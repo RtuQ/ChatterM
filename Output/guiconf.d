@@ -126,3 +126,4 @@
 ..\..\output\guiconf.o: ..\..\User\BSP\usart\bsp_usart3.h
 ..\..\output\guiconf.o: ..\..\User\BSP\DHT22\bsp_DHT22.h
 ..\..\output\guiconf.o: ..\..\User\BSP\usart\bsp_usart6.h
+..\..\output\guiconf.o: ..\..\User\BSP\adc\bsp_adc.h

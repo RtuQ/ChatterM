@@ -268,11 +268,15 @@ void  BSP_Init (void)
 	
 	LCD_Init();
 	GUI_Init();
-    print("GUI_Init Work!\n");
+    print("GUI_Init Sucess!\n");
+	
+	Rheostat_Init();
+	print("AD_Init Sucess!\n");
 	
 	if(DHT_GPIO_Config() == 0)
 	print("DHT22 OK!\n");
 	else print("Have not find DHT22\n");
+
     
 	GUI_SelectLayer(1);
 	GUI_SetBkColor(GUI_WHITE);

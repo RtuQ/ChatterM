@@ -56,10 +56,12 @@
 
 #define  APP_TASK_START_PRIO                        2u
 
-#define  APP_TASK_LED1_PRIO                         3u
-#define  APP_TASK_TALK_PRIO                         3u
-#define  APP_TASK_LED3_PRIO                         3u
-
+#define  APP_TASK_ShowBQ_PRIO                       3u
+#define  APP_TASK_TALK_PRIO                         4u
+#define  APP_TASK_LED3_PRIO                         5u
+#define  APP_TASK_CheckPeople_PRIO                  6u
+#define  APP_TASK_LED1_PRIO                         7u
+#define  APP_TASK_Power_PRIO                        8u
 /*
 *********************************************************************************************************
 *                                            TASK STACK SIZES
@@ -68,9 +70,12 @@
 
 #define  APP_TASK_START_STK_SIZE                    128u
 
-#define  APP_TASK_LED1_STK_SIZE                     512u
+#define	 APP_TASK_ShowBQ_STK_SIZE                   512u
+#define  APP_TASK_Power_STK_SIZE                    512u
+#define  APP_TASK_LED1_STK_SIZE                     128u
 #define  APP_TASK_TALK_STK_SIZE                     512u
 #define  APP_TASK_LED3_STK_SIZE                     512u
+#define	 APP_TASK_CheckPeople_STK_SIZE              64u
 
 
 /*

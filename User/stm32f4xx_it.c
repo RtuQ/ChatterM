@@ -152,8 +152,7 @@ void USART3_IRQHandler(void)
 {
 	OS_ERR   err;
 	
-	char *   p_mem_blk;
-	char temp;
+	u16 *   p_mem_blk;
 	
 	
 	OSIntEnter(); 	                                     //Ω¯»Î÷–∂œ

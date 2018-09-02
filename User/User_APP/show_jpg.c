@@ -107,7 +107,7 @@ void _ShowJPEG2(const char *sFilename, int x, int y)
 	GUI_MEMDEV_Select(0);
 	
 	GUI_SelectLayer(1);
-    GUI_MEMDEV_WriteAt(hMemJPEG,10,0);
+    GUI_MEMDEV_WriteAt(hMemJPEG,0,0);
 	
 	GUI_MEMDEV_Delete(hMemJPEG);
 	/* ÊÍ·Å¶¯Ì¬ÄÚ´æhMem */

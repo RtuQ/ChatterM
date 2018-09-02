@@ -127,3 +127,4 @@
 ..\..\output\print.o: ..\..\User\BSP\usart\bsp_usart3.h
 ..\..\output\print.o: ..\..\User\BSP\DHT22\bsp_DHT22.h
 ..\..\output\print.o: ..\..\User\BSP\usart\bsp_usart6.h
+..\..\output\print.o: ..\..\User\BSP\adc\bsp_adc.h

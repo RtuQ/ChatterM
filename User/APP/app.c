@@ -45,14 +45,23 @@
 FATFS fs;													/* FatFs文件系统对象 */
 FIL fnew;													/* 文件对象 */
 FRESULT res_sd;                /* 文件操作结果 */
-UINT fnum;            					  /* 文件成功读写数量 */
-BYTE ReadBuffer[1024]={0};        /* 读缓冲区 */
-BYTE WriteBuffer[] =              /* 写缓冲区*/
-"欢迎使用野火STM32 F429开发板 今天是个好日子，新建文件系统测试文件\r\n";  
+//UINT fnum;            					  /* 文件成功读写数量 */
+//BYTE ReadBuffer[1024]={0};        /* 读缓冲区 */
+//BYTE WriteBuffer[] =              /* 写缓冲区*/
+//"欢迎使用野火STM32 F429开发板 今天是个好日子，新建文件系统测试文件\r\n";  
 
 
 OS_MEM  mem;                    //声明内存管理对象
 uint8_t ucArray [ 70 ] [ 4 ];   //声明内存分区大小
+
+uint8_t Voice_Mode = 0;
+
+
+// ADC1换的电压值通过MDA方式传到SRAM
+extern __IO uint16_t ADC_ConvertedValue;
+
+#define People_Mode PGin(12)
+
 /*
 *********************************************************************************************************
 *                                                 TCB
@@ -61,9 +70,12 @@ uint8_t ucArray [ 70 ] [ 4 ];   //声明内存分区大小
 
 static  OS_TCB   AppTaskStartTCB;
 
+static 	OS_TCB	 AppTaskShowBQTCB;
+static  OS_TCB   AppTaskPowerTCB;
 static  OS_TCB   AppTaskLed1TCB;
         OS_TCB   AppTasktalkTCB;
 static  OS_TCB   AppTaskLed3TCB;
+static 	OS_TCB	 AppTaskCheckPeopleTCB;
 
 
 /*
@@ -74,9 +86,12 @@ static  OS_TCB   AppTaskLed3TCB;
 
 static  CPU_STK  AppTaskStartStk[APP_TASK_START_STK_SIZE];
 
+static  CPU_STK  AppTaskShowBQStk [ APP_TASK_ShowBQ_STK_SIZE ];
+static  CPU_STK  AppTaskPowerStk [ APP_TASK_Power_STK_SIZE ];
 static  CPU_STK  AppTaskLed1Stk [ APP_TASK_LED1_STK_SIZE ];
 static  CPU_STK  AppTasktalkStk [ APP_TASK_TALK_STK_SIZE ];
 static  CPU_STK  AppTaskLed3Stk [ APP_TASK_LED3_STK_SIZE ];
+static  CPU_STK  AppTaskCheckPeopleStk [ APP_TASK_CheckPeople_STK_SIZE ];
 
 
 /*
@@ -87,9 +102,12 @@ static  CPU_STK  AppTaskLed3Stk [ APP_TASK_LED3_STK_SIZE ];
 
 static  void  AppTaskStart  (void *p_arg);
 
+static  void  AppTaskShowBQ  ( void * p_arg );
+static  void  AppTaskPower  ( void * p_arg );
 static  void  AppTaskLed1  ( void * p_arg );
 static  void  AppTasktalk  ( void * p_arg );
 static  void  AppTaskLed3  ( void * p_arg );
+static  void  AppTaskCheckPeople  ( void * p_arg );
 
 
 /*
@@ -159,9 +177,10 @@ static  void  AppTaskStart (void *p_arg)
     CPU_Init();
     BSP_Init();                                                 /* Initialize BSP functions                             */
     BSP_Tick_Init();
-    
-
     Mem_Init();                                                 /* Initialize Memory Management Module                  */
+	
+   //在外部SPI Flash挂载文件系统，文件系统挂载时会对SPI设备初始化
+	res_sd = f_mount(&fs,"0:",1);
 
 #if OS_CFG_STAT_TASK_EN > 0u
     OSStatTaskCPUUsageInit(&err);                               /* Compute CPU capacity with no task running            */
@@ -178,6 +197,20 @@ static  void  AppTaskStart (void *p_arg)
 								 (OS_MEM_QTY   )70,               //内存分区中内存块数目
 								 (OS_MEM_SIZE  )4,                //内存块的字节数目
 								 (OS_ERR      *)&err);            //返回错误类型
+								 
+	OSTaskCreate((OS_TCB     *)&AppTaskShowBQTCB,                /* Create the Led1 task                                */
+                 (CPU_CHAR   *)"App Task ShowBQ",
+                 (OS_TASK_PTR ) AppTaskShowBQ,
+                 (void       *) 0,
+                 (OS_PRIO     ) APP_TASK_ShowBQ_PRIO,
+                 (CPU_STK    *)&AppTaskShowBQStk[0],
+                 (CPU_STK_SIZE) APP_TASK_ShowBQ_STK_SIZE / 10,
+                 (CPU_STK_SIZE) APP_TASK_ShowBQ_STK_SIZE,
+                 (OS_MSG_QTY  ) 5u,
+                 (OS_TICK     ) 0u,
+                 (void       *) 0,
+                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+                 (OS_ERR     *)&err);
 
 
     OSTaskCreate((OS_TCB     *)&AppTaskLed1TCB,                /* Create the Led1 task                                */
@@ -221,6 +254,33 @@ static  void  AppTaskStart (void *p_arg)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
+				 
+	OSTaskCreate((OS_TCB     *)&AppTaskPowerTCB,                /* Create the Power task                                */
+                 (CPU_CHAR   *)"App Task Power",
+                 (OS_TASK_PTR ) AppTaskPower,
+                 (void       *) 0,
+                 (OS_PRIO     ) APP_TASK_Power_PRIO,
+                 (CPU_STK    *)&AppTaskPowerStk[0],
+                 (CPU_STK_SIZE) APP_TASK_Power_STK_SIZE / 10,
+                 (CPU_STK_SIZE) APP_TASK_Power_STK_SIZE,
+                 (OS_MSG_QTY  ) 5u,
+                 (OS_TICK     ) 0u,
+                 (void       *) 0,
+                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+                 (OS_ERR     *)&err);
+	OSTaskCreate((OS_TCB     *)&AppTaskCheckPeopleTCB,                /* Create the Power task                                */
+                 (CPU_CHAR   *)"App Task CheckPeople",
+                 (OS_TASK_PTR ) AppTaskCheckPeople,
+                 (void       *) 0,
+                 (OS_PRIO     ) APP_TASK_CheckPeople_PRIO,
+                 (CPU_STK    *)&AppTaskCheckPeopleStk[0],
+                 (CPU_STK_SIZE) APP_TASK_CheckPeople_STK_SIZE / 10,
+                 (CPU_STK_SIZE) APP_TASK_CheckPeople_STK_SIZE,
+                 (OS_MSG_QTY  ) 5u,
+                 (OS_TICK     ) 0u,
+                 (void       *) 0,
+                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+                 (OS_ERR     *)&err);
 		
 		
 		OSTaskDel ( & AppTaskStartTCB, & err );
@@ -228,10 +288,33 @@ static  void  AppTaskStart (void *p_arg)
 		
 }
 
+/*
+*********************************************************************************************************
+*                                          表情显示 TASK
+*********************************************************************************************************
+*/
+static void AppTaskShowBQ (void * p_arg )
+{
+	OS_ERR      err;
+    u8 i =1; 
+
+   (void)p_arg;
+	
+	  while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
+			if(i==1)	_ShowJPEG2("0:pc.jpg",0,0);
+			if(i==2)	_ShowJPEG2("0:pc2.jpg",0,0);
+			if(i==3)	_ShowJPEG2("0:pc3.jpg",0,0);
+			OSTimeDlyHMSM(0, 0, 20,0,OS_OPT_TIME_DLY,&err);
+		    i++;
+		    if(i>=4)i = 1;
+		    
+    }
+	
+}
 
 /*
 *********************************************************************************************************
-*                                          LED1 TASK
+*                                          系统运行指示 TASK
 *********************************************************************************************************
 */
 
@@ -241,23 +324,14 @@ static  void  AppTaskLed1 ( void * p_arg )
 
 
    (void)p_arg;
-	//在外部SPI Flash挂载文件系统，文件系统挂载时会对SPI设备初始化
-	res_sd = f_mount(&fs,"0:",1);
+
 //	WM_MULTIBUF_Enable(1);
-//    show_jpg("0:pc.jpg");
-//	OSTimeDly ( 1000, OS_OPT_TIME_DLY, & err );
-//	printf("@TextToSpeech#你好!$");
-   _ShowJPEG2("0:ku.jpg",20,30);	
 	
 		
     while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
 			LED1_TOGGLE;
-		    
-			
 			OSTimeDly ( 1000, OS_OPT_TIME_DLY, & err );
     }
-		
-		
 }
 
 
@@ -273,7 +347,9 @@ static  void  AppTasktalk ( void * p_arg )
 
     u16 tem,hu;
 	OS_MSG_SIZE    msg_size;
-	char * pMsg;
+	u16 * pMsg;
+	
+	u8 i = 0 ;
 	
    (void)p_arg;
 
@@ -283,7 +359,7 @@ static  void  AppTasktalk ( void * p_arg )
 		
 		
 		/* 阻塞任务，等待任务消息 */
-		pMsg = OSTaskQPend ((OS_TICK        )0,                    //无期限等待
+		pMsg = (u16 *)OSTaskQPend ((OS_TICK        )0,                    //无期限等待
 											  (OS_OPT         )OS_OPT_PEND_BLOCKING, //没有消息就阻塞任务
 											  (OS_MSG_SIZE   *)&msg_size,            //返回消息长度
 											  (CPU_TS        *)0,                    //返回消息被发布的时间戳
@@ -291,7 +367,8 @@ static  void  AppTasktalk ( void * p_arg )
 
 	
 
-     	print ( "ReceiveData = %x\n", * pMsg );                                   //打印消息内容
+     	print ( "ReceiveData = %d\n", * pMsg );                                   //打印消息内容
+		Voice_Mode = 1;
 		switch(* pMsg)
 		{
 			case 0x01:{
@@ -308,7 +385,6 @@ static  void  AppTasktalk ( void * p_arg )
 						{
 							print("性别\n");
 							OSTimeDly(1000,OS_OPT_TIME_DLY,&err);
-							printf("@TextToSpeech#虽然我的声音是女的，[m51]但我可能是个男的[m3]$");
 						}break;
 						
 	        case 0x06:
@@ -317,13 +393,51 @@ static  void  AppTasktalk ( void * p_arg )
 							if(DHT22_Read_Data(&tem,&hu) == 0)
 								{
 									printf("@TextToSpeech#现在的温度是[n2]%d，湿度是百分之[n2]%d$",tem/10,hu/10);
-									
+									OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+									_ShowJPEG2("0:xiao.jpg",0,0);
+									if(tem >=28)
+									{
+										printf("@TextToSpeech#这真的太热了！$");
+										_ShowJPEG2("0:ku.jpg",0,0);
+									}
+									OSTimeDly(20000,OS_OPT_TIME_DLY,&err);
 								}
 							else printf("@TextToSpeech#啊呀我的温度传感器坏了$");
 						}break;
+			case 0x0f:
+						{
+							print("生气\n");
+							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);  //挂起显示表情任务
+									_ShowJPEG2("0:fahuo.jpg",0,0);
+						  
+						}break;
+			case 0x0c:
+			            {
+							print("笑话\n");
+							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+									_ShowJPEG2("0:hanxiao.jpg",0,0);
+							if(i==0)printf("@TextToSpeech#有一学渣，暑假作业全部做完，在最后一页上面写了一句话:我的作业有17道错题，74个错别字，麻烦老师认真的逐一找出来，请不要用一个“阅”，换我们一个月！$");
+						    if(i==1)printf("@TextToSpeech#乌龟受伤.让蜗牛去买药。过了2个小时.蜗牛还没回来。乌龟急了骂道:再不回来我就死了!这时门外传来了蜗牛的声音:你再说我不去了!$");
+						    OSTimeDlyHMSM(0,0,25,0,OS_OPT_TIME_DLY,&err);
+							i++; 
+							if(i>=2)i = 0;
+							
+						}break;
+			case 0x14:
+						{
+							print("笨蛋\n");
+							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+									_ShowJPEG2("0:fahuo.jpg",0,0);
+							
+						}break;
+				      
+				
+			
 		}
 
-
+         OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
+		
+		Voice_Mode = 0;
 		
 		/* 退还内存块 */
 		OSMemPut ((OS_MEM  *)&mem,                                 //指向内存管理对象
@@ -353,27 +467,80 @@ static  void  AppTaskLed3 ( void * p_arg )
 
 
     while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
-//	        _ShowJPEG2("0:pc.jpg",40,30);
-//		OSTimeDly ( 1000, OS_OPT_TIME_DLY, & err );
-//		    _ShowJPEG2("0:ku.jpg",40,30);
-//		if(PGin(12)==1) print("RED Work\n");
-//		    else print("RED not work\n");
 		
 		if(DHT22_Read_Data(&tem,&hum) == 0)
 								{
 									tem = tem/10;
 									hum = hum/10;
 									Usart_Senddec(USART1,tem);
-									
 									OSTimeDly(1000,OS_OPT_TIME_DLY,&err);
 									Usart_Senddec(USART1,hum);
 								}
-			OSTimeDly ( 10000, OS_OPT_TIME_DLY, & err );
+			OSTimeDlyHMSM(0, 0, 10,0,OS_OPT_TIME_DLY,&err);
     }
 		
 		
 }
 
+/*
+*********************************************************************************************************
+*                                          电量检测 TASK
+*********************************************************************************************************
+*/
+static void  AppTaskPower  ( void * p_arg )
+{
+	OS_ERR err;
+	 	 
+    float ADC_Vol; // 用于保存转换计算后的电压值
+	
+	(void)p_arg;
+	while (DEF_TRUE){
+      	    
+			ADC_Vol =(float) ADC_ConvertedValue/4096*(float)13.3; // 读取转换的AD值
+	        print("\r\n The current AD value = %f V \r\n",ADC_Vol); 
+		  if (ADC_Vol <= 10&&Voice_Mode == 0)
+			{
+				_ShowJPEG2("0:meidian.jpg",0,0);
+				printf("@TextToSpeech#快没电了，要给我换电池咯！$");
+			}
+			
+			
+		    OSTimeDlyHMSM(0,5,0,0,OS_OPT_TIME_DLY,&err); //每隔5分钟检测一次电压值
+		    
+	}
+}
+
+/*
+*********************************************************************************************************
+*                                          人检测 TASK
+*********************************************************************************************************
+*/
+static void  AppTaskCheckPeople  ( void * p_arg )
+{
+	OS_ERR err;
+	 	 
+    u8 Mode = 0;
+	(void)p_arg;
+	while (DEF_TRUE){
+      	    
+		    if(People_Mode== 1&&Voice_Mode == 0) {
+				
+				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+				OSTaskSuspend((OS_TCB *)&AppTasktalk,&err);
+				Mode = 1;
+				printf("@TextToSpeech#你好，有什么我可以帮你的吗？$");
+		    
+		    }
+			if(Mode == 1)
+			{
+				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
+				OSTaskResume((OS_TCB *)&AppTasktalk,&err);  //恢复对话表情任务
+				Mode = 0 ;
+			}
+		    OSTimeDlyHMSM(0,0,0,250,OS_OPT_TIME_DLY,&err); //每隔250ms检测一次
+	}
+	
+}
 
 
 

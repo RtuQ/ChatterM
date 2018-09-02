@@ -127,3 +127,4 @@
 ..\..\output\stm32f4xx_it.o: ..\..\User\BSP\usart\bsp_usart3.h
 ..\..\output\stm32f4xx_it.o: ..\..\User\BSP\DHT22\bsp_DHT22.h
 ..\..\output\stm32f4xx_it.o: ..\..\User\BSP\usart\bsp_usart6.h
+..\..\output\stm32f4xx_it.o: ..\..\User\BSP\adc\bsp_adc.h
