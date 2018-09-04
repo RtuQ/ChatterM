@@ -76,6 +76,7 @@ static  OS_TCB   AppTaskLed1TCB;
         OS_TCB   AppTasktalkTCB;
 static  OS_TCB   AppTaskLed3TCB;
 static 	OS_TCB	 AppTaskCheckPeopleTCB;
+static  OS_TCB   SystemDatasBroadcast_TCB; 
 
 
 /*
@@ -92,6 +93,7 @@ static  CPU_STK  AppTaskLed1Stk [ APP_TASK_LED1_STK_SIZE ];
 static  CPU_STK  AppTasktalkStk [ APP_TASK_TALK_STK_SIZE ];
 static  CPU_STK  AppTaskLed3Stk [ APP_TASK_LED3_STK_SIZE ];
 static  CPU_STK  AppTaskCheckPeopleStk [ APP_TASK_CheckPeople_STK_SIZE ];
+static  CPU_STK  SystemDatasBroadcast_STK [SystemDatasBroadcast_STK_SIZE];
 
 
 /*
@@ -108,6 +110,7 @@ static  void  AppTaskLed1  ( void * p_arg );
 static  void  AppTasktalk  ( void * p_arg );
 static  void  AppTaskLed3  ( void * p_arg );
 static  void  AppTaskCheckPeople  ( void * p_arg );
+static void  SystemDatasBroadcast (void *p_arg);
 
 
 /*
@@ -281,6 +284,19 @@ static  void  AppTaskStart (void *p_arg)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
+	OSTaskCreate( (OS_TCB     *)&SystemDatasBroadcast_TCB,
+                (CPU_CHAR   *)"SystemDatasBroadcast",
+                (OS_TASK_PTR ) SystemDatasBroadcast,
+                (void       *) 0,
+                (OS_PRIO     ) SystemDatasBroadcast_PRIO,
+                (CPU_STK    *)&SystemDatasBroadcast_STK[0],
+                (CPU_STK_SIZE) SystemDatasBroadcast_STK_SIZE/10,
+                (CPU_STK_SIZE) SystemDatasBroadcast_STK_SIZE,
+                (OS_MSG_QTY  ) 0,
+                (OS_TICK     ) 0,
+                (void       *) 0,
+                (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR), 
+                (OS_ERR     *) &err);	
 		
 		
 		OSTaskDel ( & AppTaskStartTCB, & err );
@@ -408,7 +424,7 @@ static  void  AppTasktalk ( void * p_arg )
 						{
 							print("生气\n");
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);  //挂起显示表情任务
-									_ShowJPEG2("0:fahuo.jpg",0,0);
+							_ShowJPEG2("0:fahuo.jpg",0,0);
 						  
 						}break;
 			case 0x0c:
@@ -498,12 +514,11 @@ static void  AppTaskPower  ( void * p_arg )
       	    
 			ADC_Vol =(float) ADC_ConvertedValue/4096*(float)13.3; // 读取转换的AD值
 	        print("\r\n The current AD value = %f V \r\n",ADC_Vol); 
-		  if (ADC_Vol <= 10&&Voice_Mode == 0)
+			if (ADC_Vol <= 10&&Voice_Mode == 0)
 			{
 				_ShowJPEG2("0:meidian.jpg",0,0);
 				printf("@TextToSpeech#快没电了，要给我换电池咯！$");
 			}
-			
 			
 		    OSTimeDlyHMSM(0,5,0,0,OS_OPT_TIME_DLY,&err); //每隔5分钟检测一次电压值
 		    
@@ -520,16 +535,22 @@ static void  AppTaskCheckPeople  ( void * p_arg )
 	OS_ERR err;
 	 	 
     u8 Mode = 0;
+	u8 Last_Mode = 0;
 	(void)p_arg;
 	while (DEF_TRUE){
       	    
-		    if(People_Mode== 1&&Voice_Mode == 0) {
+		    if(People_Mode == 1&&Voice_Mode == 0) {
 				
 				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
 				OSTaskSuspend((OS_TCB *)&AppTasktalk,&err);
 				Mode = 1;
-				printf("@TextToSpeech#你好，有什么我可以帮你的吗？$");
-		    
+				if(Last_Mode == 0)
+				{
+					printf("@TextToSpeech#你好，有什么我可以帮你的吗？$");
+				    OSTimeDlyHMSM(0,0,5,0,OS_OPT_TIME_DLY,&err); 
+				}
+		        Last_Mode = ~Last_Mode;
+				print("on\n");
 		    }
 			if(Mode == 1)
 			{
@@ -541,7 +562,45 @@ static void  AppTaskCheckPeople  ( void * p_arg )
 	}
 	
 }
+/*
+*********************************************************************************************************
+*                                          检测任务堆栈使用量 TASK  
+*********************************************************************************************************
+*/
 
+static void  SystemDatasBroadcast (void *p_arg)
+{
+  OS_ERR err;
+  CPU_STK_SIZE free,used;
+  (void)p_arg;
+  while(DEF_TRUE)
+  {
+	OSTaskStkChk (&SystemDatasBroadcast_TCB,&free,&used,&err);//  把统计任务本身的堆栈使用量也打印出来
+	print("SystemDatasBroadcast      used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+		
+	OSTaskStkChk (&AppTaskShowBQTCB,&free,&used,&err);
+	print("AppTaskShowBQ             used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+		
+	OSTaskStkChk (&AppTaskPowerTCB,&free,&used,&err);
+	print("AppTaskPower              used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+		
+	OSTaskStkChk (&AppTaskLed1TCB,&free,&used,&err);
+	print("AppTaskLed1               used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+		
+	OSTaskStkChk (&AppTasktalkTCB,&free,&used,&err);
+	print("AppTasktalk               used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+		
+	OSTaskStkChk (&AppTaskLed3TCB,&free,&used,&err);
+	print("AppTaskLed3               used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+ 
+ 
+	OSTaskStkChk (&AppTaskCheckPeopleTCB,&free,&used,&err);
+	print("AppTaskCheckPeople        used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+	
+	print("\r\n\r\n\r\n");
+	OSTimeDlyHMSM(0,0,5,0,(OS_OPT)OS_OPT_TIME_DLY,(OS_ERR*)&err);
+   }
+}
 
 
 
