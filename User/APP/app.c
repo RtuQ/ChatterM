@@ -312,17 +312,15 @@ static  void  AppTaskStart (void *p_arg)
 static void AppTaskShowBQ (void * p_arg )
 {
 	OS_ERR      err;
-    u8 i =1; 
-
+    u8 RandData = 0;
    (void)p_arg;
 	
 	  while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
-			if(i==1)	_ShowJPEG2("0:pc.jpg",0,0);
-			if(i==2)	_ShowJPEG2("0:pc2.jpg",0,0);
-			if(i==3)	_ShowJPEG2("0:pc3.jpg",0,0);
+		    RandData = Read_Seed()%3;
+			if(RandData==0)	_ShowJPEG2("0:pc.jpg",0,0);
+			if(RandData==1)	_ShowJPEG2("0:pc2.jpg",0,0);
+			if(RandData==2)	_ShowJPEG2("0:pc3.jpg",0,0);
 			OSTimeDlyHMSM(0, 0, 20,0,OS_OPT_TIME_DLY,&err);
-		    i++;
-		    if(i>=4)i = 1;
 		    
     }
 	
@@ -337,15 +335,16 @@ static void AppTaskShowBQ (void * p_arg )
 static  void  AppTaskLed1 ( void * p_arg )
 {
     OS_ERR      err;
-
-
+  
    (void)p_arg;
 
 //	WM_MULTIBUF_Enable(1);
 	
 		
     while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
-			LED1_TOGGLE;
+			
+		    LED1_TOGGLE;
+
 			OSTimeDly ( 1000, OS_OPT_TIME_DLY, & err );
     }
 }

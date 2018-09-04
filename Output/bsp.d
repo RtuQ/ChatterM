@@ -127,3 +127,4 @@
 ..\..\output\bsp.o: ..\..\User\BSP\DHT22\bsp_DHT22.h
 ..\..\output\bsp.o: ..\..\User\BSP\usart\bsp_usart6.h
 ..\..\output\bsp.o: ..\..\User\BSP\adc\bsp_adc.h
+..\..\output\bsp.o: ..\..\User\BSP\rng\bsp_rng.h

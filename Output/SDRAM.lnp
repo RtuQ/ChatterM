@@ -48,6 +48,7 @@
 "..\..\output\bsp_dht22.o"
 "..\..\output\bsp_usart6.o"
 "..\..\output\bsp_adc.o"
+"..\..\output\bsp_rng.o"
 "..\..\output\app.o"
 "..\..\output\os_app_hooks.o"
 "..\..\output\show_bmp.o"

@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F429_439xx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\DSP_LIB;..\..\Libraries\CMSIS\Include;..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\uCOS_III\uC-CPU;..\..\uCOS_III\uC-LIB;..\..\uCOS_III\uCOS-III\Ports;..\..\uCOS_III\uCOS-III\Source;..\..\emWin\Config;..\..\emWin\inc;..\..\emWin\Lib;..\..\emWin\OS;..\..\FATFS;..\..\User;..\..\User\APP;..\..\User\BSP;..\..\User\BSP\font;..\..\User\BSP\lcd;..\..\User\BSP\led;..\..\User\BSP\sdram;..\..\User\BSP\usart;..\..\User\BSP\sdio;..\..\User\User_APP;..\..\User\BSP\DHT22;..\..\User\User_APP\delay;..\..\User\BSP\adc</IncludePath>
+              <IncludePath>..\..\DSP_LIB;..\..\Libraries\CMSIS\Include;..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\uCOS_III\uC-CPU;..\..\uCOS_III\uC-LIB;..\..\uCOS_III\uCOS-III\Ports;..\..\uCOS_III\uCOS-III\Source;..\..\emWin\Config;..\..\emWin\inc;..\..\emWin\Lib;..\..\emWin\OS;..\..\FATFS;..\..\User;..\..\User\APP;..\..\User\BSP;..\..\User\BSP\font;..\..\User\BSP\lcd;..\..\User\BSP\led;..\..\User\BSP\sdram;..\..\User\BSP\usart;..\..\User\BSP\sdio;..\..\User\User_APP;..\..\User\BSP\DHT22;..\..\User\User_APP\delay;..\..\User\BSP\adc;..\..\User\BSP\rng</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -711,6 +711,11 @@
               <FileName>bsp_adc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\BSP\adc\bsp_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_rng.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\BSP\rng\bsp_rng.c</FilePath>
             </File>
           </Files>
         </Group>

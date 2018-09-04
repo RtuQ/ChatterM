@@ -128,3 +128,4 @@
 ..\..\output\show_jpg.o: ..\..\User\BSP\DHT22\bsp_DHT22.h
 ..\..\output\show_jpg.o: ..\..\User\BSP\usart\bsp_usart6.h
 ..\..\output\show_jpg.o: ..\..\User\BSP\adc\bsp_adc.h
+..\..\output\show_jpg.o: ..\..\User\BSP\rng\bsp_rng.h

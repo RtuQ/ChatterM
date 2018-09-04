@@ -127,3 +127,4 @@
 ..\..\output\gui_x_ucos.o: ..\..\User\BSP\DHT22\bsp_DHT22.h
 ..\..\output\gui_x_ucos.o: ..\..\User\BSP\usart\bsp_usart6.h
 ..\..\output\gui_x_ucos.o: ..\..\User\BSP\adc\bsp_adc.h
+..\..\output\gui_x_ucos.o: ..\..\User\BSP\rng\bsp_rng.h

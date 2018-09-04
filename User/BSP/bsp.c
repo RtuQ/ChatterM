@@ -276,7 +276,8 @@ void  BSP_Init (void)
 	if(DHT_GPIO_Config() == 0)
 	print("DHT22 OK!\n");
 	else print("Have not find DHT22\n");
-
+    
+	RNG_Config();
     
 	GUI_SelectLayer(1);
 	GUI_SetBkColor(GUI_WHITE);
