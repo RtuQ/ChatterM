@@ -22,59 +22,17 @@ extern UINT bw;
 *	                                	变量
 *********************************************************************************************************
 */
-static char acBuffer[8192];
+//static char acBuffer[8192];
 
 static GUI_GIF_INFO InfoGif;
 static GUI_GIF_IMAGE_INFO ImagInfoGif;
 
 /*
 *********************************************************************************************************
-*	函 数 名: _GetData
-*	功能说明: 被函数GUI_JPEG_DrawEx调用
-*	形    参：p             FIL类型数据
-*             NumBytesReq   请求读取的字节数
-*             ppData        数据指针
-*             Off           如果Off = 1，那么将重新从起始位置读取                 
-*	返 回 值: 返回读取的字节数
+*	调用 show_jpg.c 中的函数
 *********************************************************************************************************
 */
 extern int _GetData(void * p, const U8 ** ppData, unsigned NumBytesReq, U32 Off); 
-//{
-//	static int FileAddress = 0;
-//	UINT NumBytesRead;
-//	FIL *PicFile;
-
-//	PicFile = (FIL *)p;
-
-//	/*
-//	* 检测缓存大小
-//	*/
-//	if (NumBytesReq > sizeof(acBuffer)) {
-//	NumBytesReq = sizeof(acBuffer);
-//	}
-
-//	/*
-//	* 设置读取位置
-//	*/
-//	if(Off == 1) FileAddress = 0;
-//	else FileAddress = Off;
-//	result =f_lseek(PicFile, FileAddress);
-
-//	/*
-//	* 读取数据到缓存
-//	*/
-//	result = f_read(PicFile, acBuffer, NumBytesReq, &NumBytesRead);
-
-//	/*
-//	* 让指针ppData指向读取的数据
-//	*/
-//	*ppData = (const U8 *)acBuffer;
-
-//	/*
-//	* 返回读取的字节数
-//	*/
-//	return NumBytesRead;
-//}
 
 /*
 *********************************************************************************************************
@@ -158,13 +116,13 @@ void _ShowGIF1(const char * sFilename)
 *	返 回 值: 无
 *********************************************************************************************************
 */
-void _ShowGIF2(const char * sFilename) 
+void _ShowGIF2(const char * sFilename,char numerator,char denominator)   //放缩比例因子：numerator 分子  denominator 分母
 {
 	uint16_t i = 0;
-	uint32_t t0, t1;
+//	uint32_t t0, t1;
 	char *_acBuffer;
 	GUI_HMEM hMem;
-	char buf[50];
+//	char buf[50];
 	
 
 	/* 打开文件 */		
@@ -201,11 +159,11 @@ void _ShowGIF2(const char * sFilename)
 			/* 如果此帧延迟时间是0，默认是延迟100ms */
 			if(ImagInfoGif.Delay == 0)
 			{
-				GUI_Delay(100);
+				GUI_Delay(10);
 			}
 			else
 			{
-				t0 = GUI_GetTime();
+//				t0 = GUI_GetTime();
 				/* 显示当前播放的帧数 */
 //				sprintf(buf, "     Frame:%d/%d     ", i+1, InfoGif.NumImages);
 //				GUI_DispStringHCenterAt(buf, LCD_GetXSize()/2, 0);
@@ -215,25 +173,26 @@ void _ShowGIF2(const char * sFilename)
 				GUI_SelectLayer(1);
 				
 				/* 解码并显示此帧GIF图片，注意第5个参数是从0开始计数的 */
-				GUI_GIF_DrawSub(_acBuffer, 
+				GUI_GIF_DrawSubScaled(_acBuffer, 
 								file.fsize, 
-								(LCD_GetXSize() - InfoGif.xSize)/2,
-								(LCD_GetYSize() - InfoGif.ySize)/2, 
-								i++);
+								(LCD_GetXSize() - InfoGif.xSize*numerator/denominator)/2,
+								(LCD_GetYSize() - InfoGif.ySize*numerator/denominator)/2, 
+								i++,numerator,denominator);
 				
-				/* 获取本次解码和显示消耗的时间 */
-				t1 = GUI_GetTime() - t0;
-				
-				/* 如果GIF的解码和显示的时间超时就不做延迟 */
-				if (t1 < ImagInfoGif.Delay * 10) 
-				{
-					GUI_Delay(ImagInfoGif.Delay * 10 - t1);
-				}
+//				/* 获取本次解码和显示消耗的时间 */
+//				t1 = GUI_GetTime() - t0;
+//				
+//				/* 如果GIF的解码和显示的时间超时就不做延迟 */
+//				if (t1 < ImagInfoGif.Delay * 10) 
+//				{
+//					GUI_Delay(ImagInfoGif.Delay * 10 - t1);
+//				}
 			}			  
 	    }
 	    else
 	    {
 	        i = 0;
+			break;
 	    }
 	}
 
@@ -277,7 +236,7 @@ _ShowGIF1("1:1.gif");
 	
     /* GIF图片显示方式二：实际项目推荐 */
 #elif defined Method2
-_ShowGIF2("1:jingya.gif");	
+_ShowGIF2("0:jingya.gif",1,1);	
 	
 #endif
 	

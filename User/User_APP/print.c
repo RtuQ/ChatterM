@@ -6,26 +6,28 @@
     console_print(print_USART,ch);
 }
 
-void    printdec(int dec)
+void    printdec(int dec)    //修改了不显示0的问题
 {
-    if(dec==0)
+	
+    if(dec == 0)
     {
+		printch((char)('0'));
         return;
     }
+	if(dec > 9)
     printdec(dec/10);
     printch( (char)(dec%10 + '0'));
 }
 
 void    printflt(double flt)
 {
-    int icnt = 0;
     int tmpint = 0;
     
     tmpint = (int)flt;
     printdec(tmpint);
     printch('.');
     flt = flt - tmpint;
-    tmpint = (int)(flt * 1000000);
+    tmpint = (int)(flt * 1000);    //默认显示3位小数，可自改
     printdec(tmpint);
 }
 

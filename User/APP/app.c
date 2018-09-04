@@ -443,8 +443,13 @@ static  void  AppTasktalk ( void * p_arg )
 						{
 							print("笨蛋\n");
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
-									_ShowJPEG2("0:fahuo.jpg",0,0);
 							
+							GUI_SelectLayer(1);
+							GUI_SetBkColor(GUI_BLACK);
+							GUI_Clear();
+//							WM_MULTIBUF_Enable(1);
+							_ShowGIF2("0:renzhu.gif",2,1);
+													
 						}break;
 				      
 				
@@ -519,7 +524,6 @@ static void  AppTaskPower  ( void * p_arg )
 				_ShowJPEG2("0:meidian.jpg",0,0);
 				printf("@TextToSpeech#快没电了，要给我换电池咯！$");
 			}
-			
 		    OSTimeDlyHMSM(0,5,0,0,OS_OPT_TIME_DLY,&err); //每隔5分钟检测一次电压值
 		    
 	}
@@ -570,34 +574,70 @@ static void  AppTaskCheckPeople  ( void * p_arg )
 
 static void  SystemDatasBroadcast (void *p_arg)
 {
-  OS_ERR err;
-  CPU_STK_SIZE free,used;
-  (void)p_arg;
-  while(DEF_TRUE)
-  {
-	OSTaskStkChk (&SystemDatasBroadcast_TCB,&free,&used,&err);//  把统计任务本身的堆栈使用量也打印出来
-	print("SystemDatasBroadcast      used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
-		
-	OSTaskStkChk (&AppTaskShowBQTCB,&free,&used,&err);
-	print("AppTaskShowBQ             used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
-		
-	OSTaskStkChk (&AppTaskPowerTCB,&free,&used,&err);
-	print("AppTaskPower              used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
-		
-	OSTaskStkChk (&AppTaskLed1TCB,&free,&used,&err);
-	print("AppTaskLed1               used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
-		
-	OSTaskStkChk (&AppTasktalkTCB,&free,&used,&err);
-	print("AppTasktalk               used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
-		
-	OSTaskStkChk (&AppTaskLed3TCB,&free,&used,&err);
-	print("AppTaskLed3               used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
- 
- 
-	OSTaskStkChk (&AppTaskCheckPeopleTCB,&free,&used,&err);
-	print("AppTaskCheckPeople        used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+	OS_ERR err;
+//  CPU_STK_SIZE free,used;
+//  (void)p_arg;
+//  while(DEF_TRUE)
+//  {
+//	OSTaskStkChk (&SystemDatasBroadcast_TCB,&free,&used,&err);//  把统计任务本身的堆栈使用量也打印出来
+//	print("SystemDatasBroadcast      used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+//		
+//	OSTaskStkChk (&AppTaskShowBQTCB,&free,&used,&err);
+//	print("AppTaskShowBQ             used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+//		
+//	OSTaskStkChk (&AppTaskPowerTCB,&free,&used,&err);
+//	print("AppTaskPower              used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+//		
+//	OSTaskStkChk (&AppTaskLed1TCB,&free,&used,&err);
+//	print("AppTaskLed1               used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+//		
+//	OSTaskStkChk (&AppTasktalkTCB,&free,&used,&err);
+//	print("AppTasktalk               used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+//		
+//	OSTaskStkChk (&AppTaskLed3TCB,&free,&used,&err);
+//	print("AppTaskLed3               used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+// 
+// 
+//	OSTaskStkChk (&AppTaskCheckPeopleTCB,&free,&used,&err);
+//	print("AppTaskCheckPeople        used/free:%d/%d  usage:%d%%\r\n",used,free,(used*100)/(used+free));
+//	
+//	print("\r\n\r\n\r\n");
+//	OSTimeDlyHMSM(0,0,5,0,(OS_OPT)OS_OPT_TIME_DLY,(OS_ERR*)&err);
+//   }
+
+
+	OS_TCB      *p_tcb;	        /* 定义一个任务控制块指针, TCB = TASK CONTROL BLOCK */
+	float CPU = 0.0f;
+    (void)p_arg;
 	
-	print("\r\n\r\n\r\n");
+	while(DEF_TRUE){
+		
+    CPU_SR_ALLOC();  //这条必须有，其展开内容同ucos-ii中
+	CPU_CRITICAL_ENTER();
+    p_tcb = OSTaskDbgListPtr;
+    CPU_CRITICAL_EXIT();
+	
+	/* 打印标题 */
+	print("===============================================================\r\n");
+	print(" 优先级 使用栈 剩余栈 百分比 利用率   任务名\r\n");
+	print("  Prio   Used  Free   Per    CPU     Taskname\r\n");
+
+	/* 遍历任务控制块列表(TCB list)，打印所有的任务的优先级和名称 */
+	while (p_tcb != (OS_TCB *)0) 
+		{
+			CPU = (float)p_tcb->CPUUsage / 100;
+	print("   %d      %d    %d    %d%%   %f%%    %s\r\n", 
+			p_tcb->Prio, 
+			p_tcb->StkUsed, 
+			p_tcb->StkFree, 
+			(p_tcb->StkUsed * 100) / (p_tcb->StkUsed + p_tcb->StkFree),
+			CPU,
+			p_tcb->NamePtr);		
+			
+			CPU_CRITICAL_ENTER();
+			p_tcb = p_tcb->DbgNextPtr;
+			CPU_CRITICAL_EXIT();
+		}
 	OSTimeDlyHMSM(0,0,5,0,(OS_OPT)OS_OPT_TIME_DLY,(OS_ERR*)&err);
    }
 }

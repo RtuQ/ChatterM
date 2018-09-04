@@ -3,6 +3,6 @@
 #include "includes.h"
 
 void show_GIF(void);
-void _ShowGIF2(const char * sFilename);
+void _ShowGIF2(const char * sFilename,char numerator,char denominator);
 
 #endif
