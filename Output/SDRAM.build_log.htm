@@ -22,16 +22,24 @@ Dialog DLL:      DARMSTM.DLL V1.68.0.0
  
 <h2>Project:</h2>
 C:\Users\MSI\Desktop\智能语音表情\程序\Chatter\Project\RVMDK（uv5）\BH-F429.uvprojx
-Project File Date:  09/04/2018
+Project File Date:  09/05/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'SDRAM'
 compiling app.c...
+..\..\User\APP\app.c(79): warning:  #177-D: variable "SystemDatasBroadcast_TCB"  was declared but never referenced
+  static  OS_TCB   SystemDatasBroadcast_TCB; 
+..\..\User\APP\app.c(96): warning:  #177-D: variable "SystemDatasBroadcast_STK"  was declared but never referenced
+  static  CPU_STK  SystemDatasBroadcast_STK [SystemDatasBroadcast_STK_SIZE];
+..\..\User\APP\app.c(575): warning:  #177-D: function "SystemDatasBroadcast"  was declared but never referenced
+  static void  SystemDatasBroadcast (void *p_arg)
+..\..\User\APP\app.c: 3 warnings, 0 errors
+compiling bsp.c...
 linking...
-Program Size: Code=93976 RO-data=186396 RW-data=916 ZI-data=64548  
+Program Size: Code=95790 RO-data=186522 RW-data=976 ZI-data=63952  
 FromELF: creating hex file...
-"..\..\Output\SDRAM.axf" - 0 Error(s), 0 Warning(s).
+"..\..\Output\SDRAM.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -45,7 +53,7 @@ Package Vendor: Keil
   d:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:04
+Build Time Elapsed:  00:00:05
 </pre>
 </body>
 </html>

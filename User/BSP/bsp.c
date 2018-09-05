@@ -45,7 +45,7 @@
 *                                            LOCAL DEFINES
 *********************************************************************************************************
 */
-
+#define MPU6050_ADDRESS         0x68
 
 /*
 *********************************************************************************************************
@@ -267,8 +267,10 @@ void  BSP_Init (void)
 	print("SDRAM OK!\n");
 	
 	LCD_Init();
+	TP_Init();
 	GUI_Init();
     print("GUI_Init Sucess!\n");
+	
 	
 	Rheostat_Init();
 	print("AD_Init Sucess!\n");
@@ -278,7 +280,11 @@ void  BSP_Init (void)
 	else print("Have not find DHT22\n");
     
 	RNG_Config();
-    
+	
+//	i2c_CfgGpio();
+//	MPU6050_Init();
+//	MPU6050ReadID();       //模块有问题
+	
 	GUI_SelectLayer(1);
 	GUI_SetBkColor(GUI_WHITE);
 	GUI_Clear();

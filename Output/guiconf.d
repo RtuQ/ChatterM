@@ -128,3 +128,9 @@
 ..\..\output\guiconf.o: ..\..\User\BSP\usart\bsp_usart6.h
 ..\..\output\guiconf.o: ..\..\User\BSP\adc\bsp_adc.h
 ..\..\output\guiconf.o: ..\..\User\BSP\rng\bsp_rng.h
+..\..\output\guiconf.o: ..\..\User\BSP\i2c\bsp_i2c_gpio.h
+..\..\output\guiconf.o: ..\..\User\BSP\mpu6050\mpu6050.h
+..\..\output\guiconf.o: ..\..\User\BSP\TOUCH\touch.h
+..\..\output\guiconf.o: ..\..\User\BSP\TOUCH\ott2001a.h
+..\..\output\guiconf.o: ..\..\User\BSP\TOUCH\gt9147.h
+..\..\output\guiconf.o: ..\..\User\BSP\TOUCH\ft5206.h

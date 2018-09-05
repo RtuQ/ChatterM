@@ -128,3 +128,9 @@
 ..\..\output\app.o: ..\..\User\BSP\usart\bsp_usart6.h
 ..\..\output\app.o: ..\..\User\BSP\adc\bsp_adc.h
 ..\..\output\app.o: ..\..\User\BSP\rng\bsp_rng.h
+..\..\output\app.o: ..\..\User\BSP\i2c\bsp_i2c_gpio.h
+..\..\output\app.o: ..\..\User\BSP\mpu6050\mpu6050.h
+..\..\output\app.o: ..\..\User\BSP\TOUCH\touch.h
+..\..\output\app.o: ..\..\User\BSP\TOUCH\ott2001a.h
+..\..\output\app.o: ..\..\User\BSP\TOUCH\gt9147.h
+..\..\output\app.o: ..\..\User\BSP\TOUCH\ft5206.h

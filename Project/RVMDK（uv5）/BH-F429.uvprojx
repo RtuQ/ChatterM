@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F429_439xx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\DSP_LIB;..\..\Libraries\CMSIS\Include;..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\uCOS_III\uC-CPU;..\..\uCOS_III\uC-LIB;..\..\uCOS_III\uCOS-III\Ports;..\..\uCOS_III\uCOS-III\Source;..\..\emWin\Config;..\..\emWin\inc;..\..\emWin\Lib;..\..\emWin\OS;..\..\FATFS;..\..\User;..\..\User\APP;..\..\User\BSP;..\..\User\BSP\font;..\..\User\BSP\lcd;..\..\User\BSP\led;..\..\User\BSP\sdram;..\..\User\BSP\usart;..\..\User\BSP\sdio;..\..\User\User_APP;..\..\User\BSP\DHT22;..\..\User\User_APP\delay;..\..\User\BSP\adc;..\..\User\BSP\rng</IncludePath>
+              <IncludePath>..\..\DSP_LIB;..\..\Libraries\CMSIS\Include;..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\uCOS_III\uC-CPU;..\..\uCOS_III\uC-LIB;..\..\uCOS_III\uCOS-III\Ports;..\..\uCOS_III\uCOS-III\Source;..\..\emWin\Config;..\..\emWin\inc;..\..\emWin\Lib;..\..\emWin\OS;..\..\FATFS;..\..\User;..\..\User\APP;..\..\User\BSP;..\..\User\BSP\font;..\..\User\BSP\lcd;..\..\User\BSP\led;..\..\User\BSP\sdram;..\..\User\BSP\usart;..\..\User\BSP\sdio;..\..\User\User_APP;..\..\User\BSP\DHT22;..\..\User\User_APP\delay;..\..\User\BSP\adc;..\..\User\BSP\rng;..\..\User\BSP\i2c;..\..\User\BSP\mpu6050;..\..\User\BSP\TOUCH</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -716,6 +716,31 @@
               <FileName>bsp_rng.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\BSP\rng\bsp_rng.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_i2c_gpio.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\BSP\i2c\bsp_i2c_gpio.c</FilePath>
+            </File>
+            <File>
+              <FileName>mpu6050.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\BSP\mpu6050\mpu6050.c</FilePath>
+            </File>
+            <File>
+              <FileName>touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\BSP\TOUCH\touch.c</FilePath>
+            </File>
+            <File>
+              <FileName>ctiic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\BSP\TOUCH\ctiic.c</FilePath>
+            </File>
+            <File>
+              <FileName>gt9147.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\BSP\TOUCH\gt9147.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -101,6 +101,9 @@
 #include "bsp_usart6.h"
 #include "bsp_adc.h"
 #include "bsp_rng.h" 
+#include "bsp_i2c_gpio.h"
+#include "mpu6050.h"
+#include "touch.h" 
 
 /*
 *********************************************************************************************************

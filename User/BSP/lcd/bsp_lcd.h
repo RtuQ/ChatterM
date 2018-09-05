@@ -180,23 +180,23 @@ typedef struct
 
 
 //红色数据线
-#define LTDC_R0_GPIO_PORT        	GPIOH
-#define LTDC_R0_GPIO_CLK         	RCC_AHB1Periph_GPIOH
-#define LTDC_R0_GPIO_PIN         	GPIO_Pin_2
-#define LTDC_R0_PINSOURCE        	GPIO_PinSource2
-#define LTDC_R0_AF			          GPIO_AF_LTDC
+//#define LTDC_R0_GPIO_PORT        	GPIOH
+//#define LTDC_R0_GPIO_CLK         	RCC_AHB1Periph_GPIOH
+//#define LTDC_R0_GPIO_PIN         	GPIO_Pin_2
+//#define LTDC_R0_PINSOURCE        	GPIO_PinSource2
+//#define LTDC_R0_AF			          GPIO_AF_LTDC
 
-#define LTDC_R1_GPIO_PORT        	GPIOH
-#define LTDC_R1_GPIO_CLK         	RCC_AHB1Periph_GPIOH
-#define LTDC_R1_GPIO_PIN         	GPIO_Pin_3
-#define LTDC_R1_PINSOURCE        	GPIO_PinSource3
-#define LTDC_R1_AF			          GPIO_AF_LTDC
+//#define LTDC_R1_GPIO_PORT        	GPIOH
+//#define LTDC_R1_GPIO_CLK         	RCC_AHB1Periph_GPIOH
+//#define LTDC_R1_GPIO_PIN         	GPIO_Pin_3
+//#define LTDC_R1_PINSOURCE        	GPIO_PinSource3
+//#define LTDC_R1_AF			          GPIO_AF_LTDC
 
-#define LTDC_R2_GPIO_PORT        	GPIOH
-#define LTDC_R2_GPIO_CLK         	RCC_AHB1Periph_GPIOH
-#define LTDC_R2_GPIO_PIN         	GPIO_Pin_8
-#define LTDC_R2_PINSOURCE        	GPIO_PinSource8
-#define LTDC_R2_AF			          GPIO_AF_LTDC
+//#define LTDC_R2_GPIO_PORT        	GPIOH
+//#define LTDC_R2_GPIO_CLK         	RCC_AHB1Periph_GPIOH
+//#define LTDC_R2_GPIO_PIN         	GPIO_Pin_8
+//#define LTDC_R2_PINSOURCE        	GPIO_PinSource8
+//#define LTDC_R2_AF			          GPIO_AF_LTDC
 
 #define LTDC_R3_GPIO_PORT        	GPIOH
 #define LTDC_R3_GPIO_CLK         	RCC_AHB1Periph_GPIOH

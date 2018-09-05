@@ -284,19 +284,19 @@ static  void  AppTaskStart (void *p_arg)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
-	OSTaskCreate( (OS_TCB     *)&SystemDatasBroadcast_TCB,
-                (CPU_CHAR   *)"SystemDatasBroadcast",
-                (OS_TASK_PTR ) SystemDatasBroadcast,
-                (void       *) 0,
-                (OS_PRIO     ) SystemDatasBroadcast_PRIO,
-                (CPU_STK    *)&SystemDatasBroadcast_STK[0],
-                (CPU_STK_SIZE) SystemDatasBroadcast_STK_SIZE/10,
-                (CPU_STK_SIZE) SystemDatasBroadcast_STK_SIZE,
-                (OS_MSG_QTY  ) 0,
-                (OS_TICK     ) 0,
-                (void       *) 0,
-                (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR), 
-                (OS_ERR     *) &err);	
+//	OSTaskCreate( (OS_TCB     *)&SystemDatasBroadcast_TCB,
+//                (CPU_CHAR   *)"SystemDatasBroadcast",
+//                (OS_TASK_PTR ) SystemDatasBroadcast,
+//                (void       *) 0,
+//                (OS_PRIO     ) SystemDatasBroadcast_PRIO,
+//                (CPU_STK    *)&SystemDatasBroadcast_STK[0],
+//                (CPU_STK_SIZE) SystemDatasBroadcast_STK_SIZE/10,
+//                (CPU_STK_SIZE) SystemDatasBroadcast_STK_SIZE,
+//                (OS_MSG_QTY  ) 0,
+//                (OS_TICK     ) 0,
+//                (void       *) 0,
+//                (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR), 
+//                (OS_ERR     *) &err);	
 		
 		
 		OSTaskDel ( & AppTaskStartTCB, & err );
@@ -344,7 +344,8 @@ static  void  AppTaskLed1 ( void * p_arg )
     while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
 			
 		    LED1_TOGGLE;
-
+            if(GT9147_Scan(0) == 1)
+				print("ÄãÔÚÃþÎÒ\n");
 			OSTimeDly ( 1000, OS_OPT_TIME_DLY, & err );
     }
 }

@@ -129,3 +129,9 @@
 ..\..\output\show_gif.o: ..\..\User\BSP\usart\bsp_usart6.h
 ..\..\output\show_gif.o: ..\..\User\BSP\adc\bsp_adc.h
 ..\..\output\show_gif.o: ..\..\User\BSP\rng\bsp_rng.h
+..\..\output\show_gif.o: ..\..\User\BSP\i2c\bsp_i2c_gpio.h
+..\..\output\show_gif.o: ..\..\User\BSP\mpu6050\mpu6050.h
+..\..\output\show_gif.o: ..\..\User\BSP\TOUCH\touch.h
+..\..\output\show_gif.o: ..\..\User\BSP\TOUCH\ott2001a.h
+..\..\output\show_gif.o: ..\..\User\BSP\TOUCH\gt9147.h
+..\..\output\show_gif.o: ..\..\User\BSP\TOUCH\ft5206.h

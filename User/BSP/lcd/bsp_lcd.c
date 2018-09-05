@@ -1,20 +1,3 @@
-/**
-  ******************************************************************************
-  * @file    bsp_sdram.c
-  * @author  fire
-  * @version V1.0
-  * @date    2015-xx-xx
-  * @brief   LCD应用函数接口，支持RGB888/565 (不含中文显示)
-  ******************************************************************************
-  * @attention
-  *
-  * 实验平台:秉火  STM32 F429 开发板  
-  * 论坛    :http://www.firebbs.cn
-  * 淘宝    :https://fire-stm32.taobao.com
-  *
-  ******************************************************************************
-  */
-  
 
 /* Includes ------------------------------------------------------------------*/
 #include "bsp_lcd.h"
@@ -1440,15 +1423,13 @@ static void LCD_GPIO_Config(void)
 
  /* 使能LCD使用到的引脚时钟 */
                          //红色数据线
- RCC_AHB1PeriphClockCmd(LTDC_R0_GPIO_CLK | LTDC_R1_GPIO_CLK | LTDC_R2_GPIO_CLK|
-                        LTDC_R3_GPIO_CLK | LTDC_R4_GPIO_CLK | LTDC_R5_GPIO_CLK|
+ RCC_AHB1PeriphClockCmd(LTDC_R3_GPIO_CLK | LTDC_R4_GPIO_CLK | LTDC_R5_GPIO_CLK|
                         LTDC_R6_GPIO_CLK | LTDC_R7_GPIO_CLK |
                          //绿色数据线
-                         LTDC_G0_GPIO_CLK|LTDC_G1_GPIO_CLK|LTDC_G2_GPIO_CLK|
+                         LTDC_G2_GPIO_CLK|
                          LTDC_G3_GPIO_CLK|LTDC_G4_GPIO_CLK|LTDC_G5_GPIO_CLK|
                          LTDC_G6_GPIO_CLK|LTDC_G7_GPIO_CLK|
                          //蓝色数据线
-                         LTDC_B0_GPIO_CLK|LTDC_B2_GPIO_CLK|
                          LTDC_B3_GPIO_CLK|LTDC_B4_GPIO_CLK|LTDC_B5_GPIO_CLK|
                          LTDC_B6_GPIO_CLK|LTDC_B7_GPIO_CLK|
                          //控制信号线
@@ -1459,24 +1440,23 @@ static void LCD_GPIO_Config(void)
 /* GPIO配置 */
 
 /* 红色数据线 */
- GPIO_InitStruct.GPIO_Pin = LTDC_R0_GPIO_PIN;
+ GPIO_InitStruct.GPIO_Pin = LTDC_R3_GPIO_PIN;
  GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
  GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
  GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
  GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
- GPIO_Init(LTDC_R0_GPIO_PORT, &GPIO_InitStruct);
- GPIO_PinAFConfig(LTDC_R0_GPIO_PORT, LTDC_R0_PINSOURCE, LTDC_R0_AF);
+// GPIO_Init(LTDC_R0_GPIO_PORT, &GPIO_InitStruct);
+// GPIO_PinAFConfig(LTDC_R0_GPIO_PORT, LTDC_R0_PINSOURCE, LTDC_R0_AF);
 
- GPIO_InitStruct.GPIO_Pin = LTDC_R1_GPIO_PIN;
- GPIO_Init(LTDC_R1_GPIO_PORT, &GPIO_InitStruct);
- GPIO_PinAFConfig(LTDC_R1_GPIO_PORT, LTDC_R1_PINSOURCE, LTDC_R1_AF);
+// GPIO_InitStruct.GPIO_Pin = LTDC_R1_GPIO_PIN;
+// GPIO_Init(LTDC_R1_GPIO_PORT, &GPIO_InitStruct);
+// GPIO_PinAFConfig(LTDC_R1_GPIO_PORT, LTDC_R1_PINSOURCE, LTDC_R1_AF);
 
- GPIO_InitStruct.GPIO_Pin = LTDC_R2_GPIO_PIN;
- GPIO_Init(LTDC_R2_GPIO_PORT, &GPIO_InitStruct);
- GPIO_PinAFConfig(LTDC_R2_GPIO_PORT, LTDC_R2_PINSOURCE, LTDC_R2_AF);
+// GPIO_InitStruct.GPIO_Pin = LTDC_R2_GPIO_PIN;
+// GPIO_Init(LTDC_R2_GPIO_PORT, &GPIO_InitStruct);
+// GPIO_PinAFConfig(LTDC_R2_GPIO_PORT, LTDC_R2_PINSOURCE, LTDC_R2_AF);
 
- GPIO_InitStruct.GPIO_Pin = LTDC_R3_GPIO_PIN;
  GPIO_Init(LTDC_R3_GPIO_PORT, &GPIO_InitStruct);
  GPIO_PinAFConfig(LTDC_R3_GPIO_PORT, LTDC_R3_PINSOURCE, LTDC_R3_AF);
 
@@ -1497,13 +1477,13 @@ static void LCD_GPIO_Config(void)
  GPIO_PinAFConfig(LTDC_R7_GPIO_PORT, LTDC_R7_PINSOURCE, LTDC_R7_AF);
 
  //绿色数据线
- GPIO_InitStruct.GPIO_Pin = LTDC_G0_GPIO_PIN;
- GPIO_Init(LTDC_G0_GPIO_PORT, &GPIO_InitStruct);
- GPIO_PinAFConfig(LTDC_G0_GPIO_PORT, LTDC_G0_PINSOURCE, LTDC_G0_AF);
+// GPIO_InitStruct.GPIO_Pin = LTDC_G0_GPIO_PIN;
+// GPIO_Init(LTDC_G0_GPIO_PORT, &GPIO_InitStruct);
+// GPIO_PinAFConfig(LTDC_G0_GPIO_PORT, LTDC_G0_PINSOURCE, LTDC_G0_AF);
 
- GPIO_InitStruct.GPIO_Pin = LTDC_G1_GPIO_PIN;
- GPIO_Init(LTDC_G1_GPIO_PORT, &GPIO_InitStruct);
- GPIO_PinAFConfig(LTDC_G1_GPIO_PORT, LTDC_G1_PINSOURCE, LTDC_G1_AF);
+// GPIO_InitStruct.GPIO_Pin = LTDC_G1_GPIO_PIN;
+// GPIO_Init(LTDC_G1_GPIO_PORT, &GPIO_InitStruct);
+// GPIO_PinAFConfig(LTDC_G1_GPIO_PORT, LTDC_G1_PINSOURCE, LTDC_G1_AF);
 
  GPIO_InitStruct.GPIO_Pin = LTDC_G2_GPIO_PIN;
  GPIO_Init(LTDC_G2_GPIO_PORT, &GPIO_InitStruct);
@@ -1530,17 +1510,17 @@ static void LCD_GPIO_Config(void)
  GPIO_PinAFConfig(LTDC_G7_GPIO_PORT, LTDC_G7_PINSOURCE, LTDC_G7_AF);
 
  //蓝色数据线
- GPIO_InitStruct.GPIO_Pin = LTDC_B0_GPIO_PIN;
- GPIO_Init(LTDC_B0_GPIO_PORT, &GPIO_InitStruct);
- GPIO_PinAFConfig(LTDC_B0_GPIO_PORT, LTDC_B0_PINSOURCE, LTDC_B0_AF);
+// GPIO_InitStruct.GPIO_Pin = LTDC_B0_GPIO_PIN;
+// GPIO_Init(LTDC_B0_GPIO_PORT, &GPIO_InitStruct);
+// GPIO_PinAFConfig(LTDC_B0_GPIO_PORT, LTDC_B0_PINSOURCE, LTDC_B0_AF);
 
 // GPIO_InitStruct.GPIO_Pin = LTDC_B1_GPIO_PIN;
 // GPIO_Init(LTDC_B1_GPIO_PORT, &GPIO_InitStruct);
 // GPIO_PinAFConfig(LTDC_B1_GPIO_PORT, LTDC_B1_PINSOURCE, LTDC_B1_AF);
 
- GPIO_InitStruct.GPIO_Pin = LTDC_B2_GPIO_PIN;
- GPIO_Init(LTDC_B2_GPIO_PORT, &GPIO_InitStruct);
- GPIO_PinAFConfig(LTDC_B2_GPIO_PORT, LTDC_B2_PINSOURCE, LTDC_B2_AF);
+// GPIO_InitStruct.GPIO_Pin = LTDC_B2_GPIO_PIN;
+// GPIO_Init(LTDC_B2_GPIO_PORT, &GPIO_InitStruct);
+// GPIO_PinAFConfig(LTDC_B2_GPIO_PORT, LTDC_B2_PINSOURCE, LTDC_B2_AF);
 
  GPIO_InitStruct.GPIO_Pin = LTDC_B3_GPIO_PIN;
  GPIO_Init(LTDC_B3_GPIO_PORT, &GPIO_InitStruct);
