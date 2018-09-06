@@ -146,8 +146,9 @@ void    Usart_Senddec(USART_TypeDef * pUSARTx,int dec)
     {
         return;
     }
+	Usart_Senddec(pUSARTx,dec/10);
 	Usart_SendByte( pUSARTx,(char)(dec%10 + '0'));
-    Usart_Senddec(pUSARTx,dec/10);
+    
     
 }
 

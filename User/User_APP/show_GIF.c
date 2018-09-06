@@ -116,10 +116,10 @@ void _ShowGIF1(const char * sFilename)
 *	·µ »Ø Öµ: ÎŞ
 *********************************************************************************************************
 */
-void _ShowGIF2(const char * sFilename,char numerator,char denominator)   //·ÅËõ±ÈÀıÒò×Ó£ºnumerator ·Ö×Ó  denominator ·ÖÄ¸
+void _ShowGIF2(const char * sFilename,char numerator,char denominator,char num)   //·ÅËõ±ÈÀıÒò×Ó£ºnumerator ·Ö×Ó  denominator ·ÖÄ¸
 {
 	uint16_t i = 0;
-//	uint32_t t0, t1;
+	uint32_t t0, t1;
 	char *_acBuffer;
 	GUI_HMEM hMem;
 //	char buf[50];
@@ -163,7 +163,7 @@ void _ShowGIF2(const char * sFilename,char numerator,char denominator)   //·ÅËõ±
 			}
 			else
 			{
-//				t0 = GUI_GetTime();
+				t0 = GUI_GetTime();
 				/* ÏÔÊ¾µ±Ç°²¥·ÅµÄÖ¡Êı */
 //				sprintf(buf, "     Frame:%d/%d     ", i+1, InfoGif.NumImages);
 //				GUI_DispStringHCenterAt(buf, LCD_GetXSize()/2, 0);
@@ -179,19 +179,21 @@ void _ShowGIF2(const char * sFilename,char numerator,char denominator)   //·ÅËõ±
 								(LCD_GetYSize() - InfoGif.ySize*numerator/denominator)/2, 
 								i++,numerator,denominator);
 				
-//				/* »ñÈ¡±¾´Î½âÂëºÍÏÔÊ¾ÏûºÄµÄÊ±¼ä */
-//				t1 = GUI_GetTime() - t0;
-//				
-//				/* Èç¹ûGIFµÄ½âÂëºÍÏÔÊ¾µÄÊ±¼ä³¬Ê±¾Í²»×öÑÓ³Ù */
-//				if (t1 < ImagInfoGif.Delay * 10) 
-//				{
-//					GUI_Delay(ImagInfoGif.Delay * 10 - t1);
-//				}
+				/* »ñÈ¡±¾´Î½âÂëºÍÏÔÊ¾ÏûºÄµÄÊ±¼ä */
+				t1 = GUI_GetTime() - t0;
+				
+				/* Èç¹ûGIFµÄ½âÂëºÍÏÔÊ¾µÄÊ±¼ä³¬Ê±¾Í²»×öÑÓ³Ù */
+				if (t1 < ImagInfoGif.Delay * 10) 
+				{
+					GUI_Delay(ImagInfoGif.Delay * 10 - t1);
+				}
 			}			  
 	    }
 	    else
 	    {
 	        i = 0;
+			num--;
+	       if(num <= 0)
 			break;
 	    }
 	}
@@ -230,15 +232,15 @@ void show_GIF(void)
     //TOUCH_Calibration();
 
 
-	/* GIFÍ¼Æ¬ÏÔÊ¾·½Ê½Ò»£ºÊµ¼ÊÏîÄ¿²»ÍÆ¼ö£¬»áÓÃ¼´¿É */
-#if defined Method1
-_ShowGIF1("1:1.gif");
-	
-    /* GIFÍ¼Æ¬ÏÔÊ¾·½Ê½¶ş£ºÊµ¼ÊÏîÄ¿ÍÆ¼ö */
-#elif defined Method2
-_ShowGIF2("0:jingya.gif",1,1);	
-	
-#endif
+//	/* GIFÍ¼Æ¬ÏÔÊ¾·½Ê½Ò»£ºÊµ¼ÊÏîÄ¿²»ÍÆ¼ö£¬»áÓÃ¼´¿É */
+//#if defined Method1
+//_ShowGIF1("1:1.gif");
+//	
+//    /* GIFÍ¼Æ¬ÏÔÊ¾·½Ê½¶ş£ºÊµ¼ÊÏîÄ¿ÍÆ¼ö */
+//#elif defined Method2
+//_ShowGIF2("0:jingya.gif",1,1);	
+//	
+//#endif
 	
 	/* Èç¹û½øÈëµ½ÕâÀï£¬ËµÃ÷GIFÍ¼Æ¬¼ÓÔØÊ§°Ü */
 	GUI_DispStringAt("GIF Load failed!!", 0, 0);

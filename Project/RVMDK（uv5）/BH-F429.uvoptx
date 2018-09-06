@@ -180,9 +180,9 @@
       <DebugFlag>
         <trace>0</trace>
         <periodic>0</periodic>
-        <aLwin>0</aLwin>
+        <aLwin>1</aLwin>
         <aCover>0</aCover>
-        <aSer1>1</aSer1>
+        <aSer1>0</aSer1>
         <aSer2>0</aSer2>
         <aPa>0</aPa>
         <viewmode>1</viewmode>
@@ -216,12 +216,6 @@
       <pszMrulep></pszMrulep>
       <pSingCmdsp></pSingCmdsp>
       <pMultCmdsp></pMultCmdsp>
-      <SystemViewers>
-        <Entry>
-          <Name>System Viewer\GPIOC</Name>
-          <WinId>35905</WinId>
-        </Entry>
-      </SystemViewers>
       <DebugDescription>
         <Enable>1</Enable>
         <EnableLog>0</EnableLog>
@@ -741,7 +735,7 @@
 
   <Group>
     <GroupName>BSP</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -1105,7 +1099,7 @@
       <GroupNumber>7</GroupNumber>
       <FileNumber>69</FileNumber>
       <FileType>1</FileType>
-      <tvExp>0</tvExp>
+      <tvExp>1</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\User\User_APP\show_GIF.c</PathWithFileName>

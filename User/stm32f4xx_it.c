@@ -171,6 +171,7 @@ void USART3_IRQHandler(void)
 								 (OS_MSG_SIZE  )1,                     //消息长度
 								 (OS_OPT       )OS_OPT_POST_FIFO,      //发布到任务消息队列的入口端
 								 (OS_ERR      *)&err);                 //返回错误类型
+
 		
 	}
 	

@@ -187,7 +187,7 @@ u8 TP_Init(void)
 //得到四个校准参数
 void TP_Adjust(void)
 {								 
-
+  //电容屏无需校准，暂时不移植
 }
 
 

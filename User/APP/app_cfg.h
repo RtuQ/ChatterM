@@ -56,13 +56,15 @@
 
 #define  APP_TASK_START_PRIO                        2u
 
-#define  APP_TASK_ShowBQ_PRIO                       3u
-#define  APP_TASK_TALK_PRIO                         4u
-#define  APP_TASK_LED3_PRIO                         5u
-#define  APP_TASK_CheckPeople_PRIO                  6u
-#define  APP_TASK_LED1_PRIO                         7u
-#define  APP_TASK_Power_PRIO                        8u
-#define  SystemDatasBroadcast_PRIO                  9u            //最低优先级
+#define  APP_TASK_TouchScan_PRIO                    3u
+#define  APP_TASK_Touch_PRIO                        4u
+#define  APP_TASK_ShowBQ_PRIO                       5u
+#define  APP_TASK_TALK_PRIO                         6u
+#define  APP_TASK_LED3_PRIO                         7u
+#define  APP_TASK_CheckPeople_PRIO                  8u
+#define  APP_TASK_LED1_PRIO                         9u
+#define  APP_TASK_Power_PRIO                        10u
+#define  SystemDatasBroadcast_PRIO                  11u            //最低优先级
 /*
 *********************************************************************************************************
 *                                            TASK STACK SIZES
@@ -78,7 +80,8 @@
 #define  APP_TASK_LED3_STK_SIZE                     300u
 #define	 APP_TASK_CheckPeople_STK_SIZE              100u
 #define  SystemDatasBroadcast_STK_SIZE              100u
-
+#define  APP_TASK_TouchScan_STK_SIZE                512u
+#define  APP_TASK_Touch_STK_SIZE                512u
 
 /*
 *********************************************************************************************************

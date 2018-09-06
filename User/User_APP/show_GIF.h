@@ -3,6 +3,6 @@
 #include "includes.h"
 
 void show_GIF(void);
-void _ShowGIF2(const char * sFilename,char numerator,char denominator);
+void _ShowGIF2(const char * sFilename,char numerator,char denominator,char num);   //放缩比例因子：numerator 分子  denominator 分母
 
 #endif
