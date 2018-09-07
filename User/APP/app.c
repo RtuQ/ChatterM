@@ -479,6 +479,7 @@ static  void  AppTasktalk ( void * p_arg )
     u16 tem,hu;
 	OS_MSG_SIZE    msg_size;
 	u16 * pMsg;
+	u8 Led_Mode = 0;
 	
 	u8 i = 0 ;
 	
@@ -618,7 +619,24 @@ static  void  AppTasktalk ( void * p_arg )
 							GUI_Clear();
 							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
 							printf("@TextToSpeech#好了你可以重新开始画了$");
-						}	
+						}
+			case 0x19:
+						{
+							print("开灯\n");
+							Led_Mode = 1;
+							Usart_SendByte(USART1,'D');
+							Usart_Senddec(USART1,Led_Mode);
+							Usart_SendByte(USART1,'\r');
+							
+						}break;
+			case 0x1A:
+						{
+							print("关灯\n");
+							Led_Mode = 2;
+							Usart_SendByte(USART1,'D');
+							Usart_Senddec(USART1,Led_Mode);
+							Usart_SendByte(USART1,'\r');
+						}break;
 			
 				
 			

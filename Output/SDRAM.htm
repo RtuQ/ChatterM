@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\..\Output\SDRAM.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\Output\SDRAM.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Sep 07 10:35:12 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Fri Sep 07 12:21:45 2018
 <BR><P>
 <H3>Maximum Stack Usage =       1672 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -5932,6 +5932,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Usart_Senddec
 <LI><a href="#[43e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;printch
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AppTasktalk
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AppTaskLed3
 </UL>
 
@@ -5943,6 +5944,7 @@ Global Symbols
 <LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Usart_SendByte
 </UL>
 <BR>[Called By]<UL><LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Usart_Senddec
+<LI><a href="#[76]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AppTasktalk
 <LI><a href="#[77]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AppTaskLed3
 </UL>
 
@@ -7362,7 +7364,7 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> app.o(i.AppTaskStart)
 </UL>
-<P><STRONG><a name="[76]"></a>AppTasktalk</STRONG> (Thumb, 868 bytes, Stack size 24 bytes, app.o(i.AppTasktalk))
+<P><STRONG><a name="[76]"></a>AppTasktalk</STRONG> (Thumb, 932 bytes, Stack size 24 bytes, app.o(i.AppTasktalk))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1664 + Unknown Stack Size
 <LI>Call Chain = AppTasktalk &rArr; _ShowJPEG2 &rArr; GUI_JPEG_Draw &rArr; GUI_JPEG_DrawEx &rArr; _Draw &rArr; _DrawBanding &rArr; GUI_JPEG__DecodeProgressiveBanding &rArr; _InitScan &rArr; _CheckHuffmanTables &rArr; _CreateHuffmanTable
 </UL>
@@ -7371,6 +7373,8 @@ Local Symbols
 <LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_SelectLayer
 <LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_Clear
 <LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DHT22_Read_Data
+<LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Usart_Senddec
+<LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Usart_SendByte
 <LI><a href="#[14b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_ShowJPEG2
 <LI><a href="#[151]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_ShowGIF2
 <LI><a href="#[149]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTimeDlyHMSM
