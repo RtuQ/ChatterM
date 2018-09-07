@@ -28,21 +28,21 @@ Project File Date:  09/05/2018
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'SDRAM'
 compiling app.c...
-..\..\User\APP\app.c(80): warning:  #177-D: variable "AppTaskCheckPeopleTCB"  was declared but never referenced
+..\..\User\APP\app.c(81): warning:  #177-D: variable "AppTaskCheckPeopleTCB"  was declared but never referenced
   static 	OS_TCB	 AppTaskCheckPeopleTCB;
-..\..\User\APP\app.c(81): warning:  #177-D: variable "SystemDatasBroadcast_TCB"  was declared but never referenced
+..\..\User\APP\app.c(82): warning:  #177-D: variable "SystemDatasBroadcast_TCB"  was declared but never referenced
   static  OS_TCB   SystemDatasBroadcast_TCB; 
-..\..\User\APP\app.c(99): warning:  #177-D: variable "AppTaskCheckPeopleStk"  was declared but never referenced
+..\..\User\APP\app.c(100): warning:  #177-D: variable "AppTaskCheckPeopleStk"  was declared but never referenced
   static  CPU_STK  AppTaskCheckPeopleStk [ APP_TASK_CheckPeople_STK_SIZE ];
-..\..\User\APP\app.c(100): warning:  #177-D: variable "SystemDatasBroadcast_STK"  was declared but never referenced
+..\..\User\APP\app.c(101): warning:  #177-D: variable "SystemDatasBroadcast_STK"  was declared but never referenced
   static  CPU_STK  SystemDatasBroadcast_STK [SystemDatasBroadcast_STK_SIZE];
-..\..\User\APP\app.c(704): warning:  #177-D: function "AppTaskCheckPeople"  was declared but never referenced
+..\..\User\APP\app.c(708): warning:  #177-D: function "AppTaskCheckPeople"  was declared but never referenced
   static void  AppTaskCheckPeople  ( void * p_arg )
-..\..\User\APP\app.c(827): warning:  #177-D: function "SystemDatasBroadcast"  was declared but never referenced
+..\..\User\APP\app.c(835): warning:  #177-D: function "SystemDatasBroadcast"  was declared but never referenced
   static void  SystemDatasBroadcast (void *p_arg)
 ..\..\User\APP\app.c: 6 warnings, 0 errors
 linking...
-Program Size: Code=99558 RO-data=186682 RW-data=980 ZI-data=67868  
+Program Size: Code=101078 RO-data=191474 RW-data=992 ZI-data=67864  
 FromELF: creating hex file...
 "..\..\Output\SDRAM.axf" - 0 Error(s), 6 Warning(s).
 

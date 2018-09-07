@@ -59,6 +59,7 @@ uint8_t ucArray [ 70 ] [ 4 ];   //声明内存分区大小
 uint8_t Voice_Mode = 0;
 
 
+
 // ADC1换的电压值通过MDA方式传到SRAM
 extern __IO uint16_t ADC_ConvertedValue;
 
@@ -649,6 +650,7 @@ static  void  AppTaskLed3 ( void * p_arg )
     OS_ERR      err;
 	
 	u16 tem,hum;
+	char head[3] = {'T','H','\r'};
    (void)p_arg;
 
 
@@ -657,12 +659,14 @@ static  void  AppTaskLed3 ( void * p_arg )
 								{
 									tem = tem/10;
 									hum = hum/10;
+									
+									Usart_SendByte(USART1,head[0]);
 									Usart_Senddec(USART1,tem);
-								
-									OSTimeDly(1000,OS_OPT_TIME_DLY,&err);
+									Usart_SendByte(USART1,head[1]);
 									Usart_Senddec(USART1,hum);
+									Usart_SendByte(USART1,head[2]);
 									print("hum = %d\ntem= %d\n",hum,tem);
-									 
+									
 								}
 			OSTimeDlyHMSM(0, 0, 10,0,OS_OPT_TIME_DLY,&err);
     }
@@ -745,11 +749,12 @@ static void  AppTaskTouchScan (void *p_arg)
 	OS_ERR err;
 		u8 t=0;
 	u8 i=0;	  	   
- 	u16 lastpos[5][2];		//最后一次的数据 
+ 	u16 lastpos[5][2];		//最后一次的数据
+ 
+	
 	(void)p_arg;
 	while(DEF_TRUE)
 	{
-     
 			tp_dev.scan(0);
 		for(t=0;t<5;t++)
 		{
@@ -768,9 +773,12 @@ static void  AppTaskTouchScan (void *p_arg)
 					GUI_DrawLine(lastpos[t][0],lastpos[t][1],tp_dev.x[t],tp_dev.y[t]);//画线
 					lastpos[t][0]=tp_dev.x[t];
 					lastpos[t][1]=tp_dev.y[t];
-					if(tp_dev.x[t]>(LCD_PIXEL_WIDTH-24)&&tp_dev.y[t]<20)
+					if(tp_dev.x[t]>(LCD_PIXEL_WIDTH-24)&&tp_dev.y[t]<40)
 					{
 					  GUI_Clear();
+					  GUI_SetFont(&GUI_Font24_ASCII);
+					  GUI_SetColor(GUI_RED);
+					  GUI_DispStringHCenterAt("RST",456,10);
 					}
 				}
 			}else lastpos[t][0]=0XFFFF;
