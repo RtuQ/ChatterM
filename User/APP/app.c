@@ -461,7 +461,7 @@ static  void  AppTaskLed1 ( void * p_arg )
     while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
 			
 		    LED1_TOGGLE;
-			OSTimeDly ( 1000, OS_OPT_TIME_DLY, & err );
+			OSTimeDly ( 2000, OS_OPT_TIME_DLY, & err );
     }
 }
 
@@ -590,9 +590,9 @@ static  void  AppTasktalk ( void * p_arg )
 						{
 							print("画画\n");
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
-							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
+							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
 							OSTaskSuspend((OS_TCB *)&AppTaskTouchTCB,&err);    //挂起触摸
-							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
+							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
 							OSTaskResume((OS_TCB *)&AppTaskTouchScanTCB,&err);  //恢复
 							GUI_SelectLayer(1);
 							GUI_SetBkColor(GUI_BLACK);
@@ -604,9 +604,9 @@ static  void  AppTasktalk ( void * p_arg )
 						{
 							print("退出画画\n");
 							OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);
-							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
+							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
 							OSTaskSuspend((OS_TCB *)&AppTaskTouchScanTCB,&err);  //挂起任务
-							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
+							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
 							OSTaskResume((OS_TCB *)&AppTaskTouchTCB,&err);
 							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
 							printf("@TextToSpeech#你画的真难看$");
