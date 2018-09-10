@@ -1,35 +1,40 @@
-/**
-  ******************************************************************************
-  * @file    bsp_bsp_adc.c
-  * @author  fire
-  * @version V1.0
-  * @date    2015-xx-xx
-  * @brief   adc驱动
-  ******************************************************************************
-  * @attention
-  *
-  * 实验平台:秉火  STM32 F429 开发板  
-  * 论坛    :http://www.firebbs.cn
-  * 淘宝    :https://fire-stm32.taobao.com
-  *
-  ******************************************************************************
-  */ 
-#include "./adc/bsp_adc.h"
 
-__IO uint16_t ADC_ConvertedValue;
+#include "bsp_adc.h"
+
+__IO uint16_t ADC_ConvertedValue[RHEOSTAT_NOFCHANEL]={0};
 
 static void Rheostat_ADC_GPIO_Config(void)
 {
-		GPIO_InitTypeDef GPIO_InitStructure;
-	
+	GPIO_InitTypeDef GPIO_InitStructure;	
+	/*=====================通道1======================*/	
 	// 使能 GPIO 时钟
-	RCC_AHB1PeriphClockCmd(RHEOSTAT_ADC_GPIO_CLK, ENABLE);
-		
+	RCC_AHB1PeriphClockCmd(RHEOSTAT_ADC_GPIO_CLK1,ENABLE);		
 	// 配置 IO
-	GPIO_InitStructure.GPIO_Pin = RHEOSTAT_ADC_GPIO_PIN;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;	    
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ; //不上拉不下拉
-	GPIO_Init(RHEOSTAT_ADC_GPIO_PORT, &GPIO_InitStructure);		
+  GPIO_InitStructure.GPIO_Pin = RHEOSTAT_ADC_GPIO_PIN1;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+  //不上拉不下拉	
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
+	GPIO_Init(RHEOSTAT_ADC_GPIO_PORT1, &GPIO_InitStructure);
+
+	/*=====================通道2======================*/
+	// 使能 GPIO 时钟
+	RCC_AHB1PeriphClockCmd(RHEOSTAT_ADC_GPIO_CLK2,ENABLE);		
+	// 配置 IO
+  GPIO_InitStructure.GPIO_Pin = RHEOSTAT_ADC_GPIO_PIN2;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+  //不上拉不下拉	
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
+	GPIO_Init(RHEOSTAT_ADC_GPIO_PORT2, &GPIO_InitStructure);	
+
+//	/*=====================通道3=======================*/
+//	// 使能 GPIO 时钟
+//	RCC_AHB1PeriphClockCmd(RHEOSTAT_ADC_GPIO_CLK3,ENABLE);		
+//	// 配置 IO
+//  GPIO_InitStructure.GPIO_Pin = RHEOSTAT_ADC_GPIO_PIN3;
+//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+//  //不上拉不下拉	
+//  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
+//	GPIO_Init(RHEOSTAT_ADC_GPIO_PORT3, &GPIO_InitStructure);
 }
 
 static void Rheostat_ADC_Mode_Config(void)
@@ -45,15 +50,15 @@ static void Rheostat_ADC_Mode_Config(void)
 	// 外设基址为：ADC 数据寄存器地址
 	DMA_InitStructure.DMA_PeripheralBaseAddr = RHEOSTAT_ADC_DR_ADDR;	
   // 存储器地址，实际上就是一个内部SRAM的变量	
-	DMA_InitStructure.DMA_Memory0BaseAddr = (u32)&ADC_ConvertedValue;  
+	DMA_InitStructure.DMA_Memory0BaseAddr = (u32)ADC_ConvertedValue;  
   // 数据传输方向为外设到存储器	
 	DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralToMemory;	
 	// 缓冲区大小为，指一次传输的数据量
-	DMA_InitStructure.DMA_BufferSize = 1;	
+	DMA_InitStructure.DMA_BufferSize = RHEOSTAT_NOFCHANEL;	
 	// 外设寄存器只有一个，地址不用递增
 	DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
   // 存储器地址固定
-	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Disable; 
+	DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable; 
   // // 外设数据大小为半字，即两个字节 
 	DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord; 
   //	存储器数据大小也为半字，跟外设数据大小相同
@@ -81,7 +86,7 @@ static void Rheostat_ADC_Mode_Config(void)
 	// 独立ADC模式
   ADC_CommonInitStructure.ADC_Mode = ADC_Mode_Independent;
   // 时钟为fpclk x分频	
-  ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div2;
+  ADC_CommonInitStructure.ADC_Prescaler = ADC_Prescaler_Div4;
   // 禁止DMA直接访问模式	
   ADC_CommonInitStructure.ADC_DMAAccessMode = ADC_DMAAccessMode_Disabled;
   // 采样时间间隔	
@@ -92,8 +97,8 @@ static void Rheostat_ADC_Mode_Config(void)
 	ADC_StructInit(&ADC_InitStructure);
   // ADC 分辨率
   ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
-  // 禁止扫描模式，多通道采集才需要	
-  ADC_InitStructure.ADC_ScanConvMode = DISABLE; 
+  // 扫描模式，多通道采集需要	
+  ADC_InitStructure.ADC_ScanConvMode = ENABLE; 
   // 连续转换	
   ADC_InitStructure.ADC_ContinuousConvMode = ENABLE; 
   //禁止外部边沿触发
@@ -103,12 +108,17 @@ static void Rheostat_ADC_Mode_Config(void)
   //数据右对齐	
   ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
   //转换通道 1个
-  ADC_InitStructure.ADC_NbrOfConversion = 1;                                    
+  ADC_InitStructure.ADC_NbrOfConversion = RHEOSTAT_NOFCHANEL;                                    
   ADC_Init(RHEOSTAT_ADC, &ADC_InitStructure);
   //---------------------------------------------------------------------------
 	
-  // 配置 ADC 通道转换顺序为1，第一个转换，采样时间为3个时钟周期
-  ADC_RegularChannelConfig(RHEOSTAT_ADC, RHEOSTAT_ADC_CHANNEL, 1, ADC_SampleTime_56Cycles);
+  // 配置 ADC 通道转换顺序和采样时间周期
+  ADC_RegularChannelConfig(RHEOSTAT_ADC, RHEOSTAT_ADC_CHANNEL1, 1, 
+	                         ADC_SampleTime_3Cycles);
+  ADC_RegularChannelConfig(RHEOSTAT_ADC, RHEOSTAT_ADC_CHANNEL2, 2, 
+	                         ADC_SampleTime_3Cycles); 
+//  ADC_RegularChannelConfig(RHEOSTAT_ADC, RHEOSTAT_ADC_CHANNEL3, 3, 
+//	                         ADC_SampleTime_3Cycles); 
 
   // 使能DMA请求 after last transfer (Single-ADC mode)
   ADC_DMARequestAfterLastTransferCmd(RHEOSTAT_ADC, ENABLE);

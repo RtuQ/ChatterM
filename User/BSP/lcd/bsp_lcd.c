@@ -171,6 +171,8 @@ void LCD_LayerInit(uint8_t Pixelformat)
 #elif LCD_NUM_LAYERS == 2
   LTDC_LayerCmd(LTDC_Layer2, DISABLE);
 #endif
+	
+ 
   /* LTDC configuration reload */
   LTDC_ReloadConfig(LTDC_IMReload);
   /* ≤„¥∞ø⁄≈‰÷√ */

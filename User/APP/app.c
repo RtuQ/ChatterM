@@ -54,14 +54,14 @@ FRESULT res_sd;                /* 文件操作结果 */
 OS_MEM  mem;                    //声明内存管理对象
 //OS_Q  Task_Msg;                 //声明消息队列
 
-uint8_t ucArray [ 70 ] [ 4 ];   //声明内存分区大小
+uint8_t ucArray [ 70 ] [ 4 ];     //声明内存分区大小
 
 uint8_t Voice_Mode = 0;
 
 
 
 // ADC1换的电压值通过MDA方式传到SRAM
-extern __IO uint16_t ADC_ConvertedValue;
+extern __IO uint16_t ADC_ConvertedValue[RHEOSTAT_NOFCHANEL];
 
 #define People_Mode PGin(12)
 
@@ -82,7 +82,7 @@ static 	OS_TCB	 AppTaskCheckPeopleTCB;
 static  OS_TCB   SystemDatasBroadcast_TCB; 
 static  OS_TCB   AppTaskTouchScanTCB; 
 static  OS_TCB   AppTaskTouchTCB; 
-
+static  OS_TCB   AppTaskLightTCB; 
 
 /*
 *********************************************************************************************************
@@ -94,6 +94,7 @@ static  CPU_STK  AppTaskStartStk[APP_TASK_START_STK_SIZE];
 
 static  CPU_STK  AppTaskShowBQStk [ APP_TASK_ShowBQ_STK_SIZE ];
 static  CPU_STK  AppTaskPowerStk [ APP_TASK_Power_STK_SIZE ];
+static  CPU_STK  AppTaskLightStk [ APP_TASK_Light_STK_SIZE ];
 static  CPU_STK  AppTaskLed1Stk [ APP_TASK_LED1_STK_SIZE ];
 static  CPU_STK  AppTasktalkStk [ APP_TASK_TALK_STK_SIZE ];
 static  CPU_STK  AppTaskLed3Stk [ APP_TASK_LED3_STK_SIZE ];
@@ -118,6 +119,7 @@ static  void  AppTaskCheckPeople  ( void * p_arg );
 static void  SystemDatasBroadcast (void *p_arg);
 static void  AppTaskTouchScan (void *p_arg);
 static void  AppTaskTouch (void *p_arg);
+static void  AppTaskLight (void *p_arg);
 
 /*
 *********************************************************************************************************
@@ -275,6 +277,19 @@ static  void  AppTaskStart (void *p_arg)
                  (CPU_STK    *)&AppTaskPowerStk[0],
                  (CPU_STK_SIZE) APP_TASK_Power_STK_SIZE / 10,
                  (CPU_STK_SIZE) APP_TASK_Power_STK_SIZE,
+                 (OS_MSG_QTY  ) 5u,
+                 (OS_TICK     ) 0u,
+                 (void       *) 0,
+                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+                 (OS_ERR     *)&err);
+	OSTaskCreate((OS_TCB     *)&AppTaskLightTCB,                /* Create the Power task                                */
+                 (CPU_CHAR   *)"App Task Light",
+                 (OS_TASK_PTR ) AppTaskLight,
+                 (void       *) 0,
+                 (OS_PRIO     ) APP_TASK_Light_PRIO,
+                 (CPU_STK    *)&AppTaskLightStk[0],
+                 (CPU_STK_SIZE) APP_TASK_Light_STK_SIZE / 10,
+                 (CPU_STK_SIZE) APP_TASK_Light_STK_SIZE,
                  (OS_MSG_QTY  ) 5u,
                  (OS_TICK     ) 0u,
                  (void       *) 0,
@@ -706,14 +721,36 @@ static void  AppTaskPower  ( void * p_arg )
 	(void)p_arg;
 	while (DEF_TRUE){
       	    
-			ADC_Vol =(float) ADC_ConvertedValue/4096*(float)13.3; // 读取转换的AD值
+			ADC_Vol =(float)ADC_ConvertedValue[0]/4096*(float)13.3; // 读取转换的AD值
 	        print("\r\n The current AD value = %f V \r\n",ADC_Vol); 
 			if (ADC_Vol <= 10&&Voice_Mode == 0)
 			{
 				_ShowJPEG2("0:meidian.jpg",0,0);
 				printf("@TextToSpeech#快没电了，要给我换电池咯！$");
 			}
-		    OSTimeDlyHMSM(0,5,0,0,OS_OPT_TIME_DLY,&err); //每隔5分钟检测一次电压值
+		    OSTimeDlyHMSM(0,5,0,0,OS_OPT_TIME_DLY,&err); //每隔5分钟读取一次电压值
+		    
+	}
+}
+
+
+
+/*********************************************************************************************************
+*                                          光照检测 TASK
+*********************************************************************************************************
+*/
+static void  AppTaskLight  ( void * p_arg )
+{
+	OS_ERR err;
+	 	 
+    float Light_ADC_Vol; // 用于保存转换计算后的电压值
+	
+	(void)p_arg;
+	while (DEF_TRUE){
+      	    
+			Light_ADC_Vol =(float)ADC_ConvertedValue[1]/4096*(float)3.3; // 读取转换的AD值
+	        print("\r\n The current Light_ADC_Vol value = %f V \r\n",Light_ADC_Vol); 
+		    OSTimeDlyHMSM(0,0,2,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
 		    
 	}
 }
