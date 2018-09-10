@@ -4,11 +4,11 @@
 
 
 
-#define print_USART USART6
+#define print_USART     USART6
 #define console_print   Usart_SendByte
 
 
-void    print(char* fmt, ...);
+void    Debug_printf(char* fmt, ...);
 
 #endif
 

@@ -256,28 +256,28 @@ void  BSP_Init (void)
 	BSP_USART3_Config();
 	BSP_USART6_Config();
 	RED_GPIO_Config();
-	print("*****************************************************************\r\n");
-    print("*                                                               *\r\n"); 
-    print("*               STM32  TALKING BOY-Program    ^_^               *\r\n");
-    print("*                                                               *\r\n");
-    print("*****************************************************************\r\n");
+	Debug_printf("*****************************************************************\r\n");
+    Debug_printf("*                                                               *\r\n"); 
+    Debug_printf("*               STM32  TALKING BOY-Program    ^_^               *\r\n");
+    Debug_printf("*                                                               *\r\n");
+    Debug_printf("*****************************************************************\r\n");
 	
 	LED_GPIO_Config ();
 	SDRAM_Init();
-	print("SDRAM OK!\n");
+	Debug_printf("SDRAM OK!\n");
 	
 	LCD_Init();
 	TP_Init();
 	GUI_Init();
-    print("GUI_Init Sucess!\n");
+    Debug_printf("GUI_Init Sucess!\n");
 	
 	
 	Rheostat_Init();
-	print("AD_Init Sucess!\n");
+	Debug_printf("AD_Init Sucess!\n");
 	
 	if(DHT_GPIO_Config() == 0)
-	print("DHT22 OK!\n");
-	else print("Have not find DHT22\n");
+	Debug_printf("DHT22 OK!\n");
+	else Debug_printf("Have not find DHT22\n");
     
 	RNG_Config();
 	

@@ -76,13 +76,13 @@ uint8_t MPU6050ReadID(void)
     Re=MPU6050_ReadData(MPU6050_RA_WHO_AM_I);    //读器件地址
 	if(Re != 0x68)
 	{
-		print("MPU6050 dectected error!\r\n检测不到MPU6050模块，请检查模块与开发板的接线");
-		print("MPU6050 ID = %X\r\n",Re);
+		Debug_printf("MPU6050 dectected error!\r\n检测不到MPU6050模块，请检查模块与开发板的接线");
+		Debug_printf("MPU6050 ID = %X\r\n",Re);
 		return 0;
 	}
 	else
 	{
-		print("MPU6050 ID = %d\r\n",Re);
+		Debug_printf("MPU6050 ID = %d\r\n",Re);
 		return 1;
 	}
 		

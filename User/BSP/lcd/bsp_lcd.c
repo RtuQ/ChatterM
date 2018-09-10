@@ -163,83 +163,84 @@ void LCD_Init(void)
  * @param  None
  * @retval None
  */
-void LCD_LayerInit(uint8_t Pixelformat)
-{
-  LTDC_Layer_InitTypeDef LTDC_Layer_InitStruct;
-#if LCD_NUM_LAYERS == 1
-  LTDC_LayerCmd(LTDC_Layer1, DISABLE);
-#elif LCD_NUM_LAYERS == 2
-  LTDC_LayerCmd(LTDC_Layer2, DISABLE);
-#endif
-	
- 
-  /* LTDC configuration reload */
-  LTDC_ReloadConfig(LTDC_IMReload);
-  /* 层窗口配置 */
-  /* 配置本层的窗口边界，注意这些参数是包含HBP HSW VBP VSW的 */    
-	//一行的第一个起始像素，该成员值应用为 (LTDC_InitStruct.LTDC_AccumulatedHBP+1)的值
-	LTDC_Layer_InitStruct.LTDC_HorizontalStart = HBP + HSW;
-	//一行的最后一个像素，该成员值应用为 (LTDC_InitStruct.LTDC_AccumulatedActiveW)的值
-	LTDC_Layer_InitStruct.LTDC_HorizontalStop = HSW+HBP+LCD_PIXEL_WIDTH-1;
-	//一列的第一个起始像素，该成员值应用为 (LTDC_InitStruct.LTDC_AccumulatedVBP+1)的值
-	LTDC_Layer_InitStruct.LTDC_VerticalStart =  VBP + VSW;
-	//一列的最后一个像素，该成员值应用为 (LTDC_InitStruct.LTDC_AccumulatedActiveH)的值
-	LTDC_Layer_InitStruct.LTDC_VerticalStop = VSW+VBP+LCD_PIXEL_HEIGHT-1;
+/***************  错误报警 该函数未用到暂时注释 *****************/
+//void LCD_LayerInit(uint8_t Pixelformat)
+//{
+//  LTDC_Layer_InitTypeDef LTDC_Layer_InitStruct;
+//#if LCD_NUM_LAYERS == 1
+//  LTDC_LayerCmd(LTDC_Layer1, DISABLE);
+//#elif LCD_NUM_LAYERS == 2
+//  LTDC_LayerCmd(LTDC_Layer2, DISABLE);
+//#endif
+//	
+// 
+//  /* LTDC configuration reload */
+//  LTDC_ReloadConfig(LTDC_IMReload);
+//  /* 层窗口配置 */
+//  /* 配置本层的窗口边界，注意这些参数是包含HBP HSW VBP VSW的 */    
+//	//一行的第一个起始像素，该成员值应用为 (LTDC_InitStruct.LTDC_AccumulatedHBP+1)的值
+//	LTDC_Layer_InitStruct.LTDC_HorizontalStart = HBP + HSW;
+//	//一行的最后一个像素，该成员值应用为 (LTDC_InitStruct.LTDC_AccumulatedActiveW)的值
+//	LTDC_Layer_InitStruct.LTDC_HorizontalStop = HSW+HBP+LCD_PIXEL_WIDTH-1;
+//	//一列的第一个起始像素，该成员值应用为 (LTDC_InitStruct.LTDC_AccumulatedVBP+1)的值
+//	LTDC_Layer_InitStruct.LTDC_VerticalStart =  VBP + VSW;
+//	//一列的最后一个像素，该成员值应用为 (LTDC_InitStruct.LTDC_AccumulatedActiveH)的值
+//	LTDC_Layer_InitStruct.LTDC_VerticalStop = VSW+VBP+LCD_PIXEL_HEIGHT-1;
 
-  /* Pixel Format configuration*/
-  if(Pixelformat==0)
-   LTDC_Layer_InitStruct.LTDC_PixelFormat = LTDC_Pixelformat_RGB565;
-  else
-   LTDC_Layer_InitStruct.LTDC_PixelFormat = LTDC_Pixelformat_ARGB1555;
+//  /* Pixel Format configuration*/
+//  if(Pixelformat==0)
+//   LTDC_Layer_InitStruct.LTDC_PixelFormat = LTDC_Pixelformat_RGB565;
+//  else
+//   LTDC_Layer_InitStruct.LTDC_PixelFormat = LTDC_Pixelformat_ARGB1555;
 
-  /* Alpha constant (255 totally opaque) */
-  LTDC_Layer_InitStruct.LTDC_ConstantAlpha = 255;
-  /* Default Color configuration (configure A,R,G,B component values) */
-  LTDC_Layer_InitStruct.LTDC_DefaultColorBlue =  0;
-  LTDC_Layer_InitStruct.LTDC_DefaultColorGreen = 0;
-  LTDC_Layer_InitStruct.LTDC_DefaultColorRed =   0;
-  LTDC_Layer_InitStruct.LTDC_DefaultColorAlpha = 0;
-  /* Configure blending factors */
-  LTDC_Layer_InitStruct.LTDC_BlendingFactor_1 = LTDC_BlendingFactor1_PAxCA;
-  LTDC_Layer_InitStruct.LTDC_BlendingFactor_2 = LTDC_BlendingFactor2_PAxCA;
+//  /* Alpha constant (255 totally opaque) */
+//  LTDC_Layer_InitStruct.LTDC_ConstantAlpha = 255;
+//  /* Default Color configuration (configure A,R,G,B component values) */
+//  LTDC_Layer_InitStruct.LTDC_DefaultColorBlue =  0;
+//  LTDC_Layer_InitStruct.LTDC_DefaultColorGreen = 0;
+//  LTDC_Layer_InitStruct.LTDC_DefaultColorRed =   0;
+//  LTDC_Layer_InitStruct.LTDC_DefaultColorAlpha = 0;
+//  /* Configure blending factors */
+//  LTDC_Layer_InitStruct.LTDC_BlendingFactor_1 = LTDC_BlendingFactor1_PAxCA;
+//  LTDC_Layer_InitStruct.LTDC_BlendingFactor_2 = LTDC_BlendingFactor2_PAxCA;
 
-  /* the length of one line of pixels in bytes + 3 then :
-  Line Lenth = Active high width x number of bytes per pixel + 3
-  Active high width         = LCD_PIXEL_WIDTH
-  number of bytes per pixel = 2    (pixel_format : RGB565)
-  */
-  LTDC_Layer_InitStruct.LTDC_CFBLineLength = ((LCD_PIXEL_WIDTH * 2) + 3);
-  /* the pitch is the increment from the start of one line of pixels to the
-  start of the next line in bytes, then :
-  Pitch = Active high width x number of bytes per pixel */
-  LTDC_Layer_InitStruct.LTDC_CFBPitch = (LCD_PIXEL_WIDTH * 2);
+//  /* the length of one line of pixels in bytes + 3 then :
+//  Line Lenth = Active high width x number of bytes per pixel + 3
+//  Active high width         = LCD_PIXEL_WIDTH
+//  number of bytes per pixel = 2    (pixel_format : RGB565)
+//  */
+//  LTDC_Layer_InitStruct.LTDC_CFBLineLength = ((LCD_PIXEL_WIDTH * 2) + 3);
+//  /* the pitch is the increment from the start of one line of pixels to the
+//  start of the next line in bytes, then :
+//  Pitch = Active high width x number of bytes per pixel */
+//  LTDC_Layer_InitStruct.LTDC_CFBPitch = (LCD_PIXEL_WIDTH * 2);
 
-  /* Configure the number of lines */
-  LTDC_Layer_InitStruct.LTDC_CFBLineNumber = LCD_PIXEL_HEIGHT;
+//  /* Configure the number of lines */
+//  LTDC_Layer_InitStruct.LTDC_CFBLineNumber = LCD_PIXEL_HEIGHT;
 
 
-#if LCD_NUM_LAYERS == 1
-  /* Start Address configuration : the LCD Frame buffer is defined on SDRAM */
-  LTDC_Layer_InitStruct.LTDC_CFBStartAdress = LCD_FRAME_BUFFER;  
-  /* Initialize LTDC layer 1 */
-  LTDC_LayerInit(LTDC_Layer1, &LTDC_Layer_InitStruct);
+//#if LCD_NUM_LAYERS == 1
+//  /* Start Address configuration : the LCD Frame buffer is defined on SDRAM */
+//  LTDC_Layer_InitStruct.LTDC_CFBStartAdress = LCD_FRAME_BUFFER;  
+//  /* Initialize LTDC layer 1 */
+//  LTDC_LayerInit(LTDC_Layer1, &LTDC_Layer_InitStruct);
 
-  /* Enable Layers */
-  LTDC_LayerCmd(LTDC_Layer1, ENABLE); 
-#elif LCD_NUM_LAYERS == 2
-  /* Start Address configuration : the LCD Frame buffer is defined on SDRAM */
-  LTDC_Layer_InitStruct.LTDC_CFBStartAdress = LCD_FRAME_BUFFER+LCD_PIXEL_WIDTH*LCD_PIXEL_HEIGHT*LCD_BUFER_OFFSET;  
-  /* Initialize LTDC layer 2 */
-  LTDC_LayerInit(LTDC_Layer2, &LTDC_Layer_InitStruct);
+//  /* Enable Layers */
+//  LTDC_LayerCmd(LTDC_Layer1, ENABLE); 
+//#elif LCD_NUM_LAYERS == 2
+//  /* Start Address configuration : the LCD Frame buffer is defined on SDRAM */
+//  LTDC_Layer_InitStruct.LTDC_CFBStartAdress = LCD_FRAME_BUFFER+LCD_PIXEL_WIDTH*LCD_PIXEL_HEIGHT*LCD_BUFER_OFFSET;  
+//  /* Initialize LTDC layer 2 */
+//  LTDC_LayerInit(LTDC_Layer2, &LTDC_Layer_InitStruct);
 
-  /* Enable Layers */
-  LTDC_LayerCmd(LTDC_Layer2, ENABLE); 
-#endif
+//  /* Enable Layers */
+//  LTDC_LayerCmd(LTDC_Layer2, ENABLE); 
+//#endif
 
-  /* LTDC configuration reload */
-  LTDC_ReloadConfig(LTDC_IMReload);
+//  /* LTDC configuration reload */
+//  LTDC_ReloadConfig(LTDC_IMReload);
 
-}
+//}
 
 
 

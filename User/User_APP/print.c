@@ -68,7 +68,7 @@ void    printhex(int hex)
     }
 }
  
-void    print(char* fmt, ...)
+void    Debug_printf(char* fmt, ...)
 {
     double vargflt = 0;
     int  vargint = 0;
