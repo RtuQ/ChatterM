@@ -159,17 +159,11 @@ void _ShowGIF2(const char * sFilename,char numerator,char denominator,char num) 
 			/* 如果此帧延迟时间是0，默认是延迟100ms */
 			if(ImagInfoGif.Delay == 0)
 			{
-				GUI_Delay(10);
+				GUI_Delay(100);
 			}
 			else
 			{
 				t0 = GUI_GetTime();
-				/* 显示当前播放的帧数 */
-//				sprintf(buf, "     Frame:%d/%d     ", i+1, InfoGif.NumImages);
-//				GUI_DispStringHCenterAt(buf, LCD_GetXSize()/2, 0);
-				
-				
-				
 				GUI_SelectLayer(1);
 				
 				/* 解码并显示此帧GIF图片，注意第5个参数是从0开始计数的 */

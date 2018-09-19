@@ -84,7 +84,7 @@ static  OS_TCB   AppTaskTouchScanTCB;
 static  OS_TCB   AppTaskTouchTCB; 
 static  OS_TCB   AppTaskLightTCB; 
 
-#if SystemData == 1
+#if SystemData == 1                           //在includes.h中定义
 static  OS_TCB   SystemDatasBroadcast_TCB; 
 #endif
 
@@ -305,19 +305,19 @@ static  void  AppTaskStart (void *p_arg)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
-	OSTaskCreate((OS_TCB     *)&AppTaskCheckPeopleTCB,                /* Create the Power task                                */
-                 (CPU_CHAR   *)"App Task CheckPeople",
-                 (OS_TASK_PTR ) AppTaskCheckPeople,
-                 (void       *) 0,
-                 (OS_PRIO     ) APP_TASK_CheckPeople_PRIO,
-                 (CPU_STK    *)&AppTaskCheckPeopleStk[0],
-                 (CPU_STK_SIZE) APP_TASK_CheckPeople_STK_SIZE / 10,
-                 (CPU_STK_SIZE) APP_TASK_CheckPeople_STK_SIZE,
-                 (OS_MSG_QTY  ) 5u,
-                 (OS_TICK     ) 0u,
-                 (void       *) 0,
-                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
-                 (OS_ERR     *)&err);
+//	OSTaskCreate((OS_TCB     *)&AppTaskCheckPeopleTCB,                /* Create the Power task                                */
+//                 (CPU_CHAR   *)"App Task CheckPeople",
+//                 (OS_TASK_PTR ) AppTaskCheckPeople,
+//                 (void       *) 0,
+//                 (OS_PRIO     ) APP_TASK_CheckPeople_PRIO,
+//                 (CPU_STK    *)&AppTaskCheckPeopleStk[0],
+//                 (CPU_STK_SIZE) APP_TASK_CheckPeople_STK_SIZE / 10,
+//                 (CPU_STK_SIZE) APP_TASK_CheckPeople_STK_SIZE,
+//                 (OS_MSG_QTY  ) 5u,
+//                 (OS_TICK     ) 0u,
+//                 (void       *) 0,
+//                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+//                 (OS_ERR     *)&err);
     OSTaskCreate((OS_TCB     *)&AppTaskTouchScanTCB,                /* Create the Power task                                */
                  (CPU_CHAR   *)"App Task TouchScan",
                  (OS_TASK_PTR ) AppTaskTouchScan,
@@ -383,90 +383,117 @@ static void AppTaskShowBQ (void * p_arg )
 		    RandData2 = RandData%3;
 		    RandData = RandData%11;
 		   Debug_printf("RandData = %d\n",RandData);
-			if(RandData==0)	_ShowJPEG2("0:pc.jpg",0,0);
-			if(RandData==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-			if(RandData==2)	_ShowJPEG2("0:pc3.jpg",0,0);
+			if(RandData==0)	
+			{
+				_ShowJPEG2("0:pc.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+			}
+			if(RandData==1)	
+			{  _ShowJPEG2("0:pc2.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+			}
+			if(RandData==2)	
+			{
+				_ShowJPEG2("0:pc3.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+			}
 		    if(RandData==3)
 			{
 				GUI_SelectLayer(1);
 				GUI_SetBkColor(GUI_BLACK);
 				GUI_Clear();
+				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
 				_ShowGIF2("0:xiaoji3.gif",2,1,5);
 				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 				else	_ShowJPEG2("0:pc3.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
 			}
 			if(RandData==4)
 			{
 				GUI_SelectLayer(1);
 				GUI_SetBkColor(GUI_BLACK);
 				GUI_Clear();
+				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
 				_ShowGIF2("0:xiaoji4.gif",2,1,5);
 				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 				else	_ShowJPEG2("0:pc3.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
 			}
 			if(RandData==5)
 			{
 				GUI_SelectLayer(1);
 				GUI_SetBkColor(GUI_BLACK);
 				GUI_Clear();
+				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
 				_ShowGIF2("0:xiaoji5.gif",2,1,5);
 				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 				else	_ShowJPEG2("0:pc3.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
 			}
 			if(RandData==6)
 			{
 				GUI_SelectLayer(1);
 				GUI_SetBkColor(GUI_BLACK);
 				GUI_Clear();
+				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
 				_ShowGIF2("0:xiaoji6.gif",2,1,5);
 				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 				else	_ShowJPEG2("0:pc3.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
 			}
 			if(RandData==7)
 			{
 				GUI_SelectLayer(1);
 				GUI_SetBkColor(GUI_BLACK);
 				GUI_Clear();
+				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
 				_ShowGIF2("0:xiaoji7.gif",2,1,5);
 				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 				else	_ShowJPEG2("0:pc3.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
 			}
 			if(RandData==8)
 			{
 				GUI_SelectLayer(1);
 				GUI_SetBkColor(GUI_BLACK);
 				GUI_Clear();
+				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
 				_ShowGIF2("0:xiaoji8.gif",2,1,5);
 				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 				else	_ShowJPEG2("0:pc3.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
 			}
 			if(RandData==9)
 			{
 				GUI_SelectLayer(1);
 				GUI_SetBkColor(GUI_BLACK);
 				GUI_Clear();
+				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
 				_ShowGIF2("0:xiaoji9.gif",2,1,5);
 				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 				else	_ShowJPEG2("0:pc3.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
 			}
 			if(RandData==10)
 			{
 				GUI_SelectLayer(1);
 				GUI_SetBkColor(GUI_BLACK);
 				GUI_Clear();
+				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
 				_ShowGIF2("0:xiaoji10.gif",2,1,5);
 				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 				else	_ShowJPEG2("0:pc3.jpg",0,0);
+				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
 			}
-			OSTimeDlyHMSM(0, 0, 20,0,OS_OPT_TIME_DLY,&err);
+			
 		    
     }
 	
@@ -506,6 +533,7 @@ static  void  AppTasktalk ( void * p_arg )
 	OS_MSG_SIZE    msg_size;
 	u16 * pMsg;
 	u8 Led_Mode = 0;
+	u8 HH_Mode = 0;
 	
 	u8 i = 0 ;
 	
@@ -594,6 +622,7 @@ static  void  AppTasktalk ( void * p_arg )
 			            {
 							Debug_printf("笑话\n");
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+							
 							_ShowJPEG2("0:hanxiao.jpg",0,0);
 							if(i==0)printf("@TextToSpeech#有一学渣，暑假作业全部做完，在最后一页上面写了一句话:我的作业有17道错题，74个错别字，麻烦老师认真的逐一找出来，请不要用一个“阅”，换我们一个月！$");
 						    if(i==1)printf("@TextToSpeech#乌龟受伤.让蜗牛去买药。过了2个小时.蜗牛还没回来。乌龟急了骂道:再不回来我就死了!这时门外传来了蜗牛的声音:你再说我不去了!$");
@@ -606,62 +635,97 @@ static  void  AppTasktalk ( void * p_arg )
 						{
 							Debug_printf("笨蛋\n");
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+							
 							GUI_SelectLayer(1);
 							GUI_SetBkColor(GUI_BLACK);
 							GUI_Clear();
-							_ShowGIF2("0:xiaoji1.gif",2,1,5);	
+							_ShowJPEG2("0:fahuo.jpg",0,0);	
+							
 							OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);							
 						}break;
 			case 0x16:
 						{
 							Debug_printf("画画\n");
+							HH_Mode = 1 ;
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
 							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
-							OSTaskSuspend((OS_TCB *)&AppTaskTouchTCB,&err);    //挂起触摸
+							
+							OSTaskSuspend((OS_TCB *)&AppTaskTouchTCB,&err);     //挂起触摸
 							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+							
 							OSTaskResume((OS_TCB *)&AppTaskTouchScanTCB,&err);  //恢复
+							
 							GUI_SelectLayer(1);
 							GUI_SetBkColor(GUI_BLACK);
 							GUI_Clear();
+							
+							GUI_SetFont(&GUI_Font24_ASCII);
+							GUI_SetColor(GUI_RED);
+							GUI_DispStringHCenterAt("RST",456,10);
+							
 							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+							
 							printf("@TextToSpeech#开始画吧，请说退出画画退出$");
 						}break;
 			case 0x17:
 						{
 							Debug_printf("退出画画\n");
-							OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);
-							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
-							OSTaskSuspend((OS_TCB *)&AppTaskTouchScanTCB,&err);  //挂起任务
-							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
-							OSTaskResume((OS_TCB *)&AppTaskTouchTCB,&err);
-							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
-							printf("@TextToSpeech#你画的真难看$");
+							if(HH_Mode == 1)
+							{
+								OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);
+								OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+							
+								OSTaskSuspend((OS_TCB *)&AppTaskTouchScanTCB,&err);  //挂起任务
+								OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+							
+								OSTaskResume((OS_TCB *)&AppTaskTouchTCB,&err);
+								OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+							
+								printf("@TextToSpeech#你画的真难看$");
+								HH_Mode = 0;
+							}
 						}break;
 			case 0x18:
 						{
 							Debug_printf("清屏\n");
-							GUI_SelectLayer(1);
-							GUI_SetBkColor(GUI_BLACK);
-							GUI_Clear();
-							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
-							printf("@TextToSpeech#好了你可以重新开始画了$");
-						}
+							if(HH_Mode == 1)
+							{
+								GUI_SelectLayer(1);
+								GUI_SetBkColor(GUI_BLACK);
+								GUI_Clear();
+								
+								GUI_SetFont(&GUI_Font24_ASCII);
+								GUI_SetColor(GUI_RED);
+								GUI_DispStringHCenterAt("RST",456,10);
+								
+								OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
+								printf("@TextToSpeech#好了你可以重新开始画了$");
+							}
+						}break;
 			case 0x19:
 						{
 							Debug_printf("开灯\n");
 							Led_Mode = 1;
+							
 							Usart_SendByte(USART1,'D');
 							Usart_Senddec(USART1,Led_Mode);
 							Usart_SendByte(USART1,'\r');
+							
+							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
+							printf("@TextToSpeech#已开灯$");
 							
 						}break;
 			case 0x1A:
 						{
 							Debug_printf("关灯\n");
 							Led_Mode = 2;
+							
 							Usart_SendByte(USART1,'D');
 							Usart_Senddec(USART1,Led_Mode);
 							Usart_SendByte(USART1,'\r');
+							
+							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
+							printf("@TextToSpeech#已关灯$");
 						}break;
 			
 				
@@ -736,8 +800,11 @@ static void  AppTaskPower  ( void * p_arg )
 	        Debug_printf("\r\n The current AD value = %f V \r\n",ADC_Vol); 
 			if (ADC_Vol <= 10&&Voice_Mode == 0)
 			{
+				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
 				_ShowJPEG2("0:meidian.jpg",0,0);
-				printf("@TextToSpeech#快没电了，要给我换电池咯！$");
+				printf("@TextToSpeech#快没电了，要给我充电咯！$");
+				OSTimeDlyHMSM(0, 0, 3,0,OS_OPT_TIME_DLY,&err);
+				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);
 			}
 		    OSTimeDlyHMSM(0,5,0,0,OS_OPT_TIME_DLY,&err); //每隔5分钟读取一次电压值
 		    
@@ -754,13 +821,38 @@ static void  AppTaskLight  ( void * p_arg )
 {
 	OS_ERR err;
 	 	 
-    float Light_ADC_Vol; // 用于保存转换计算后的电压值
+    float Light_ADC_Vol;                     // 用于保存转换计算后的电压值，电压值越小--->越暗
+	
+	u8 Light_Mode = 0;
 	
 	(void)p_arg;
 	while (DEF_TRUE){
       	    
-			Light_ADC_Vol =(float)ADC_ConvertedValue[1]/4096*(float)3.3; // 读取转换的AD值
-	        Debug_printf("\r\n The current Light_ADC_Vol value = %f V \r\n",Light_ADC_Vol); 
+			Light_ADC_Vol =(float)ADC_ConvertedValue[1]/4096*(float)3.3;    // 读取转换的AD值
+		
+		    Debug_printf("\r\n The current Light_ADC_Vol value = %f V \r\n",Light_ADC_Vol); 
+		 
+			if(Light_ADC_Vol > 2.7&&Light_Mode == 0)
+			{
+				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+				OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
+				OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
+				
+				printf("@TextToSpeech#天怎么突然黑了$");
+				OSTimeDlyHMSM(0,0,10,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
+				
+				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
+				OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
+				OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
+				
+				Light_Mode = 1;                                //亮度变化只提醒一遍，状态改变后再提醒
+			}
+			if (Light_ADC_Vol < 2.7&&Light_Mode == 1)
+			{
+				Light_Mode = 0;
+			}
+			
+	        
 		    OSTimeDlyHMSM(0,0,2,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
 		    
 	}
@@ -783,7 +875,7 @@ static void  AppTaskCheckPeople  ( void * p_arg )
 		    if(People_Mode == 1&&Voice_Mode == 0) {
 				
 				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
-				OSTaskSuspend((OS_TCB *)&AppTasktalk,&err);
+				OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
 				Mode = 1;
 				if(Last_Mode == 0)
 				{
@@ -796,7 +888,7 @@ static void  AppTaskCheckPeople  ( void * p_arg )
 			if(Mode == 1)
 			{
 				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
-				OSTaskResume((OS_TCB *)&AppTasktalk,&err);  //恢复对话表情任务
+				OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
 				Mode = 0 ;
 				OSTimeDlyHMSM(0,0,1,0,OS_OPT_TIME_DLY,&err); //检测到人后一段时间内不再检测 延时
 			}
@@ -842,6 +934,8 @@ static void  AppTaskTouchScan (void *p_arg)
 					lastpos[t][1]=tp_dev.y[t];
 					if(tp_dev.x[t]>(LCD_PIXEL_WIDTH-24)&&tp_dev.y[t]<40)
 					{
+					  GUI_SelectLayer(1);
+					  GUI_SetBkColor(GUI_BLACK);
 					  GUI_Clear();
 					  GUI_SetFont(&GUI_Font24_ASCII);
 					  GUI_SetColor(GUI_RED);

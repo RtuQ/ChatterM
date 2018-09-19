@@ -1055,8 +1055,21 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>emWin</GroupName>
+          <GroupName>DOC</GroupName>
+        </Group>
+        <Group>
+          <GroupName>EMWIN</GroupName>
           <Files>
+            <File>
+              <FileName>GUI_X_uCOS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\OS\GUI_X_uCOS.c</FilePath>
+            </File>
+            <File>
+              <FileName>GUI_X_Touch_Analog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\Config\GUI_X_Touch_Analog.c</FilePath>
+            </File>
             <File>
               <FileName>GUIConf.c</FileName>
               <FileType>1</FileType>
@@ -1072,15 +1085,7 @@
               <FileType>4</FileType>
               <FilePath>..\..\emWin\Lib\STemWin540_CM4_OS_Keil.lib</FilePath>
             </File>
-            <File>
-              <FileName>GUI_X_uCOS.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\emWin\OS\GUI_X_uCOS.c</FilePath>
-            </File>
           </Files>
-        </Group>
-        <Group>
-          <GroupName>DOC</GroupName>
         </Group>
       </Groups>
     </Target>

@@ -79,15 +79,17 @@ static  char    KeyIsInited;
 int  GUI_X_GetTime (void) 
 {
 	OS_ERR      err;
-  return OSTimeGet(&err);
+  return ((int)OSTimeGet(&err));
 }
 
 
 void  GUI_X_Delay (int period) 
 {
   OS_ERR      err;
-	
-  OSTimeDly(period, OS_OPT_TIME_DLY, &err);
+  CPU_INT32U ticks;
+  ticks = (period*1000)/OSCfg_TickRate_Hz;
+ 
+  OSTimeDly(ticks, OS_OPT_TIME_PERIODIC, &err);
 }
 
 

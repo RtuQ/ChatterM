@@ -32,7 +32,7 @@
 
 #include "includes.h"
 extern OS_TCB	 AppTasktalkTCB;
-extern OS_MEM  mem; 
+extern OS_MEM    mem; 
 
 /** @addtogroup STM32F429I_DISCOVERY_Examples
   * @{
