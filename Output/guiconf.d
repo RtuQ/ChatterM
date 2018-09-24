@@ -134,3 +134,5 @@
 ..\..\output\guiconf.o: ..\..\User\BSP\TOUCH\ott2001a.h
 ..\..\output\guiconf.o: ..\..\User\BSP\TOUCH\gt9147.h
 ..\..\output\guiconf.o: ..\..\User\BSP\TOUCH\ft5206.h
+..\..\output\guiconf.o: ..\..\User\BSP\RTC\bsp_rtc.h
+..\..\output\guiconf.o: ..\..\emWin\WindowDLG.h

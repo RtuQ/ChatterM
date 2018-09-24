@@ -134,3 +134,5 @@
 ..\..\output\gui_x_ucos.o: ..\..\User\BSP\TOUCH\ott2001a.h
 ..\..\output\gui_x_ucos.o: ..\..\User\BSP\TOUCH\gt9147.h
 ..\..\output\gui_x_ucos.o: ..\..\User\BSP\TOUCH\ft5206.h
+..\..\output\gui_x_ucos.o: ..\..\User\BSP\RTC\bsp_rtc.h
+..\..\output\gui_x_ucos.o: ..\..\emWin\WindowDLG.h

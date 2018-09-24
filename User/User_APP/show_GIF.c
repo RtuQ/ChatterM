@@ -164,7 +164,7 @@ void _ShowGIF2(const char * sFilename,char numerator,char denominator,char num) 
 			else
 			{
 				t0 = GUI_GetTime();
-				GUI_SelectLayer(1);
+//				GUI_SelectLayer(1);
 				
 				/* 解码并显示此帧GIF图片，注意第5个参数是从0开始计数的 */
 				GUI_GIF_DrawSubScaled(_acBuffer, 

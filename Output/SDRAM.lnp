@@ -54,6 +54,7 @@
 "..\..\output\touch.o"
 "..\..\output\ctiic.o"
 "..\..\output\gt9147.o"
+"..\..\output\bsp_rtc.o"
 "..\..\output\app.o"
 "..\..\output\os_app_hooks.o"
 "..\..\output\show_bmp.o"
@@ -92,10 +93,11 @@
 "..\..\output\ff.o"
 "..\..\output\cc936.o"
 "..\..\output\gui_x_ucos.o"
-"..\..\output\gui_x_touch_analog.o"
 "..\..\output\guiconf.o"
 "..\..\output\lcdconf_lin_template.o"
 "..\..\emWin\Lib\STemWin540_CM4_OS_Keil.lib"
+"..\..\output\windowdlg.o"
+"..\..\output\gui_x_touch_analog.o"
 --library_type=microlib --strict --scatter "..\..\Output\SDRAM.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

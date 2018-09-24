@@ -135,3 +135,5 @@
 ..\..\output\ctiic.o: ..\..\User\BSP\TOUCH\ott2001a.h
 ..\..\output\ctiic.o: ..\..\User\BSP\TOUCH\gt9147.h
 ..\..\output\ctiic.o: ..\..\User\BSP\TOUCH\ft5206.h
+..\..\output\ctiic.o: ..\..\User\BSP\RTC\bsp_rtc.h
+..\..\output\ctiic.o: ..\..\emWin\WindowDLG.h

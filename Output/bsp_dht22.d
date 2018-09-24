@@ -135,3 +135,5 @@
 ..\..\output\bsp_dht22.o: ..\..\User\BSP\TOUCH\ott2001a.h
 ..\..\output\bsp_dht22.o: ..\..\User\BSP\TOUCH\gt9147.h
 ..\..\output\bsp_dht22.o: ..\..\User\BSP\TOUCH\ft5206.h
+..\..\output\bsp_dht22.o: ..\..\User\BSP\RTC\bsp_rtc.h
+..\..\output\bsp_dht22.o: ..\..\emWin\WindowDLG.h

@@ -135,3 +135,5 @@
 ..\..\output\mpu6050.o: ..\..\User\BSP\TOUCH\ott2001a.h
 ..\..\output\mpu6050.o: ..\..\User\BSP\TOUCH\gt9147.h
 ..\..\output\mpu6050.o: ..\..\User\BSP\TOUCH\ft5206.h
+..\..\output\mpu6050.o: ..\..\User\BSP\RTC\bsp_rtc.h
+..\..\output\mpu6050.o: ..\..\emWin\WindowDLG.h

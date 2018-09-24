@@ -132,6 +132,8 @@
 ..\..\output\touch.o: ..\..\User\BSP\i2c\bsp_i2c_gpio.h
 ..\..\output\touch.o: ..\..\User\BSP\mpu6050\mpu6050.h
 ..\..\output\touch.o: ..\..\User\BSP\TOUCH\touch.h
+..\..\output\touch.o: ..\..\User\BSP\RTC\bsp_rtc.h
+..\..\output\touch.o: ..\..\emWin\WindowDLG.h
 ..\..\output\touch.o: ..\..\User\BSP\TOUCH\ott2001a.h
 ..\..\output\touch.o: ..\..\User\BSP\TOUCH\gt9147.h
 ..\..\output\touch.o: ..\..\User\BSP\TOUCH\ft5206.h

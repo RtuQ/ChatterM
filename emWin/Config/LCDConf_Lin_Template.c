@@ -93,7 +93,7 @@ uint16_t Width = 480, Height = 272;
 		   b. 调用GUI_Init函数后，调用函数GUI_SelectLayer(1), 设置当前操作的是图层2。
 */
 #undef  GUI_NUM_LAYERS
-#define GUI_NUM_LAYERS    2
+#define GUI_NUM_LAYERS    1
 /* 
    5. 设置图层1和图层2对应的显存地址
       (1) EXT_SDRAM_ADDR 是SDRAM的首地址。
@@ -1548,6 +1548,10 @@ void LCD_X_Config(void)
 		LCD_SetSizeEx (1, LCD_PIXEL_WIDTH, LCD_PIXEL_HEIGHT);
 		LCD_SetVSizeEx(1, LCD_PIXEL_WIDTH, LCD_PIXEL_HEIGHT * NUM_VSCREENS);
 	#endif
+	
+	
+	GUI_TOUCH_Calibrate(GUI_COORD_X,0,LCD_PIXEL_WIDTH,0,LCD_PIXEL_WIDTH-1);   
+    GUI_TOUCH_Calibrate(GUI_COORD_Y,0,LCD_PIXEL_HEIGHT,0,LCD_PIXEL_HEIGHT-1);
 	
 	//
 	// Setting up VRam address and custom functions for CopyBuffer-, CopyRect- and FillRect operations

@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F429_439xx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\DSP_LIB;..\..\Libraries\CMSIS\Include;..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\uCOS_III\uC-CPU;..\..\uCOS_III\uC-LIB;..\..\uCOS_III\uCOS-III\Ports;..\..\uCOS_III\uCOS-III\Source;..\..\emWin\Config;..\..\emWin\inc;..\..\emWin\Lib;..\..\emWin\OS;..\..\FATFS;..\..\User;..\..\User\APP;..\..\User\BSP;..\..\User\BSP\font;..\..\User\BSP\lcd;..\..\User\BSP\led;..\..\User\BSP\sdram;..\..\User\BSP\usart;..\..\User\BSP\sdio;..\..\User\User_APP;..\..\User\BSP\DHT22;..\..\User\User_APP\delay;..\..\User\BSP\adc;..\..\User\BSP\rng;..\..\User\BSP\i2c;..\..\User\BSP\mpu6050;..\..\User\BSP\TOUCH</IncludePath>
+              <IncludePath>..\..\DSP_LIB;..\..\Libraries\CMSIS\Include;..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\uCOS_III\uC-CPU;..\..\uCOS_III\uC-LIB;..\..\uCOS_III\uCOS-III\Ports;..\..\uCOS_III\uCOS-III\Source;..\..\emWin\Config;..\..\emWin\inc;..\..\emWin\Lib;..\..\emWin\OS;..\..\FATFS;..\..\User;..\..\User\APP;..\..\User\BSP;..\..\User\BSP\font;..\..\User\BSP\lcd;..\..\User\BSP\led;..\..\User\BSP\sdram;..\..\User\BSP\usart;..\..\User\BSP\sdio;..\..\User\User_APP;..\..\User\BSP\DHT22;..\..\User\User_APP\delay;..\..\User\BSP\adc;..\..\User\BSP\rng;..\..\User\BSP\i2c;..\..\User\BSP\mpu6050;..\..\User\BSP\TOUCH;..\..\emWin;..\..\User\BSP\RTC</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -742,6 +742,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\User\BSP\TOUCH\gt9147.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\BSP\RTC\bsp_rtc.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1055,20 +1060,12 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>DOC</GroupName>
-        </Group>
-        <Group>
           <GroupName>EMWIN</GroupName>
           <Files>
             <File>
               <FileName>GUI_X_uCOS.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\emWin\OS\GUI_X_uCOS.c</FilePath>
-            </File>
-            <File>
-              <FileName>GUI_X_Touch_Analog.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\emWin\Config\GUI_X_Touch_Analog.c</FilePath>
             </File>
             <File>
               <FileName>GUIConf.c</FileName>
@@ -1085,7 +1082,20 @@
               <FileType>4</FileType>
               <FilePath>..\..\emWin\Lib\STemWin540_CM4_OS_Keil.lib</FilePath>
             </File>
+            <File>
+              <FileName>WindowDLG.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\WindowDLG.c</FilePath>
+            </File>
+            <File>
+              <FileName>GUI_X_Touch_Analog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\Config\GUI_X_Touch_Analog.c</FilePath>
+            </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>DOC</GroupName>
         </Group>
       </Groups>
     </Target>

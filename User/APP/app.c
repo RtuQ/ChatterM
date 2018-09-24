@@ -63,6 +63,8 @@ uint8_t Voice_Mode = 0;
 // ADC1换的电压值通过MDA方式传到SRAM
 extern __IO uint16_t ADC_ConvertedValue[RHEOSTAT_NOFCHANEL];
 
+u8 Touch_TimeMode = 1;
+
 #define People_Mode PGin(12)
 
 
@@ -74,7 +76,7 @@ extern __IO uint16_t ADC_ConvertedValue[RHEOSTAT_NOFCHANEL];
 
 static  OS_TCB   AppTaskStartTCB;
 
-static 	OS_TCB	 AppTaskShowBQTCB;
+    	OS_TCB	 AppTaskShowBQTCB;
 static  OS_TCB   AppTaskPowerTCB;
 static  OS_TCB   AppTaskLed1TCB;
         OS_TCB   AppTasktalkTCB;
@@ -83,6 +85,7 @@ static 	OS_TCB	 AppTaskCheckPeopleTCB;
 static  OS_TCB   AppTaskTouchScanTCB; 
 static  OS_TCB   AppTaskTouchTCB; 
 static  OS_TCB   AppTaskLightTCB; 
+        OS_TCB   AppTaskWindowTCB; 
 
 #if SystemData == 1                           //在includes.h中定义
 static  OS_TCB   SystemDatasBroadcast_TCB; 
@@ -105,7 +108,7 @@ static  CPU_STK  AppTaskLed3Stk [ APP_TASK_LED3_STK_SIZE ];
 static  CPU_STK  AppTaskCheckPeopleStk [ APP_TASK_CheckPeople_STK_SIZE ];
 static  CPU_STK  AppTaskTouchScanStk [APP_TASK_TouchScan_STK_SIZE];
 static  CPU_STK  AppTaskTouchStk [APP_TASK_Touch_STK_SIZE];
-
+static  CPU_STK  AppTaskWindowStk [APP_TASK_Window_STK_SIZE];
 
 #if SystemData == 1
 static  CPU_STK  SystemDatasBroadcast_STK [SystemDatasBroadcast_STK_SIZE];
@@ -127,6 +130,7 @@ static  void  AppTaskCheckPeople  ( void * p_arg );
 static void  AppTaskTouchScan (void *p_arg);
 static void  AppTaskTouch (void *p_arg);
 static void  AppTaskLight (void *p_arg);
+static void  AppTaskWindow (void*p_arg);
 
 #if SystemData == 1
 static void  SystemDatasBroadcast (void *p_arg);
@@ -344,6 +348,20 @@ static  void  AppTaskStart (void *p_arg)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
+				 
+    OSTaskCreate((OS_TCB     *)&AppTaskWindowTCB,                /* Create the Power task                                */
+                 (CPU_CHAR   *)"App Task Window",
+                 (OS_TASK_PTR ) AppTaskWindow,
+                 (void       *) 0,
+                 (OS_PRIO     ) APP_TASK_Window_PRIO,
+                 (CPU_STK    *)&AppTaskWindowStk[0],
+                 (CPU_STK_SIZE) APP_TASK_Window_STK_SIZE / 10,
+                 (CPU_STK_SIZE) APP_TASK_Window_STK_SIZE,
+                 (OS_MSG_QTY  ) 5u,                                      //消息任务大小，需要时改
+                 (OS_TICK     ) 0u,
+                 (void       *) 0,
+                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+                 (OS_ERR     *)&err);
 #if SystemData == 1
 	OSTaskCreate( (OS_TCB     *)&SystemDatasBroadcast_TCB,
                 (CPU_CHAR   *)"SystemDatasBroadcast",
@@ -360,6 +378,7 @@ static  void  AppTaskStart (void *p_arg)
                 (OS_ERR     *) &err);	
 #endif				 
 		OSTaskSuspend((OS_TCB *)&AppTaskTouchScanTCB,&err);               //挂起画板任务
+		OSTaskSuspend((OS_TCB *)&AppTaskWindowTCB,&err);               //挂起画板任务
 		OSTaskDel ( & AppTaskStartTCB, & err );                           //删除启动任务
         OS_CRITICAL_EXIT();	                                              //退出临界
 		
@@ -383,120 +402,121 @@ static void AppTaskShowBQ (void * p_arg )
 		    RandData2 = RandData%3;
 		    RandData = RandData%11;
 		   Debug_printf("RandData = %d\n",RandData);
-			if(RandData==0)	
-			{
-				_ShowJPEG2("0:pc.jpg",0,0);
+		  switch(RandData)
+		  {
+			  case 0:
+				{
+				  _ShowJPEG2("0:pc.jpg",0,0);
 				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-			if(RandData==1)	
-			{  _ShowJPEG2("0:pc2.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-			if(RandData==2)	
-			{
-				_ShowJPEG2("0:pc3.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-		    if(RandData==3)
-			{
-				GUI_SelectLayer(1);
-				GUI_SetBkColor(GUI_BLACK);
-				GUI_Clear();
-				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
-				_ShowGIF2("0:xiaoji3.gif",2,1,5);
-				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
-				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-				else	_ShowJPEG2("0:pc3.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-			if(RandData==4)
-			{
-				GUI_SelectLayer(1);
-				GUI_SetBkColor(GUI_BLACK);
-				GUI_Clear();
-				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
-				_ShowGIF2("0:xiaoji4.gif",2,1,5);
-				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
-				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-				else	_ShowJPEG2("0:pc3.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-			if(RandData==5)
-			{
-				GUI_SelectLayer(1);
-				GUI_SetBkColor(GUI_BLACK);
-				GUI_Clear();
-				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
-				_ShowGIF2("0:xiaoji5.gif",2,1,5);
-				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
-				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-				else	_ShowJPEG2("0:pc3.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-			if(RandData==6)
-			{
-				GUI_SelectLayer(1);
-				GUI_SetBkColor(GUI_BLACK);
-				GUI_Clear();
-				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
-				_ShowGIF2("0:xiaoji6.gif",2,1,5);
-				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
-				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-				else	_ShowJPEG2("0:pc3.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-			if(RandData==7)
-			{
-				GUI_SelectLayer(1);
-				GUI_SetBkColor(GUI_BLACK);
-				GUI_Clear();
-				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
-				_ShowGIF2("0:xiaoji7.gif",2,1,5);
-				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
-				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-				else	_ShowJPEG2("0:pc3.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-			if(RandData==8)
-			{
-				GUI_SelectLayer(1);
-				GUI_SetBkColor(GUI_BLACK);
-				GUI_Clear();
-				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
-				_ShowGIF2("0:xiaoji8.gif",2,1,5);
-				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
-				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-				else	_ShowJPEG2("0:pc3.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-			if(RandData==9)
-			{
-				GUI_SelectLayer(1);
-				GUI_SetBkColor(GUI_BLACK);
-				GUI_Clear();
-				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
-				_ShowGIF2("0:xiaoji9.gif",2,1,5);
-				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
-				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-				else	_ShowJPEG2("0:pc3.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-			if(RandData==10)
-			{
-				GUI_SelectLayer(1);
-				GUI_SetBkColor(GUI_BLACK);
-				GUI_Clear();
-				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
-				_ShowGIF2("0:xiaoji10.gif",2,1,5);
-				if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
-				if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-				else	_ShowJPEG2("0:pc3.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
-			}
-			
-		    
+				}	break;
+			  case 1:	
+				{ 
+					_ShowJPEG2("0:pc2.jpg",0,0);
+					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+				}break;
+			  case 2:
+				{
+					_ShowJPEG2("0:pc3.jpg",0,0);
+					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+				}break;
+			  case 3:
+				{
+//					GUI_SelectLayer(1);
+					GUI_SetBkColor(GUI_BLACK);
+					GUI_Clear();
+					OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
+					_ShowGIF2("0:xiaoji3.gif",2,1,5);
+					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
+					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
+					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+				}break;
+			  case 4:
+				{
+//					GUI_SelectLayer(1);
+					GUI_SetBkColor(GUI_BLACK);
+					GUI_Clear();
+					OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
+					_ShowGIF2("0:xiaoji4.gif",2,1,5);
+					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
+					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
+					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+				}break;
+			  case 5:
+				{
+//					GUI_SelectLayer(1);
+					GUI_SetBkColor(GUI_BLACK);
+					GUI_Clear();
+					OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
+					_ShowGIF2("0:xiaoji5.gif",2,1,5);
+					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
+					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
+					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+				}break;
+			  case 6:
+				{
+//					GUI_SelectLayer(1);
+					GUI_SetBkColor(GUI_BLACK);
+					GUI_Clear();
+					OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
+					_ShowGIF2("0:xiaoji6.gif",2,1,5);
+					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
+					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
+					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+				}break;
+			  case 7:
+				{
+//					GUI_SelectLayer(1);
+					GUI_SetBkColor(GUI_BLACK);
+					GUI_Clear();
+					OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
+					_ShowGIF2("0:xiaoji7.gif",2,1,5);
+					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
+					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
+					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+				}break;
+			  case 8:
+				{
+//					GUI_SelectLayer(1);
+					GUI_SetBkColor(GUI_BLACK);
+					GUI_Clear();
+					OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
+					_ShowGIF2("0:xiaoji8.gif",2,1,5);
+					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
+					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
+					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+				}break;
+			  case 9:
+				{
+//					GUI_SelectLayer(1);
+					GUI_SetBkColor(GUI_BLACK);
+					GUI_Clear();
+					OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
+					_ShowGIF2("0:xiaoji9.gif",2,1,5);
+					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
+					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
+					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+				}break;
+			  case 10:
+				{
+//					GUI_SelectLayer(1);
+					GUI_SetBkColor(GUI_BLACK);
+					GUI_Clear();
+					OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
+					_ShowGIF2("0:xiaoji10.gif",2,1,5);
+					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
+					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
+					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+				}break;
+			}	    
     }
-	
 }
 
 /*
@@ -508,12 +528,15 @@ static void AppTaskShowBQ (void * p_arg )
 static  void  AppTaskLed1 ( void * p_arg )
 {
     OS_ERR      err;
+	
+	RTC_TimeAndDate_Set();
   
    (void)p_arg;
 		
     while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
 			
 		    LED1_TOGGLE;
+			RTC_TimeAndDate_Show();
 			OSTimeDly ( 2000, OS_OPT_TIME_DLY, & err );
     }
 }
@@ -581,15 +604,18 @@ static  void  AppTasktalk ( void * p_arg )
 									hu = hu/10;
 									
 									OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
-									_ShowJPEG2("0:xiao.jpg",0,0);
+
 									if(tem >=28)
 									{
-										printf("@TextToSpeech#这真的太热了！$");
+										printf("@TextToSpeech#这真的太热了！温度都到[n2]%dD度了$",tem);
 										_ShowJPEG2("0:ku.jpg",0,0);
 									}
 									else
+									{
+										_ShowJPEG2("0:xiao.jpg",0,0);
 										printf("@TextToSpeech#现在的温度是[n2]%d，湿度是百分之[n2]%d$",tem,hu);
-									OSTimeDly(20000,OS_OPT_TIME_DLY,&err);
+									    OSTimeDly(20000,OS_OPT_TIME_DLY,&err);
+									}
 								}
 							else printf("@TextToSpeech#啊呀我的温度传感器坏了$");
 							OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
@@ -598,7 +624,7 @@ static  void  AppTasktalk ( void * p_arg )
 						{
 							Debug_printf("听歌\n");
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
-							GUI_SelectLayer(1);
+//							GUI_SelectLayer(1);
 							GUI_SetBkColor(GUI_BLACK);
 							GUI_Clear();
 							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
@@ -636,7 +662,7 @@ static  void  AppTasktalk ( void * p_arg )
 							Debug_printf("笨蛋\n");
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
 							
-							GUI_SelectLayer(1);
+
 							GUI_SetBkColor(GUI_BLACK);
 							GUI_Clear();
 							_ShowJPEG2("0:fahuo.jpg",0,0);	
@@ -650,12 +676,11 @@ static  void  AppTasktalk ( void * p_arg )
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
 							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
 							
-							OSTaskSuspend((OS_TCB *)&AppTaskTouchTCB,&err);     //挂起触摸
+//							OSTaskSuspend((OS_TCB *)&AppTaskTouchTCB,&err);     //挂起触摸
 							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+				
 							
-							OSTaskResume((OS_TCB *)&AppTaskTouchScanTCB,&err);  //恢复
-							
-							GUI_SelectLayer(1);
+//							GUI_SelectLayer(1);
 							GUI_SetBkColor(GUI_BLACK);
 							GUI_Clear();
 							
@@ -690,7 +715,7 @@ static  void  AppTasktalk ( void * p_arg )
 							Debug_printf("清屏\n");
 							if(HH_Mode == 1)
 							{
-								GUI_SelectLayer(1);
+//								GUI_SelectLayer(1);
 								GUI_SetBkColor(GUI_BLACK);
 								GUI_Clear();
 								
@@ -726,6 +751,11 @@ static  void  AppTasktalk ( void * p_arg )
 							
 							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
 							printf("@TextToSpeech#已关灯$");
+						}break;
+			case 0x1B:
+						{
+				           Touch_TimeMode = 0;
+						   OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
 						}break;
 			
 				
@@ -927,14 +957,14 @@ static void  AppTaskTouchScan (void *p_arg)
 						lastpos[t][0] = tp_dev.x[t];
 						lastpos[t][1] = tp_dev.y[t];
 					}
-					GUI_SelectLayer(1);
+//					GUI_SelectLayer(1);
                     GUI_SetColor(GUI_BLUE);
 					GUI_DrawLine(lastpos[t][0],lastpos[t][1],tp_dev.x[t],tp_dev.y[t]);//画线
 					lastpos[t][0]=tp_dev.x[t];
 					lastpos[t][1]=tp_dev.y[t];
 					if(tp_dev.x[t]>(LCD_PIXEL_WIDTH-24)&&tp_dev.y[t]<40)
 					{
-					  GUI_SelectLayer(1);
+//					  GUI_SelectLayer(1);
 					  GUI_SetBkColor(GUI_BLACK);
 					  GUI_Clear();
 					  GUI_SetFont(&GUI_Font24_ASCII);
@@ -966,11 +996,13 @@ static void  AppTaskTouch (void *p_arg)
 	(void)p_arg;
 	while(DEF_TRUE)
 	{
-     
+        if(Touch_TimeMode)
+		{
 			if(tp_dev.scan(0)==1)
 			{
 				Debug_printf("touch\n");
 				touch_time ++;
+	
 			}
 		    if(touch_time >=5&&do_Mode == 1)
 			{
@@ -980,12 +1012,48 @@ static void  AppTaskTouch (void *p_arg)
 			if(touch_time >=8&&do_Mode == 0)
 			{
 				printf("@TextToSpeech#再来，我要咬你了$");
+				
+				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+				OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
+				
+//				GUI_SelectLayer(1);
+				GUI_SetBkColor(GUI_BLACK);
+				GUI_Clear();
+				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
+				_ShowGIF2("0:yaoren.gif",1,2,3);
 				touch_time =0;
 				do_Mode = 1;
+				
+				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
+				OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
 			}
-		 OSTimeDlyHMSM(0,0,0,450,OS_OPT_TIME_DLY,&err);
+		}
+		else
+         GUI_TOUCH_Exec();                             // 刷新坐标
+		 OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_DLY,&err);
 	}
 			
+}
+
+
+
+/*
+*********************************************************************************************************
+*                                         窗口 TASK
+*********************************************************************************************************
+*/
+
+static void  AppTaskWindow (void *p_arg)
+{
+	OS_ERR err;
+	(void)p_arg;
+	while(DEF_TRUE)
+	{
+           Debug_printf("hello\n");
+			MainTask();
+		    OSTimeDlyHMSM(0,0,0,450,OS_OPT_TIME_DLY,&err);
+			
+    }
 }
 /*
 *********************************************************************************************************

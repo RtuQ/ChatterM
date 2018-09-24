@@ -281,11 +281,13 @@ void  BSP_Init (void)
     
 	RNG_Config();
 	
+	RTC_CLK_Config();
+	
 //	i2c_CfgGpio();
 //	MPU6050_Init();
 //	MPU6050ReadID();       //模块有问题
 	
-	GUI_SelectLayer(1);
+//	GUI_SelectLayer(1);
 	GUI_SetBkColor(GUI_WHITE);
 	GUI_Clear();
  

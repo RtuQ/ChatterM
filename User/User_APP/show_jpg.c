@@ -54,7 +54,7 @@ void _ShowJPEG1(const char *sFilename)
 	{
 		return;
 	}
-	GUI_SelectLayer(1);
+//	GUI_SelectLayer(1);
 	/* 绘制JPEG图片 */
 	GUI_JPEG_DrawEx(_GetData, &file, 0, 0);
 	
@@ -69,8 +69,6 @@ void _ShowJPEG2(const char *sFilename, int x, int y)
 
 	GUI_MEMDEV_Handle hMemJPEG;
 	
-	
-//	f_result = f_mount(&fst,"1:",1);     //挂载FATFS
 
 	/* 打开文件 */		
 	f_result = f_open(&file,sFilename, FA_OPEN_EXISTING | FA_READ | FA_OPEN_ALWAYS);
@@ -106,7 +104,7 @@ void _ShowJPEG2(const char *sFilename, int x, int y)
 
 	GUI_MEMDEV_Select(0);
 	
-	GUI_SelectLayer(1);
+//	GUI_SelectLayer(1);
     GUI_MEMDEV_WriteAt(hMemJPEG,0,0);
 	
 	GUI_MEMDEV_Delete(hMemJPEG);

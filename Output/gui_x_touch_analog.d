@@ -132,6 +132,8 @@
 ..\..\output\gui_x_touch_analog.o: ..\..\User\BSP\i2c\bsp_i2c_gpio.h
 ..\..\output\gui_x_touch_analog.o: ..\..\User\BSP\mpu6050\mpu6050.h
 ..\..\output\gui_x_touch_analog.o: ..\..\User\BSP\TOUCH\touch.h
+..\..\output\gui_x_touch_analog.o: ..\..\User\BSP\RTC\bsp_rtc.h
+..\..\output\gui_x_touch_analog.o: ..\..\emWin\WindowDLG.h
 ..\..\output\gui_x_touch_analog.o: ..\..\User\BSP\TOUCH\ott2001a.h
 ..\..\output\gui_x_touch_analog.o: ..\..\User\BSP\TOUCH\gt9147.h
 ..\..\output\gui_x_touch_analog.o: ..\..\User\BSP\TOUCH\ft5206.h

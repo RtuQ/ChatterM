@@ -65,8 +65,9 @@
 #define  APP_TASK_LED1_PRIO                         9u
 #define  APP_TASK_Power_PRIO                        10u
 #define  APP_TASK_Light_PRIO                        11u
+#define  APP_TASK_Window_PRIO                       12u
 #if SystemData == 1
-#define  SystemDatasBroadcast_PRIO                  12u            //最低优先级
+#define  SystemDatasBroadcast_PRIO                  13u            //最低优先级
 #endif
 /*
 *********************************************************************************************************
@@ -85,6 +86,7 @@
 #define	 APP_TASK_CheckPeople_STK_SIZE              100u
 #define  APP_TASK_TouchScan_STK_SIZE                512u
 #define  APP_TASK_Touch_STK_SIZE                    512u
+#define  APP_TASK_Window_STK_SIZE                   512u
 
 #if SystemData == 1
 #define  SystemDatasBroadcast_STK_SIZE              100u

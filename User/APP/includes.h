@@ -107,6 +107,10 @@
 #include "bsp_i2c_gpio.h"
 #include "mpu6050.h"
 #include "touch.h" 
+#include "bsp_rtc.h"
+
+
+#include "WindowDLG.h"
 
 /*
 *********************************************************************************************************
