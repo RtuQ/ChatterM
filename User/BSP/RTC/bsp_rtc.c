@@ -23,24 +23,24 @@
   * @param  无
   * @retval 无
   */
-void RTC_TimeAndDate_Set(void)
+void RTC_TimeAndDate_Set(int hour,int mint,int year,int month,int date)
 {
 	RTC_TimeTypeDef RTC_TimeStructure;
 	RTC_DateTypeDef RTC_DateStructure;
 	
 	// 初始化时间
 	RTC_TimeStructure.RTC_H12 = RTC_H12_AMorPM;
-	RTC_TimeStructure.RTC_Hours = HOURS;        
-	RTC_TimeStructure.RTC_Minutes = MINUTES;      
+	RTC_TimeStructure.RTC_Hours = hour;        
+	RTC_TimeStructure.RTC_Minutes = mint;      
 	RTC_TimeStructure.RTC_Seconds = SECONDS;      
 	RTC_SetTime(RTC_Format_BINorBCD, &RTC_TimeStructure);
 	RTC_WriteBackupRegister(RTC_BKP_DRX, RTC_BKP_DATA);
 	
   // 初始化日期	
 	RTC_DateStructure.RTC_WeekDay = WEEKDAY;       
-	RTC_DateStructure.RTC_Date = DATE;         
-	RTC_DateStructure.RTC_Month = MONTH;         
-	RTC_DateStructure.RTC_Year = YEAR;        
+	RTC_DateStructure.RTC_Date = date;         
+	RTC_DateStructure.RTC_Month = month;         
+	RTC_DateStructure.RTC_Year = year;        
 	RTC_SetDate(RTC_Format_BINorBCD, &RTC_DateStructure);
 	RTC_WriteBackupRegister(RTC_BKP_DRX, RTC_BKP_DATA);
 }

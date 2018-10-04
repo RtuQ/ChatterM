@@ -38,6 +38,17 @@ extern OS_TCB   AppTaskWindowTCB;
 extern OS_TCB   AppTaskShowBQTCB;
 
 extern u8 Touch_TimeMode;
+extern u8 settime_mode;
+
+struct Rtime
+{
+	int year;
+	int month;
+	int day;
+	int hour;
+	int mint;
+	int sec;
+}Wset;
 
 #define ID_WINDOW_0   (GUI_ID_USER + 0x00)
 #define ID_DROPDOWN_0   (GUI_ID_USER + 0x01)
@@ -47,7 +58,12 @@ extern u8 Touch_TimeMode;
 #define ID_DROPDOWN_4   (GUI_ID_USER + 0x05)
 #define ID_BUTTON_0   (GUI_ID_USER + 0x06)
 #define ID_BUTTON_1   (GUI_ID_USER + 0x07)
-
+#define ID_TEXT_0   (GUI_ID_USER + 0x08)
+#define ID_TEXT_1   (GUI_ID_USER + 0x09)
+#define ID_TEXT_2   (GUI_ID_USER + 0x0A)
+#define ID_TEXT_3   (GUI_ID_USER + 0x0B)
+#define ID_TEXT_4   (GUI_ID_USER + 0x0C)
+#define ID_TEXT_5   (GUI_ID_USER + 0x0D)
 
 // USER START (Optionally insert additional defines)
 // USER END
@@ -75,6 +91,12 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
   { DROPDOWN_CreateIndirect, "Dropdown", ID_DROPDOWN_4, 268, 140, 60, 19, 0, 0x0, 0 },
   { BUTTON_CreateIndirect, "Button", ID_BUTTON_0, 118, 207, 80, 20, 0, 0x0, 0 },
   { BUTTON_CreateIndirect, "Button", ID_BUTTON_1, 253, 209, 80, 20, 0, 0x0, 0 },
+  
+  { TEXT_CreateIndirect, "Year", ID_TEXT_0, 112,48,120,19, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "Month", ID_TEXT_1, 222,48,120,19, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "DATE", ID_TEXT_2, 307,48,120,19, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "HOURS", ID_TEXT_3, 152,120,120,19, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "MINUTES", ID_TEXT_4, 268,120,120,19, 0, 0x0, 0 },
   // USER START (Optionally insert additional widgets)
   // USER END
 };
@@ -97,6 +119,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
   WM_HWIN hItem;
   int     NCode;
   int     Id;
+  int     list_value;
  OS_ERR      err;
   // USER START (Optionally insert additional variables)
   // USER END
@@ -107,7 +130,34 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     // Initialization of 'Window'
     //
     hItem = pMsg->hWin;
-    WINDOW_SetBkColor(hItem, 0x00FF4646);
+    WINDOW_SetBkColor(hItem, GUI_WHITE);
+  
+    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0);
+    BUTTON_SetText(hItem,"Confirm");
+  
+    hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_1);
+    BUTTON_SetText(hItem,"Cancel");
+  
+    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_0);
+    TEXT_SetFont(hItem,GUI_FONT_24B_ASCII);
+    TEXT_SetText(hItem,"YEAR");
+    
+    hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_1);
+    TEXT_SetFont(hItem,GUI_FONT_24B_ASCII);
+    TEXT_SetText(hItem,"MONTH");
+    
+   hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_2);
+    TEXT_SetFont(hItem,GUI_FONT_24B_ASCII);
+    TEXT_SetText(hItem,"DATE");
+	
+	 hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_3);
+    TEXT_SetFont(hItem,GUI_FONT_24B_ASCII);
+    TEXT_SetText(hItem,"HOURS");
+	
+	 hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_4);
+    TEXT_SetFont(hItem,GUI_FONT_24B_ASCII);
+    TEXT_SetText(hItem,"MINUTES");
+    
 
 	hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_0);
 	DROPDOWN_SetFont(hItem, GUI_FONT_24B_ASCII);
@@ -288,9 +338,10 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
 									  {
-										  DROPDOWN_GetSel(ID_DROPDOWN_0);
-									  }
-										break;
+										  hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_0);
+										  list_value =  DROPDOWN_GetSel(hItem);
+										  Wset.year = list_value + 16;
+									  }break;
       // USER START (Optionally insert additional code for further notification handling)
       // USER END
       }
@@ -306,11 +357,12 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         // USER END
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
-        break;
-      // USER START (Optionally insert additional code for further notification handling)
-      // USER END
+										{
+										  hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_1);
+										  list_value =  DROPDOWN_GetSel(hItem);
+										  Wset.month = list_value +1;
+										  Debug_printf("mint:%d",Wset.month);
+									  }break;
       }
       break;
     case ID_DROPDOWN_2: // Notifications sent by 'Dropdown'
@@ -324,8 +376,12 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         // USER END
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+										{
+											  hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_2);
+											  list_value =  DROPDOWN_GetSel(hItem);
+											  Wset.day = list_value +1;
+											Debug_printf("mint:%d",Wset.day);
+										}
         break;
       // USER START (Optionally insert additional code for further notification handling)
       // USER END
@@ -342,8 +398,12 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         // USER END
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+										{
+											  hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_3);
+											  list_value =  DROPDOWN_GetSel(hItem);
+											  Wset.hour = list_value +1;
+											  Debug_printf("mint:%d",Wset.hour);
+										}
         break;
       // USER START (Optionally insert additional code for further notification handling)
       // USER END
@@ -360,8 +420,12 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         // USER END
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+										{
+											  hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_4);
+											  list_value =  DROPDOWN_GetSel(hItem);
+											  Wset.mint = list_value +1;
+											  Debug_printf("mint:%d",Wset.mint);
+										}
         break;
       // USER START (Optionally insert additional code for further notification handling)
       // USER END
@@ -374,8 +438,12 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         // USER END
         break;
       case WM_NOTIFICATION_RELEASED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+									  {
+										  RTC_TimeAndDate_Set(Wset.hour,Wset.mint,Wset.year,Wset.month,Wset.day);
+										  
+										  
+										  RTC_TimeAndDate_Show();
+									  }
         break;
       // USER START (Optionally insert additional code for further notification handling)
       // USER END
@@ -389,9 +457,9 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         break;
       case WM_NOTIFICATION_RELEASED:
 								  {GUI_EndDialog(hWin2,0);
-							//	  OSTaskSuspend((OS_TCB *)&AppTaskWindowTCB,&err);
 								   Touch_TimeMode = 1 ;
 								  OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);
+									 
 								  }	break;
       }
       break;
@@ -422,6 +490,7 @@ WM_HWIN CreateWindow(void) {
   WM_HWIN hWin;
 
   hWin = GUI_CreateDialogBox(_aDialogCreate, GUI_COUNTOF(_aDialogCreate), _cbDialog, WM_HBKWIN, 0, 0);
+  settime_mode = 0;
   return hWin;
 }
 
@@ -431,9 +500,11 @@ void MainTask(void) {
 	//
 	// Check if recommended memory for the sample is available
 	//
-	hWin2 = CreateWindow();
+	
 	while (1) {
-		Debug_printf("stop?\n");
+//		Debug_printf("stop?\n");
+		if(settime_mode)
+			hWin2 = CreateWindow();
 		GUI_Delay(10);
 	}
 }

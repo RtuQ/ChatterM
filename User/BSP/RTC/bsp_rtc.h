@@ -36,7 +36,7 @@
  
                                   
 void RTC_CLK_Config(void);
-void RTC_TimeAndDate_Set(void);
+void RTC_TimeAndDate_Set(int hour,int mint,int year,int month,int date);
 void RTC_TimeAndDate_Show(void);
 
 #endif // __RTC_H__

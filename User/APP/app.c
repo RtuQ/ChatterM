@@ -64,6 +64,7 @@ uint8_t Voice_Mode = 0;
 extern __IO uint16_t ADC_ConvertedValue[RHEOSTAT_NOFCHANEL];
 
 u8 Touch_TimeMode = 1;
+u8 settime_mode  = 1;
 
 #define People_Mode PGin(12)
 
@@ -427,17 +428,17 @@ static void AppTaskShowBQ (void * p_arg )
 			  case 0:
 				{
 				  _ShowJPEG2("0:pc.jpg",0,0);
-				OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}	break;
 			  case 1:	
 				{ 
 					_ShowJPEG2("0:pc2.jpg",0,0);
-					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}break;
 			  case 2:
 				{
 					_ShowJPEG2("0:pc3.jpg",0,0);
-					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}break;
 			  case 3:
 				{
@@ -449,7 +450,7 @@ static void AppTaskShowBQ (void * p_arg )
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 					else	_ShowJPEG2("0:pc3.jpg",0,0);
-					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}break;
 			  case 4:
 				{
@@ -461,7 +462,7 @@ static void AppTaskShowBQ (void * p_arg )
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 					else	_ShowJPEG2("0:pc3.jpg",0,0);
-					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}break;
 			  case 5:
 				{
@@ -473,7 +474,7 @@ static void AppTaskShowBQ (void * p_arg )
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 					else	_ShowJPEG2("0:pc3.jpg",0,0);
-					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}break;
 			  case 6:
 				{
@@ -485,7 +486,7 @@ static void AppTaskShowBQ (void * p_arg )
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 					else	_ShowJPEG2("0:pc3.jpg",0,0);
-					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}break;
 			  case 7:
 				{
@@ -497,7 +498,7 @@ static void AppTaskShowBQ (void * p_arg )
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 					else	_ShowJPEG2("0:pc3.jpg",0,0);
-					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}break;
 			  case 8:
 				{
@@ -509,7 +510,7 @@ static void AppTaskShowBQ (void * p_arg )
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 					else	_ShowJPEG2("0:pc3.jpg",0,0);
-					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}break;
 			  case 9:
 				{
@@ -521,7 +522,7 @@ static void AppTaskShowBQ (void * p_arg )
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 					else	_ShowJPEG2("0:pc3.jpg",0,0);
-					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}break;
 			  case 10:
 				{
@@ -533,9 +534,11 @@ static void AppTaskShowBQ (void * p_arg )
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
 					else	_ShowJPEG2("0:pc3.jpg",0,0);
-					OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);
+
 				}break;
-			}	    
+			}
+          
+			OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);			
     }
 }
 
@@ -548,8 +551,7 @@ static void AppTaskShowBQ (void * p_arg )
 static  void  AppTaskLed1 ( void * p_arg )
 {
     OS_ERR      err;
-	
-	RTC_TimeAndDate_Set();
+
   
    (void)p_arg;
 		
@@ -736,6 +738,13 @@ static  void  AppTasktalk ( void * p_arg )
 			case 0x18:
 						{
 							Debug_printf("清屏\n");
+							
+							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
+							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+							
+							Touch_TimeMode = 0;
+							settime_mode = 1;
+							OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
 							if(HH_Mode == 1)
 							{
 //								GUI_SelectLayer(1);
