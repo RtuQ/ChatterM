@@ -197,7 +197,9 @@ static  void  AppTaskStart (void *p_arg)
  
     OS_ERR      err;
 
-
+    u8 i;
+	u8 num=0;
+	u8 len = 2;
    (void)p_arg;
 
     CPU_Init();
@@ -215,6 +217,24 @@ static  void  AppTaskStart (void *p_arg)
     CPU_IntDisMeasMaxCurReset();
 #endif
 
+     _ShowJPEG2("0:kaiji.jpg",0,0);
+	GUI_SetBkColor(GUI_WHITE);
+	GUI_SetColor(GUI_BLACK);
+	GUI_SetFont(&GUI_Font8x18);
+	GUI_DispStringAt("System Starting...",0,220);
+	GUI_DispStringAt("%",175,220);
+	GUI_DispDecAt(num,150,220,len);
+	GUI_DispStringAt("[..........................................................]",0,241);
+	bsp_DelayMS(2000);
+	for(i=0;i<58;i++)
+	{
+		GUI_DispStringAt("=",8+(i*8),241);
+		GUI_DispDecAt(num,150,220,len);
+		num = num+2;
+		if(num >=100) { num =100; len = 3;}
+		bsp_DelayMS(100);
+	}
+	 bsp_DelayMS(2000);
      CPU_SR_ALLOC();                               //进入临界区域防止被其他任务打断
 	 OS_CRITICAL_ENTER();
 	
@@ -536,7 +556,7 @@ static  void  AppTaskLed1 ( void * p_arg )
     while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
 			
 		    LED1_TOGGLE;
-			RTC_TimeAndDate_Show();
+//			RTC_TimeAndDate_Show();
 			OSTimeDly ( 2000, OS_OPT_TIME_DLY, & err );
     }
 }
@@ -582,7 +602,6 @@ static  void  AppTasktalk ( void * p_arg )
 						Debug_printf("你好\n");
 						OSTimeDly(2000,OS_OPT_TIME_DLY,&err);
 						printf("@TextToSpeech#有什么我能帮你的$");
-				
 			          }break;
 			case 0x02:
                       {
@@ -676,7 +695,10 @@ static  void  AppTasktalk ( void * p_arg )
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
 							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
 							
-//							OSTaskSuspend((OS_TCB *)&AppTaskTouchTCB,&err);     //挂起触摸
+							OSTaskSuspend((OS_TCB *)&AppTaskTouchTCB,&err);     //挂起触摸
+							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+							
+							OSTaskResume((OS_TCB *)&AppTaskTouchScanTCB,&err);  
 							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
 				
 							
@@ -708,6 +730,7 @@ static  void  AppTasktalk ( void * p_arg )
 							
 								printf("@TextToSpeech#你画的真难看$");
 								HH_Mode = 0;
+								
 							}
 						}break;
 			case 0x18:
@@ -1004,12 +1027,12 @@ static void  AppTaskTouch (void *p_arg)
 				touch_time ++;
 	
 			}
-		    if(touch_time >=5&&do_Mode == 1)
+		    if(touch_time >=8&&do_Mode == 1)
 			{
 				printf("@TextToSpeech#好痒啊,别摸我了$");
 				do_Mode = 0;
 			}
-			if(touch_time >=8&&do_Mode == 0)
+			if(touch_time >=16&&do_Mode == 0)
 			{
 				printf("@TextToSpeech#再来，我要咬你了$");
 				
@@ -1027,10 +1050,14 @@ static void  AppTaskTouch (void *p_arg)
 				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
 				OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
 			}
+			
+			OSTimeDlyHMSM(0,0,0,480,OS_OPT_TIME_DLY,&err);
 		}
 		else
-         GUI_TOUCH_Exec();                             // 刷新坐标
-		 OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_DLY,&err);
+        {
+			GUI_TOUCH_Exec();                             // 刷新坐标
+			OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_DLY,&err);
+		}
 	}
 			
 }

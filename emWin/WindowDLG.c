@@ -287,9 +287,10 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         // USER END
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
-        break;
+									  {
+										  DROPDOWN_GetSel(ID_DROPDOWN_0);
+									  }
+										break;
       // USER START (Optionally insert additional code for further notification handling)
       // USER END
       }
@@ -387,15 +388,11 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         // USER END
         break;
       case WM_NOTIFICATION_RELEASED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
-	  GUI_EndDialog(hWin2,0);
-//	  OSTaskSuspend((OS_TCB *)&AppTaskWindowTCB,&err);
-	  Touch_TimeMode = 1 ;
-	  OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);	
-        break;
-      // USER START (Optionally insert additional code for further notification handling)
-      // USER END
+								  {GUI_EndDialog(hWin2,0);
+							//	  OSTaskSuspend((OS_TCB *)&AppTaskWindowTCB,&err);
+								   Touch_TimeMode = 1 ;
+								  OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);
+								  }	break;
       }
       break;
     // USER START (Optionally insert additional code for further Ids)

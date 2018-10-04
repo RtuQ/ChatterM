@@ -288,15 +288,7 @@ void  BSP_Init (void)
 //	MPU6050ReadID();       //模块有问题
 	
 //	GUI_SelectLayer(1);
-	GUI_SetBkColor(GUI_WHITE);
-	GUI_Clear();
  
-//	GUI_Clear();
-//	/* 设置字体 */
-//	GUI_SetFont(&GUI_Font8x16);
-//	/* 这里调用字符串显示 并实现一下换行 */
-//	GUI_DispString("LED SUCCESSED\nLTDC Successed\nSystem starting.......");
-
 }
 
 /*
