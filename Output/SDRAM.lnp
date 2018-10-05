@@ -98,6 +98,7 @@
 "..\..\emWin\Lib\STemWin540_CM4_OS_Keil.lib"
 "..\..\output\windowdlg.o"
 "..\..\output\gui_x_touch_analog.o"
+"..\..\output\xuexiaomin.o"
 --library_type=microlib --strict --scatter "..\..\Output\SDRAM.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

@@ -17,7 +17,8 @@
   
 #include "bsp_rtc.h"
 
- 
+Rtime now;
+
 /**
   * @brief  设置时间和日期
   * @param  无
@@ -52,7 +53,6 @@ void RTC_TimeAndDate_Set(int hour,int mint,int year,int month,int date)
   */
 void RTC_TimeAndDate_Show(void)
 {
-	char LCDTemp[100];
 	RTC_TimeTypeDef RTC_TimeStructure;
 	RTC_DateTypeDef RTC_DateStructure;
 	
@@ -60,9 +60,12 @@ void RTC_TimeAndDate_Show(void)
     RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
 	  RTC_GetDate(RTC_Format_BIN, &RTC_DateStructure);
 		
-						
+	  
+     now.year = 	RTC_DateStructure.RTC_Year;
+	 now.month =    RTC_DateStructure.RTC_Month;
+	 now.day =      RTC_DateStructure.RTC_Date;
 			// 打印日期
-      Debug_printf("The Date :  Y:20%d - M:%d - D:%d - W:%d\r\n", 
+		Debug_printf("The Date :  Y:20%d - M:%d - D:%d - W:%d\r\n", 
 			RTC_DateStructure.RTC_Year,
 			RTC_DateStructure.RTC_Month, 
 			RTC_DateStructure.RTC_Date,
@@ -70,14 +73,18 @@ void RTC_TimeAndDate_Show(void)
 		
 
 			
-			
+		now.hour = 	RTC_TimeStructure.RTC_Hours;
+		now.mint =   RTC_TimeStructure.RTC_Minutes;
+		now.sec = RTC_TimeStructure.RTC_Seconds;
 			// 打印时间
-      Debug_printf("The Time :  %d:%d:%d \r\n\r\n", 
+		Debug_printf("The Time :  %d:%d:%d \r\n\r\n", 
 			RTC_TimeStructure.RTC_Hours, 
 			RTC_TimeStructure.RTC_Minutes, 
 			RTC_TimeStructure.RTC_Seconds);
-			
+	
+      	
       (void)RTC->DR;
+	 
 
 }
 

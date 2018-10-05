@@ -40,15 +40,11 @@ extern OS_TCB   AppTaskShowBQTCB;
 extern u8 Touch_TimeMode;
 extern u8 settime_mode;
 
-struct Rtime
-{
-	int year;
-	int month;
-	int day;
-	int hour;
-	int mint;
-	int sec;
-}Wset;
+extern const unsigned char _acxuexiaomin[22221UL + 1];
+
+GUI_MEMDEV_Handle    hMempic;
+
+Rtime Wset;
 
 #define ID_WINDOW_0   (GUI_ID_USER + 0x00)
 #define ID_DROPDOWN_0   (GUI_ID_USER + 0x01)
@@ -63,10 +59,8 @@ struct Rtime
 #define ID_TEXT_2   (GUI_ID_USER + 0x0A)
 #define ID_TEXT_3   (GUI_ID_USER + 0x0B)
 #define ID_TEXT_4   (GUI_ID_USER + 0x0C)
-#define ID_TEXT_5   (GUI_ID_USER + 0x0D)
 
-// USER START (Optionally insert additional defines)
-// USER END
+
 
 /*********************************************************************
 *
@@ -97,8 +91,6 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
   { TEXT_CreateIndirect, "DATE", ID_TEXT_2, 307,48,120,19, 0, 0x0, 0 },
   { TEXT_CreateIndirect, "HOURS", ID_TEXT_3, 152,120,120,19, 0, 0x0, 0 },
   { TEXT_CreateIndirect, "MINUTES", ID_TEXT_4, 268,120,120,19, 0, 0x0, 0 },
-  // USER START (Optionally insert additional widgets)
-  // USER END
 };
 
 /*********************************************************************
@@ -125,12 +117,19 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
   // USER END
 
   switch (pMsg->MsgId) {
+	  
+	  
+	  case WM_PAINT:
+	  {
+		  /* 重绘背景图片 */
+		 GUI_MEMDEV_WriteAt(hMempic,0,0);
+	  }break;
   case WM_INIT_DIALOG:
     //
     // Initialization of 'Window'
     //
-    hItem = pMsg->hWin;
-    WINDOW_SetBkColor(hItem, GUI_WHITE);
+//    hItem = pMsg->hWin;
+//    WINDOW_SetBkColor(hItem, GUI_WHITE);
   
     hItem = WM_GetDialogItem(pMsg->hWin, ID_BUTTON_0);
     BUTTON_SetText(hItem,"Confirm");
@@ -497,9 +496,20 @@ WM_HWIN CreateWindow(void) {
 // USER START (Optionally insert additional public code)
 // USER END
 void MainTask(void) {
-	//
-	// Check if recommended memory for the sample is available
-	//
+
+	
+	/* 绘制桌面窗口的背景图片 ------------------------------------------*/
+	hMempic = GUI_MEMDEV_CreateFixed(0, 
+	                                 0, 
+	                                 LCD_GetXSize(), 
+	                                 LCD_GetYSize(), 
+									 GUI_MEMDEV_HASTRANS, 
+									 GUI_MEMDEV_APILIST_16, 
+									 GUICC_M565);
+	GUI_MEMDEV_Select(hMempic);
+    GUI_JPEG_Draw(_acxuexiaomin, sizeof(_acxuexiaomin), 0, 0);
+	
+	GUI_MEMDEV_Select(0);
 	
 	while (1) {
 //		Debug_printf("stop?\n");
