@@ -552,14 +552,25 @@ static  void  AppTaskLed1 ( void * p_arg )
 {
     OS_ERR      err;
 
+	float pitch,roll,yaw; 		//Å·À­½Ç
   
    (void)p_arg;
 		
     while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
 			
 		    LED1_TOGGLE;
+		   while(mpu_dmp_get_data(&pitch,&roll,&yaw)!=0)
+			{ 
+				if(roll<0)
+				{
+					roll = roll*(-1);
+					Debug_printf("roll = -%d        pitch = %d          yaw = %d          \n",(int)(roll*100),(int)(pitch*100),(int)(yaw*10));
+				}
+				else
+					Debug_printf("roll = %d        pitch = %d          yaw = %d          \n",(int)(roll*100),(int)(pitch*100),(int)(yaw*10));
+			}
 //			RTC_TimeAndDate_Show();
-			OSTimeDly ( 2000, OS_OPT_TIME_DLY, & err );
+			OSTimeDly ( 2000, OS_OPT_TIME_DLY, & err );                                       
     }
 }
 

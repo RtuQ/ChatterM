@@ -369,6 +369,14 @@ void MPU6050ReadGyro(short *gyroData);
 void MPU6050ReadAcc(short *accData);
 void MPU6050_ReturnTemp(float*Temperature);
 void MPU6050_Init(void);
+
+u8 MPU_Set_Gyro_Fsr(u8 fsr);
+u8 MPU_Set_Accel_Fsr(u8 fsr);
+u8 MPU_Set_LPF(u16 lpf);
+u8 MPU_Set_Rate(u16 rate);
+u8 MPU_Write_Len(u8 addr,u8 reg,u8 len,u8 *buf);
+u8 MPU_Read_Len(u8 addr,u8 reg,u8 len,u8 *buf);
+
 uint8_t MPU6050ReadID(void);
 uint8_t MPU6050_ReadData(u8 reg_add);
 void PMU6050_WriteReg(u8 reg_add,u8 reg_dat);

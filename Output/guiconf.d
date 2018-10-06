@@ -130,6 +130,8 @@
 ..\..\output\guiconf.o: ..\..\User\BSP\rng\bsp_rng.h
 ..\..\output\guiconf.o: ..\..\User\BSP\i2c\bsp_i2c_gpio.h
 ..\..\output\guiconf.o: ..\..\User\BSP\mpu6050\mpu6050.h
+..\..\output\guiconf.o: ..\..\User\BSP\mpu6050\eMPL\inv_mpu.h
+..\..\output\guiconf.o: ..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h
 ..\..\output\guiconf.o: ..\..\User\BSP\TOUCH\touch.h
 ..\..\output\guiconf.o: ..\..\User\BSP\TOUCH\ott2001a.h
 ..\..\output\guiconf.o: ..\..\User\BSP\TOUCH\gt9147.h

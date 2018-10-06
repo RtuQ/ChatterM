@@ -55,6 +55,8 @@
 "..\..\output\ctiic.o"
 "..\..\output\gt9147.o"
 "..\..\output\bsp_rtc.o"
+"..\..\output\inv_mpu.o"
+"..\..\output\inv_mpu_dmp_motion_driver.o"
 "..\..\output\app.o"
 "..\..\output\os_app_hooks.o"
 "..\..\output\show_bmp.o"

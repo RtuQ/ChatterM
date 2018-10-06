@@ -337,7 +337,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F429_439xx,USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\DSP_LIB;..\..\Libraries\CMSIS\Include;..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\uCOS_III\uC-CPU;..\..\uCOS_III\uC-LIB;..\..\uCOS_III\uCOS-III\Ports;..\..\uCOS_III\uCOS-III\Source;..\..\emWin\Config;..\..\emWin\inc;..\..\emWin\Lib;..\..\emWin\OS;..\..\FATFS;..\..\User;..\..\User\APP;..\..\User\BSP;..\..\User\BSP\font;..\..\User\BSP\lcd;..\..\User\BSP\led;..\..\User\BSP\sdram;..\..\User\BSP\usart;..\..\User\BSP\sdio;..\..\User\User_APP;..\..\User\BSP\DHT22;..\..\User\User_APP\delay;..\..\User\BSP\adc;..\..\User\BSP\rng;..\..\User\BSP\i2c;..\..\User\BSP\mpu6050;..\..\User\BSP\TOUCH;..\..\emWin;..\..\User\BSP\RTC</IncludePath>
+              <IncludePath>..\..\DSP_LIB;..\..\Libraries\CMSIS\Include;..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include;..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc;..\..\uCOS_III\uC-CPU;..\..\uCOS_III\uC-LIB;..\..\uCOS_III\uCOS-III\Ports;..\..\uCOS_III\uCOS-III\Source;..\..\emWin\Config;..\..\emWin\inc;..\..\emWin\Lib;..\..\emWin\OS;..\..\FATFS;..\..\User;..\..\User\APP;..\..\User\BSP;..\..\User\BSP\font;..\..\User\BSP\lcd;..\..\User\BSP\led;..\..\User\BSP\sdram;..\..\User\BSP\usart;..\..\User\BSP\sdio;..\..\User\User_APP;..\..\User\BSP\DHT22;..\..\User\User_APP\delay;..\..\User\BSP\adc;..\..\User\BSP\rng;..\..\User\BSP\i2c;..\..\User\BSP\mpu6050;..\..\User\BSP\TOUCH;..\..\emWin;..\..\User\BSP\RTC;..\..\User\BSP\mpu6050\eMPL</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -746,6 +746,16 @@
               <FileName>bsp_rtc.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\User\BSP\RTC\bsp_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>inv_mpu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\BSP\mpu6050\eMPL\inv_mpu.c</FilePath>
+            </File>
+            <File>
+              <FileName>inv_mpu_dmp_motion_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.c</FilePath>
             </File>
           </Files>
         </Group>

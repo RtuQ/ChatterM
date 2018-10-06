@@ -131,6 +131,8 @@
 ..\..\output\gt9147.o: ..\..\User\BSP\rng\bsp_rng.h
 ..\..\output\gt9147.o: ..\..\User\BSP\i2c\bsp_i2c_gpio.h
 ..\..\output\gt9147.o: ..\..\User\BSP\mpu6050\mpu6050.h
+..\..\output\gt9147.o: ..\..\User\BSP\mpu6050\eMPL\inv_mpu.h
+..\..\output\gt9147.o: ..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h
 ..\..\output\gt9147.o: ..\..\User\BSP\TOUCH\touch.h
 ..\..\output\gt9147.o: ..\..\User\BSP\TOUCH\ott2001a.h
 ..\..\output\gt9147.o: ..\..\User\BSP\TOUCH\gt9147.h

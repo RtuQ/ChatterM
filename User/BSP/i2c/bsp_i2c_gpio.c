@@ -22,29 +22,6 @@
 #include "bsp_i2c_gpio.h"
 
 
-
-/*
-*********************************************************************************************************
-*	函 数 名: i2c_Delay
-*	功能说明: I2C总线位延迟，最快400KHz
-*	形    参：无
-*	返 回 值: 无
-*********************************************************************************************************
-*/
-static void i2c_Delay(void)
-{
-	uint8_t i;
-
-	/*　
-		可用逻辑分析仪测量I2C通讯时的频率
-    工作条件：CPU主频180MHz ，MDK编译环境，1级优化
-  
-		经测试，循环次数为20~250时都能通讯正常
-
-	*/
-	for (i = 0; i < 30; i++);
-}
-
 /*
 *********************************************************************************************************
 *	函 数 名: i2c_Start
@@ -59,11 +36,10 @@ void i2c_Start(void)
 	SDA_OUT();
 	I2C_SDA = 1;
 	I2C_SCL = 1;
-	bsp_DelayUS(4);
+	bsp_DelayUS(30);
 	I2C_SDA = 0;
-	bsp_DelayUS(4);
+	bsp_DelayUS(2);
 	I2C_SCL = 0;
-//	i2c_Delay();  //
 }
 
 /*
@@ -80,10 +56,10 @@ void i2c_Stop(void)
 	SDA_OUT();
 	I2C_SCL = 0;
 	I2C_SDA = 0;
-	bsp_DelayUS(4);
-	I2C_SDA = 1;
+	bsp_DelayUS(30);
 	I2C_SCL = 1;
-	bsp_DelayUS(4);  //
+	bsp_DelayUS(2);
+	I2C_SDA = 1;
 }
 
 /*
@@ -100,9 +76,8 @@ uint8_t i2c_WaitAck(void)
     
 	SDA_IN();
 	I2C_SDA = 1;	/* CPU释放SDA总线 */
-	bsp_DelayUS(1);
 	I2C_SCL = 1;	/* CPU驱动SCL = 1, 此时器件会返回ACK应答 */
-	bsp_DelayUS(1);
+	bsp_DelayUS(2);
     while(I2C_SDA_READ)
 	{
 		re++;
@@ -111,7 +86,7 @@ uint8_t i2c_WaitAck(void)
 			i2c_Stop();
 			return 1;
 		}
-			
+		bsp_DelayUS(2);	
 	}
 	I2C_SCL = 0 ;
 	return 0;
@@ -127,13 +102,13 @@ uint8_t i2c_WaitAck(void)
 */
 void i2c_Ack(void)
 {
+	I2C_SCL = 0;
+	SDA_OUT();
 	I2C_SDA = 0;	/* CPU驱动SDA = 0 */
 	bsp_DelayUS(2);
-	I2C_SCL = 0;	/* CPU产生1个时钟 */
-	i2c_Delay();
-	I2C_SCL = 1;
+	I2C_SCL = 1;	/* CPU产生1个时钟 */
 	bsp_DelayUS(2);
-	I2C_SDA = 0;	/* CPU释放SDA总线 */
+	I2C_SCL = 0;
 }
 
 /*
@@ -146,7 +121,7 @@ void i2c_Ack(void)
 */
 void i2c_NAck(void)
 {
-	I2C_SDA = 0;	/* CPU驱动SDA = 1 */
+	I2C_SCL = 0;	/* CPU驱动SDA = 1 */
 	SDA_OUT();
 	I2C_SDA = 1;
 	bsp_DelayUS(2);
@@ -173,7 +148,7 @@ void i2c_SendByte(uint8_t _ucByte)
 	{
 		I2C_SDA = (_ucByte&0x80)>>7;
 		_ucByte<<=1;
-		bsp_DelayUS(2);
+        bsp_DelayUS(2);
 		I2C_SCL = 1;
 		bsp_DelayUS(2);
 		I2C_SCL = 0;
@@ -197,6 +172,7 @@ uint8_t i2c_ReadByte(u8 ack)
 	uint8_t value;
 	value = 0;
 	SDA_IN();
+	bsp_DelayUS(30);       //必须要有这个延时 不然 I2C出错
 	for (i = 0; i < 8; i++)
 	{
 		I2C_SCL = 0;
@@ -204,7 +180,7 @@ uint8_t i2c_ReadByte(u8 ack)
 		I2C_SCL = 1;
 		value <<= 1;
 		if(I2C_SDA_READ)value++;
-		bsp_DelayUS(1);
+		bsp_DelayUS(2);
 		
 	}
 	if(!ack)
@@ -229,15 +205,20 @@ void i2c_CfgGpio(void)
 
 	RCC_AHB1PeriphClockCmd(I2C_GPIO_CLK, ENABLE);	/* 打开GPIO时钟 */
 
-	GPIO_InitStructure.GPIO_Pin = I2C_SCL_PIN | I2C_SDA_PIN;
+	GPIO_InitStructure.GPIO_Pin = I2C_SCL_PIN ;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;  	
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;  	/* 开漏输出 */
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_Init(I2C_GPIO_PORT, &GPIO_InitStructure);
+	
+	
+	GPIO_InitStructure.GPIO_Pin =I2C_SDA_PIN;
+	GPIO_Init(I2C_GPIO_PORT, &GPIO_InitStructure);
 
 	/* 给一个停止信号, 复位I2C总线上的所有设备到待机模式 */
-	i2c_Stop();
+	I2C_SDA = 1;
+	I2C_SCL = 1; 
 }
 
 

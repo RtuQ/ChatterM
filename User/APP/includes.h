@@ -106,6 +106,8 @@
 #include "bsp_rng.h" 
 #include "bsp_i2c_gpio.h"
 #include "mpu6050.h"
+#include "inv_mpu.h"
+#include "inv_mpu_dmp_motion_driver.h"
 #include "touch.h" 
 #include "bsp_rtc.h"
 

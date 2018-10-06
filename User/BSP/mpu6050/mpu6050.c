@@ -7,16 +7,27 @@
 	* @param	 reg_data:要写入的数据
   * @retval  
   */
-void MPU6050_WriteReg(u8 reg_add,u8 reg_dat)
+u8 MPU6050_WriteReg(u8 reg_add,u8 reg_dat)
 {
-//	Sensors_I2C_WriteRegister(MPU6050_ADDRESS,reg_add,1,&reg_dat);
 	i2c_Start();		/* 发送启动信号 */
 	/* 发送设备地址+读写控制bit（0 = w， 1 = r) bit7 先传 */
-	i2c_SendByte(MPU6050_ADDRESS | EEPROM_I2C_WR);
+	i2c_SendByte((MPU6050_ADDRESS<<1) | EEPROM_I2C_WR);
+	if(i2c_WaitAck())	//等待应答
+	{
+		i2c_Stop();		
+//		Debug_printf("no ack!\n");		
+	}
 	i2c_SendByte(reg_add);
+	i2c_WaitAck();
 	i2c_SendByte(reg_dat);
+	if(i2c_WaitAck())	//等待应答
+	{
+		i2c_Stop();
+        return 1;		
+	}
 	
 	i2c_Stop();
+	return 0;
 }
 
 /**
@@ -31,11 +42,14 @@ uint8_t MPU6050_ReadData(u8 reg_add)
 	u8 MPU6050_data;
 	i2c_Start();		/* 发送启动信号 */
 	/* 发送设备地址+读写控制bit（0 = w， 1 = r) bit7 先传 */
-	i2c_SendByte(MPU6050_ADDRESS | EEPROM_I2C_WR);
+	i2c_SendByte((MPU6050_ADDRESS<<1) | EEPROM_I2C_WR);
+	i2c_WaitAck();
 	i2c_SendByte(reg_add);
+	i2c_WaitAck();
 	i2c_Start();		/* 发送启动信号 */
 	/* 发送设备地址+读写控制bit（0 = w， 1 = r) bit7 先传 */
-	i2c_SendByte(MPU6050_ADDRESS | EEPROM_I2C_RD);
+	i2c_SendByte((MPU6050_ADDRESS<<1) | EEPROM_I2C_RD);
+	i2c_WaitAck();
 	MPU6050_data = i2c_ReadByte(0);
 	i2c_Stop();
 	return MPU6050_data;
@@ -49,20 +63,138 @@ uint8_t MPU6050_ReadData(u8 reg_add)
   */
 void MPU6050_Init(void)
 {
-  int i=0,j=0;
-  //在初始化之前要延时一段时间，若没有延时，则断电后再上电数据可能会出错
-  for(i=0;i<1000;i++)
-  {
-    for(j=0;j<1000;j++)
-    {
-      ;
-    }
-  }
+  	MPU6050_WriteReg(MPU6050_RA_PWR_MGMT_1,0X80);	//复位MPU6050
+    bsp_DelayMS(100);
 	MPU6050_WriteReg(MPU6050_RA_PWR_MGMT_1, 0x00);	     //解除休眠状态
-	MPU6050_WriteReg(MPU6050_RA_SMPLRT_DIV , 0x07);	    //陀螺仪采样率
-	MPU6050_WriteReg(MPU6050_RA_CONFIG , 0x06);	
-	MPU6050_WriteReg(MPU6050_RA_ACCEL_CONFIG , 0x01);	  //配置加速度传感器工作在16G模式
-	MPU6050_WriteReg(MPU6050_RA_GYRO_CONFIG, 0x18);     //陀螺仪自检及测量范围，典型值：0x18(不自检，2000deg/s)
+	MPU_Set_Gyro_Fsr(3);
+	MPU_Set_Accel_Fsr(0);
+	MPU_Set_Rate(50);
+	MPU6050_WriteReg(MPU6050_RA_INT_ENABLE,0X00);	//关闭所有中断
+	MPU6050_WriteReg(MPU6050_RA_USER_CTRL,0X00);	//I2C主模式关闭
+	MPU6050_WriteReg(MPU6050_RA_FIFO_EN,0x00);	//关闭FIFO
+	MPU6050_WriteReg(MPU6050_RA_INT_PIN_CFG,0X80);	//INT引脚低电平有效
+	MPU6050_ReadData(MPU6050_WHO_AM_I);
+	
+	MPU6050_WriteReg(MPU6050_RA_PWR_MGMT_1, 0x01);	     
+	MPU6050_WriteReg(MPU6050_RA_PWR_MGMT_2, 0x00);	     
+	MPU_Set_Rate(50);
+}
+
+
+
+/**
+  * @brief   设置MPU6050陀螺仪传感器满量程范围
+  * @param   fsr:0,±250dps;1,±500dps;2,±1000dps;3,±2000dps
+  * @retval  正常返回0，异常返回1
+  */
+u8 MPU_Set_Gyro_Fsr(u8 fsr)
+{
+	return MPU6050_WriteReg(MPU6050_RA_GYRO_CONFIG,fsr<<3);//设置陀螺仪满量程范围  
+}
+
+/**
+  * @brief   设置MPU6050加速度传感器满量程范围
+  * @param   fsr:0,±2g;1,±4g;2,±8g;3,±16g
+  * @retval  正常返回0，异常返回1
+  */
+u8 MPU_Set_Accel_Fsr(u8 fsr)
+{
+	return MPU6050_WriteReg(MPU6050_RA_ACCEL_CONFIG,fsr<<3);//设置加速度传感器满量程范围  
+}
+
+/**
+  * @brief   设置MPU6050的数字低通滤波器
+  * @param   lpf:数字低通滤波频率(Hz)
+  * @retval  正常返回0，异常返回1
+  */
+u8 MPU_Set_LPF(u16 lpf)
+{
+	u8 data=0;
+	if(lpf>=188)data=1;
+	else if(lpf>=98)data=2;
+	else if(lpf>=42)data=3;
+	else if(lpf>=20)data=4;
+	else if(lpf>=10)data=5;
+	else data=6; 
+	return MPU6050_WriteReg(MPU6050_RA_CONFIG,data);//设置数字低通滤波器  
+}
+/**
+  * @brief   设置MPU6050的采样率(假定Fs=1KHz)
+  * @param   rate:4~1000(Hz)
+  * @retval  正常返回0，异常返回1
+  */
+u8 MPU_Set_Rate(u16 rate)
+{
+	u8 data;
+	if(rate>1000)rate=1000;
+	if(rate<4)rate=4;
+	data=1000/rate-1;
+	data=MPU6050_WriteReg(MPU6050_RA_SMPLRT_DIV,data);	//设置数字低通滤波器
+ 	return MPU_Set_LPF(rate/2);	//自动设置LPF为采样率的一半
+}
+
+
+//IIC连续写
+//addr:器件地址 
+//reg:寄存器地址
+//len:写入长度
+//buf:数据区
+//返回值:0,正常
+//    其他,错误代码
+u8 MPU_Write_Len(u8 addr,u8 reg,u8 len,u8 *buf)
+{
+	u8 i; 
+    i2c_Start(); 
+	i2c_SendByte((addr<<1)|0);//发送器件地址+写命令	
+	if(i2c_WaitAck())	//等待应答
+	{
+		i2c_Stop();		 
+		return 1;		
+	}
+    i2c_SendByte(reg);	//写寄存器地址
+    i2c_WaitAck();		//等待应答
+	for(i=0;i<len;i++)
+	{
+		i2c_SendByte(buf[i]);	//发送数据
+		if(i2c_WaitAck())		//等待ACK
+		{
+			i2c_Stop();	 
+			return 1;		 
+		}		
+	}    
+    i2c_Stop();	 
+	return 0;	
+} 
+//IIC连续读
+//addr:器件地址
+//reg:要读取的寄存器地址
+//len:要读取的长度
+//buf:读取到的数据存储区
+//返回值:0,正常
+//    其他,错误代码
+u8 MPU_Read_Len(u8 addr,u8 reg,u8 len,u8 *buf)
+{ 
+ 	i2c_Start(); 
+	i2c_SendByte((addr<<1)|0);//发送器件地址+写命令	
+	if(i2c_WaitAck())	//等待应答
+	{
+		i2c_Stop();		 
+		return 1;		
+	}
+    i2c_SendByte(reg);	//写寄存器地址
+    i2c_WaitAck();		//等待应答
+    i2c_Start();
+	i2c_SendByte((addr<<1)|1);//发送器件地址+读命令	
+    i2c_WaitAck();		//等待应答 
+	while(len)
+	{
+		if(len==1)*buf=i2c_ReadByte(0);//读数据,发送nACK 
+		else *buf=i2c_ReadByte(1);		//读数据,发送ACK  
+		len--;
+		buf++; 
+	}    
+    i2c_Stop();	//产生一个停止条件 
+	return 0;	
 }
 
 /**
@@ -82,7 +214,7 @@ uint8_t MPU6050ReadID(void)
 	}
 	else
 	{
-		Debug_printf("MPU6050 ID = %d\r\n",Re);
+		Debug_printf("MPU6050 ID = %X\r\n",Re);
 		return 1;
 	}
 		

@@ -283,9 +283,12 @@ void  BSP_Init (void)
 	
 	RTC_CLK_Config();
 	
-//	i2c_CfgGpio();
-//	MPU6050_Init();
-//	MPU6050ReadID();       //模块有问题
+	i2c_CfgGpio();
+    bsp_DelayMS(200);
+	MPU6050_Init();
+	MPU6050ReadID();       
+    if(mpu_dmp_init() != 0)
+    Debug_printf("dmp = %d\n",mpu_dmp_init());
 	
 //	GUI_SelectLayer(1);
  
