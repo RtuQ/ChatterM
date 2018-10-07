@@ -1,6 +1,4 @@
 #include "mpu6050.h"
-#define MPU_ERROR 		I2C_ERROR
-#define MPU_INFO 		I2C_INFO
 /**
   * @brief   写数据到MPU6050寄存器
   * @param   reg_add:寄存器地址
@@ -132,15 +130,14 @@ u8 MPU_Set_Rate(u16 rate)
 	data=MPU6050_WriteReg(MPU6050_RA_SMPLRT_DIV,data);	//设置数字低通滤波器
  	return MPU_Set_LPF(rate/2);	//自动设置LPF为采样率的一半
 }
-
-
-//IIC连续写
-//addr:器件地址 
-//reg:寄存器地址
-//len:写入长度
-//buf:数据区
-//返回值:0,正常
-//    其他,错误代码
+/**
+  * @brief   IIC连续写
+  * @param   addr:器件地址
+             reg:寄存器地址
+			 len:写入长度
+			 buf:数据区
+  * @retval  正常返回0，异常返回1
+  */
 u8 MPU_Write_Len(u8 addr,u8 reg,u8 len,u8 *buf)
 {
 	u8 i; 
@@ -165,13 +162,16 @@ u8 MPU_Write_Len(u8 addr,u8 reg,u8 len,u8 *buf)
     i2c_Stop();	 
 	return 0;	
 } 
-//IIC连续读
-//addr:器件地址
-//reg:要读取的寄存器地址
-//len:要读取的长度
-//buf:读取到的数据存储区
-//返回值:0,正常
-//    其他,错误代码
+
+/**
+  * @brief   IIC连续读
+  * @param   
+			addr:器件地址
+			reg:要读取的寄存器地址
+			len:要读取的长度
+			buf:读取到的数据存储区
+  * @retval  正常返回0，异常返回1
+  */
 u8 MPU_Read_Len(u8 addr,u8 reg,u8 len,u8 *buf)
 { 
  	i2c_Start(); 

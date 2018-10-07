@@ -1103,9 +1103,9 @@
               <FilePath>..\..\emWin\Config\GUI_X_Touch_Analog.c</FilePath>
             </File>
             <File>
-              <FileName>xuexiaomin.c</FileName>
+              <FileName>beijing.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\emWin\xuexiaomin.c</FilePath>
+              <FilePath>..\..\emWin\beijing.c</FilePath>
             </File>
           </Files>
         </Group>

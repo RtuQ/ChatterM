@@ -1275,7 +1275,7 @@ int dmp_read_fifo(short *gyro, short *accel, long *quat,
     /* Get a packet. */
     if (mpu_read_fifo_stream(dmp.packet_length, fifo_data, more))
 	{
-		log_e("error here\n");
+//		log_e("error here\n");
         return -1;
 	}
 

@@ -40,7 +40,7 @@ extern OS_TCB   AppTaskShowBQTCB;
 extern u8 Touch_TimeMode;
 extern u8 settime_mode;
 
-extern const unsigned char _acxuexiaomin[22221UL + 1];
+extern const unsigned char _acbeijing[43783UL + 1];
 
 GUI_MEMDEV_Handle    hMempic;
 
@@ -113,8 +113,6 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
   int     Id;
   int     list_value;
  OS_ERR      err;
-  // USER START (Optionally insert additional variables)
-  // USER END
 
   switch (pMsg->MsgId) {
 	  
@@ -125,9 +123,6 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 		 GUI_MEMDEV_WriteAt(hMempic,0,0);
 	  }break;
   case WM_INIT_DIALOG:
-    //
-    // Initialization of 'Window'
-    //
 //    hItem = pMsg->hWin;
 //    WINDOW_SetBkColor(hItem, GUI_WHITE);
   
@@ -166,13 +161,11 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 	DROPDOWN_AddString(hItem, "2019");
 	DROPDOWN_AddString(hItem, "2020");
 
-	/* ÏÂÃæÕâ¸öÈý¸öº¯ÊýÊÇÐÂÔöµÄ */
+	
 	DROPDOWN_SetAutoScroll(hItem, 1);
 	DROPDOWN_SetListHeight(hItem, 100);
 	DROPDOWN_SetScrollbarWidth(hItem, 16);
-	//
-	// Initialization of 'Dropdown'
-	//
+
 	hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_1);
 	DROPDOWN_SetFont(hItem, GUI_FONT_24B_ASCII);
 	DROPDOWN_AddString(hItem, "1");
@@ -188,7 +181,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 	DROPDOWN_AddString(hItem, "11");
 	DROPDOWN_AddString(hItem, "12");
 
-	/* ÏÂÃæÕâ¸öÈý¸öº¯ÊýÊÇÐÂÔöµÄ */
+	
 	DROPDOWN_SetAutoScroll(hItem, 1);
 	DROPDOWN_SetListHeight(hItem, 100);
 	DROPDOWN_SetScrollbarWidth(hItem, 16);
@@ -226,7 +219,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 	DROPDOWN_AddString(hItem, "30");
 	DROPDOWN_AddString(hItem, "31");
 
-	/* ÏÂÃæÕâ¸öÈý¸öº¯ÊýÊÇÐÂÔöµÄ */
+	
 	DROPDOWN_SetAutoScroll(hItem, 1);
 	DROPDOWN_SetListHeight(hItem, 100);
 	DROPDOWN_SetScrollbarWidth(hItem, 16);
@@ -246,7 +239,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 	DROPDOWN_AddString(hItem, "11");
 	DROPDOWN_AddString(hItem, "12");
 
-	/* ÏÂÃæÕâ¸öÈý¸öº¯ÊýÊÇÐÂÔöµÄ */
+	
 	DROPDOWN_SetAutoScroll(hItem, 1);
 	DROPDOWN_SetListHeight(hItem, 100);
 	DROPDOWN_SetScrollbarWidth(hItem, 16);
@@ -312,14 +305,13 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 	DROPDOWN_AddString(hItem, "58");
 	DROPDOWN_AddString(hItem, "59");
 
-	/* ÏÂÃæÕâ¸öÈý¸öº¯ÊýÊÇÐÂÔöµÄ */
+	
 	DROPDOWN_SetAutoScroll(hItem, 1);
 	DROPDOWN_SetListHeight(hItem, 100);
 	DROPDOWN_SetScrollbarWidth(hItem, 16);
 
 
-    // USER START (Optionally insert additional code for further widget initialization)
-    // USER END
+    
     break;
   case WM_NOTIFY_PARENT:
     Id    = WM_GetId(pMsg->hWinSrc);
@@ -507,7 +499,7 @@ void MainTask(void) {
 									 GUI_MEMDEV_APILIST_16, 
 									 GUICC_M565);
 	GUI_MEMDEV_Select(hMempic);
-    GUI_JPEG_Draw(_acxuexiaomin, sizeof(_acxuexiaomin), 0, 0);
+    GUI_JPEG_Draw(_acbeijing, sizeof(_acbeijing), 0, 0);
 	
 	GUI_MEMDEV_Select(0);
 	

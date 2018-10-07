@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\..\Output\SDRAM.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\Output\SDRAM.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sat Oct 06 09:47:09 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Oct 07 22:45:00 2018
 <BR><P>
 <H3>Maximum Stack Usage =       1720 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1918,7 +1918,6 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[1ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MPU6050ReadID
 <LI><a href="#[184]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BSP_Init
-<LI><a href="#[5b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;dmp_read_fifo
 <LI><a href="#[5b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_read_fifo_stream
 <LI><a href="#[5d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_init
 <LI><a href="#[440]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_TimeAndDate_Show
@@ -10676,6 +10675,7 @@ Global Symbols
 <LI><a href="#[248]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GT9147_Init
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AppTasktalk
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AppTaskTouch
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AppTaskStart
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AppTaskPower
 <LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;AppTaskLight
 </UL>
@@ -11015,11 +11015,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[1ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_dmp_init
 </UL>
 
-<P><STRONG><a name="[5b1]"></a>dmp_read_fifo</STRONG> (Thumb, 414 bytes, Stack size 88 bytes, inv_mpu_dmp_motion_driver.o(i.dmp_read_fifo))
+<P><STRONG><a name="[5b1]"></a>dmp_read_fifo</STRONG> (Thumb, 408 bytes, Stack size 88 bytes, inv_mpu_dmp_motion_driver.o(i.dmp_read_fifo))
 <BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = dmp_read_fifo &rArr; mpu_read_fifo_stream &rArr; Debug_printf &rArr; printflt &rArr; __aeabi_dmul &rArr; _double_epilogue &rArr; _double_round
 </UL>
-<BR>[Calls]<UL><LI><a href="#[174]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Debug_printf
-<LI><a href="#[5b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;decode_gesture
+<BR>[Calls]<UL><LI><a href="#[5b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;decode_gesture
 <LI><a href="#[5a3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_reset_fifo
 <LI><a href="#[5b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mpu_read_fifo_stream
 <LI><a href="#[5b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;mget_ms
@@ -12040,7 +12039,7 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> app.o(i.AppTaskStart)
 </UL>
-<P><STRONG><a name="[e7]"></a>AppTaskStart</STRONG> (Thumb, 624 bytes, Stack size 80 bytes, app.o(i.AppTaskStart))
+<P><STRONG><a name="[e7]"></a>AppTaskStart</STRONG> (Thumb, 630 bytes, Stack size 80 bytes, app.o(i.AppTaskStart))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1720 + Unknown Stack Size
 <LI>Call Chain = AppTaskStart &rArr; _ShowJPEG2 &rArr; GUI_JPEG_Draw &rArr; GUI_JPEG_DrawEx &rArr; _Draw &rArr; _DrawBanding &rArr; GUI_JPEG__DecodeProgressiveBanding &rArr; _InitScan &rArr; _CheckHuffmanTables &rArr; _CreateHuffmanTable
 </UL>
@@ -12063,6 +12062,7 @@ Local Symbols
 <LI><a href="#[18e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPU_SR_Save
 <LI><a href="#[192]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPU_SR_Restore
 <LI><a href="#[183]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CPU_Init
+<LI><a href="#[17c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> app.o(i.main)
 </UL>
@@ -12107,7 +12107,7 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> app.o(i.AppTaskStart)
 </UL>
-<P><STRONG><a name="[82]"></a>AppTasktalk</STRONG> (Thumb, 1700 bytes, Stack size 24 bytes, app.o(i.AppTasktalk))
+<P><STRONG><a name="[82]"></a>AppTasktalk</STRONG> (Thumb, 1712 bytes, Stack size 24 bytes, app.o(i.AppTasktalk))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1664 + Unknown Stack Size
 <LI>Call Chain = AppTasktalk &rArr; _ShowJPEG2 &rArr; GUI_JPEG_Draw &rArr; GUI_JPEG_DrawEx &rArr; _Draw &rArr; _DrawBanding &rArr; GUI_JPEG__DecodeProgressiveBanding &rArr; _InitScan &rArr; _CheckHuffmanTables &rArr; _CreateHuffmanTable
 </UL>

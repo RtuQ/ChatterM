@@ -235,7 +235,10 @@ static  void  AppTaskStart (void *p_arg)
 		if(num >=100) { num =100; len = 3;}
 		bsp_DelayMS(100);
 	}
-	 bsp_DelayMS(2000);
+	printf("@PlayFLASH#0023$");
+	bsp_DelayMS(2000);
+	
+	
      CPU_SR_ALLOC();                               //进入临界区域防止被其他任务打断
 	 OS_CRITICAL_ENTER();
 	
@@ -247,7 +250,7 @@ static  void  AppTaskStart (void *p_arg)
 								 (OS_MEM_SIZE  )4,                //内存块的字节数目
 								 (OS_ERR      *)&err);            //返回错误类型             
 								 
-	OSTaskCreate((OS_TCB     *)&AppTaskShowBQTCB,                /* Create the Led1 task                                */
+	OSTaskCreate((OS_TCB     *)&AppTaskShowBQTCB,                /* Create the ShowBQ task                                */
                  (CPU_CHAR   *)"App Task ShowBQ",
                  (OS_TASK_PTR ) AppTaskShowBQ,
                  (void       *) 0,
@@ -317,7 +320,7 @@ static  void  AppTaskStart (void *p_arg)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
-	OSTaskCreate((OS_TCB     *)&AppTaskLightTCB,                /* Create the Power task                                */
+	OSTaskCreate((OS_TCB     *)&AppTaskLightTCB,                /* Create the Light task                                */
                  (CPU_CHAR   *)"App Task Light",
                  (OS_TASK_PTR ) AppTaskLight,
                  (void       *) 0,
@@ -330,7 +333,7 @@ static  void  AppTaskStart (void *p_arg)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
-//	OSTaskCreate((OS_TCB     *)&AppTaskCheckPeopleTCB,                /* Create the Power task                                */
+//	OSTaskCreate((OS_TCB     *)&AppTaskCheckPeopleTCB,                /* Create the CheckPeople task                                */
 //                 (CPU_CHAR   *)"App Task CheckPeople",
 //                 (OS_TASK_PTR ) AppTaskCheckPeople,
 //                 (void       *) 0,
@@ -343,7 +346,7 @@ static  void  AppTaskStart (void *p_arg)
 //                 (void       *) 0,
 //                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
 //                 (OS_ERR     *)&err);
-    OSTaskCreate((OS_TCB     *)&AppTaskTouchScanTCB,                /* Create the Power task                                */
+    OSTaskCreate((OS_TCB     *)&AppTaskTouchScanTCB,                /* Create the TouchScan task                                */
                  (CPU_CHAR   *)"App Task TouchScan",
                  (OS_TASK_PTR ) AppTaskTouchScan,
                  (void       *) 0,
@@ -356,7 +359,7 @@ static  void  AppTaskStart (void *p_arg)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
-    OSTaskCreate((OS_TCB     *)&AppTaskTouchTCB,                /* Create the Power task                                */
+    OSTaskCreate((OS_TCB     *)&AppTaskTouchTCB,                /* Create the Touch task                                */
                  (CPU_CHAR   *)"App Task Touch",
                  (OS_TASK_PTR ) AppTaskTouch,
                  (void       *) 0,
@@ -370,7 +373,7 @@ static  void  AppTaskStart (void *p_arg)
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
 				 
-    OSTaskCreate((OS_TCB     *)&AppTaskWindowTCB,                /* Create the Power task                                */
+    OSTaskCreate((OS_TCB     *)&AppTaskWindowTCB,                /* Create the Window task                                */
                  (CPU_CHAR   *)"App Task Window",
                  (OS_TASK_PTR ) AppTaskWindow,
                  (void       *) 0,
@@ -384,7 +387,7 @@ static  void  AppTaskStart (void *p_arg)
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
 #if SystemData == 1
-	OSTaskCreate( (OS_TCB     *)&SystemDatasBroadcast_TCB,
+	OSTaskCreate( (OS_TCB     *)&SystemDatasBroadcast_TCB,                 /* Create the SystemDatasBroadcast task       */
                 (CPU_CHAR   *)"SystemDatasBroadcast",
                 (OS_TASK_PTR ) SystemDatasBroadcast,
                 (void       *) 0,
@@ -423,6 +426,7 @@ static void AppTaskShowBQ (void * p_arg )
 		    RandData2 = RandData%3;
 		    RandData = RandData%11;
 		   Debug_printf("RandData = %d\n",RandData);
+//		  _ShowGIF2("0:yinyue.gif",1,2,5);
 		  switch(RandData)
 		  {
 			  case 0:
@@ -689,7 +693,7 @@ static  void  AppTasktalk ( void * p_arg )
 							if(i>=2)i = 0;
 							OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
 						}break;
-			case 0x14:
+			case 0x1c:
 						{
 							Debug_printf("笨蛋\n");
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
@@ -750,12 +754,6 @@ static  void  AppTasktalk ( void * p_arg )
 						{
 							Debug_printf("清屏\n");
 							
-							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
-							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
-							
-							Touch_TimeMode = 0;
-							settime_mode = 1;
-							OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
 							if(HH_Mode == 1)
 							{
 //								GUI_SelectLayer(1);
@@ -797,8 +795,12 @@ static  void  AppTasktalk ( void * p_arg )
 						}break;
 			case 0x1B:
 						{
-				           Touch_TimeMode = 0;
-						   OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
+				           	OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
+							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+							
+							Touch_TimeMode = 0;
+							settime_mode = 1;
+							OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
 						}break;
 			
 				
