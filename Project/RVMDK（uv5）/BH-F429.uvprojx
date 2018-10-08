@@ -1107,6 +1107,46 @@
               <FileType>1</FileType>
               <FilePath>..\..\emWin\beijing.c</FilePath>
             </File>
+            <File>
+              <FileName>speaker.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\speaker.c</FilePath>
+            </File>
+            <File>
+              <FileName>setting.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\setting.c</FilePath>
+            </File>
+            <File>
+              <FileName>planner.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\planner.c</FilePath>
+            </File>
+            <File>
+              <FileName>music.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\music.c</FilePath>
+            </File>
+            <File>
+              <FileName>folder.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\folder.c</FilePath>
+            </File>
+            <File>
+              <FileName>camera.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\camera.c</FilePath>
+            </File>
+            <File>
+              <FileName>armclock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\armclock.c</FilePath>
+            </File>
+            <File>
+              <FileName>about.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\about.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

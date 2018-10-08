@@ -1,0 +1,9 @@
+..\..\output\armclock.o: ..\..\emWin\armclock.c
+..\..\output\armclock.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\armclock.o: ..\..\emWin\inc\GUI.h
+..\..\output\armclock.o: ..\..\emWin\inc\GUI_ConfDefaults.h
+..\..\output\armclock.o: ..\..\emWin\Config\GUIConf.h
+..\..\output\armclock.o: ..\..\emWin\inc\GUI_Type.h
+..\..\output\armclock.o: ..\..\emWin\inc\LCD.h
+..\..\output\armclock.o: ..\..\emWin\inc\Global.h
+..\..\output\armclock.o: ..\..\emWin\inc\GUI_Version.h

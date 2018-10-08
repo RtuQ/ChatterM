@@ -25,15 +25,14 @@
 #include "WindowDLG.h"
 
 
-WM_HWIN hWin2;
+
 
 /*********************************************************************
 *
-*       Defines
+*                        外部引用
 *
 **********************************************************************
 */
-
 extern OS_TCB   AppTaskWindowTCB;
 extern OS_TCB   AppTaskShowBQTCB;
 
@@ -41,10 +40,56 @@ extern u8 Touch_TimeMode;
 extern u8 settime_mode;
 
 extern const unsigned char _acbeijing[43783UL + 1];
+extern GUI_CONST_STORAGE GUI_BITMAP bmspeaker;
+extern GUI_CONST_STORAGE GUI_BITMAP bmsetting;
+extern GUI_CONST_STORAGE GUI_BITMAP bmplanner;
+extern GUI_CONST_STORAGE GUI_BITMAP bmmusic;
+extern GUI_CONST_STORAGE GUI_BITMAP bmfolder;
+extern GUI_CONST_STORAGE GUI_BITMAP bmcamera;
+extern GUI_CONST_STORAGE GUI_BITMAP bmarmclock;
+extern GUI_CONST_STORAGE GUI_BITMAP bmabout;
 
+/*********************************************************************
+*
+*                                变量和数组
+*
+**********************************************************************
+*/
+WM_HWIN hWin2;
+WM_HWIN hWinICON;
+WM_HWIN hWinMain;
+WM_HWIN hWinInfo;
 GUI_MEMDEV_Handle    hMempic;
 
+u8	s_ucSelIconIndex = 0;	/* 选择的ICON，默认不选择任何 */
 Rtime Wset;
+
+/* 用于桌面ICONVIEW图标的创建 */
+typedef struct 
+{
+	const GUI_BITMAP * pBitmap;
+	const char       * pText;
+} BITMAP_ITEM;
+
+/* 用于桌面ICONVIEW图标的创建 */
+static const BITMAP_ITEM _aBitmapItem[] = 
+{
+	{&bmarmclock,    "Clock"},
+	{&bmmusic,    "Music"},
+	{&bmcamera,    "Camera"},
+	{&bmplanner,    "Planner"},
+	
+	{&bmspeaker,    "Speaker"},
+	{&bmfolder,    "Folder"},
+	{&bmsetting,    "Setting"},
+	{&bmabout,    "About"},
+};
+/*********************************************************************
+* 
+*                                   Defines
+*
+**********************************************************************
+*/
 
 #define ID_WINDOW_0   (GUI_ID_USER + 0x00)
 #define ID_DROPDOWN_0   (GUI_ID_USER + 0x01)
@@ -59,7 +104,12 @@ Rtime Wset;
 #define ID_TEXT_2   (GUI_ID_USER + 0x0A)
 #define ID_TEXT_3   (GUI_ID_USER + 0x0B)
 #define ID_TEXT_4   (GUI_ID_USER + 0x0C)
+#define ID_WINDOW_1   (GUI_ID_USER + 0x0D)
 
+#define ID_TEXT_5   (GUI_ID_USER + 0x0E)
+
+
+#define ID_TimerTime 1
 
 
 /*********************************************************************
@@ -93,6 +143,16 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
   { TEXT_CreateIndirect, "MINUTES", ID_TEXT_4, 268,120,120,19, 0, 0x0, 0 },
 };
 
+
+/*********************************************************************
+*
+*       _aDialogCreate2
+*/
+static const GUI_WIDGET_CREATE_INFO _aDialogCreate2[] = {
+  { WINDOW_CreateIndirect, "Window", ID_WINDOW_1, 0, 0, 480, 272, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_5, 300,7,120,19, 0, 0x0, 0 },
+};
+
 /*********************************************************************
 *
 *       Static code
@@ -102,6 +162,154 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
 
 // USER START (Optionally insert additional static code)
 // USER END
+
+
+
+
+/*
+*********************************************************************************************************
+*	函 数 名: _cbDialogInfo
+*	功能说明: 主窗口的回调函数
+*	形    参：pMsg   参数指针
+*	返 回 值: 无
+*********************************************************************************************************
+*/
+static void _cbDialog2(WM_MESSAGE * pMsg) 
+{
+	WM_HWIN hItem;
+	WM_MESSAGE pMsgInfo;
+	int NCode, Id;
+
+	switch (pMsg->MsgId) 
+	{
+		case WM_PAINT:
+			/* 重绘背景图片 */
+			GUI_MEMDEV_WriteAt(hMempic,0,0);
+			break;
+		
+		case WM_INIT_DIALOG:
+			/* 创建文本 */
+			hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_5);
+			TEXT_SetTextColor(hItem, GUI_WHITE);
+			TEXT_SetFont(hItem, GUI_FONT_20B_ASCII);
+			TEXT_SetText(hItem, "System Set Mode");
+
+//			hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_9);
+//			TEXT_SetFont(hItem, GUI_FONT_16B_ASCII);
+//			TEXT_SetTextColor(hItem, 0x00FFFFFF);
+//			TEXT_SetText(hItem, "2014-06-17");
+//			
+//			hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_10);
+//			TEXT_SetFont(hItem, GUI_FONT_16B_ASCII);
+//			TEXT_SetTextColor(hItem, 0x00FFFFFF);
+//			TEXT_SetText(hItem, "00:00:00");
+			break;
+			
+		case WM_TIMER:
+		
+			/* 重启定时器 */
+			WM_RestartTimer(pMsg->Data.v, 1000);
+			break;
+		
+//		/*  发送按下的消息 */
+//		case MSG_SetENTER:
+//			pMsgInfo.MsgId = WM_NOTIFY_PARENT;
+//			pMsgInfo.hWinSrc = hWinICON;
+//			pMsgInfo.Data.v = WM_NOTIFICATION_RELEASED;
+//			WM_SendMessage(pMsg->hWin, &pMsgInfo);	
+//			break;
+//		
+//		/*  设置ICON的聚焦 */
+//		case MSG_SetICONFocus:
+//			WM_SetFocus(hWinICON);
+//			break;
+//		
+//		/* 删除通过ICON创建的对话框 */
+//		case MSG_Delect:
+//			if(WM_IsWindow(hWinInfo))
+//			{
+//				WM_DeleteWindow(hWinInfo);			
+//			}
+//			break;
+			
+		case WM_NOTIFY_PARENT:
+			Id    = WM_GetId(pMsg->hWinSrc);     
+			NCode = pMsg->Data.v;                
+			switch (Id) 
+			{
+				/* 点击ICONVIEW上相应的图标，打开相应的窗口 */
+				case GUI_ID_ICONVIEW0:
+					switch (NCode) 
+					{
+						case  WM_NOTIFICATION_RELEASED:
+							
+							s_ucSelIconIndex  = ICONVIEW_GetSel(pMsg->hWinSrc);
+						
+							switch( ICONVIEW_GetSel(pMsg->hWinSrc))
+							{
+								/* 视频监控 */
+								case 0:
+//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+								    break;	
+								
+								/* 灯光控制 */
+								case 1:
+//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+									break;	
+								
+								/* 智能门窗 */
+								case 2:
+//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+								    break;	
+								
+								/* 电器控制 */
+								case 3:
+//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+								    break;
+								
+								/* 信息查询 */
+								case 4:
+//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+								    break;	
+								
+								/* 安防报警 */
+								case 5:
+//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+								    break;	
+								
+								/* 背景音乐 */
+								case 6:
+//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+								    break;	
+								
+								/* 情景模式 */
+								case 7:
+//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+								    break;	
+								
+								/* 定时管理 */
+								case 8:
+//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+								    break;
+								
+								/* 系统设置 */
+								case 9:
+//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+								    break;
+								
+								default:
+									break;
+							}	
+						 break;
+					}
+				break;
+			}
+			break;
+			
+		default:
+			WM_DefaultProc(pMsg);
+	}
+}
 
 /*********************************************************************
 *
@@ -466,6 +674,67 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
   }
 }
 
+
+/*********************************************************************
+*
+*       CreateFramewin
+*/
+WM_HWIN CreateWindow2(void);
+WM_HWIN CreateWindow2(void) {
+  WM_HWIN hWin;
+
+  hWin = GUI_CreateDialogBox(_aDialogCreate2, GUI_COUNTOF(_aDialogCreate2), _cbDialog2, WM_HBKWIN, 0, 0);
+  return hWin;
+}
+
+/*********************************************************************
+*
+*                       主窗口创建
+*
+**********************************************************************
+*/
+void  MainWindow(void){
+
+	 u8 i;
+     hWin2 = CreateWindow2();
+	/*在指定位置创建指定尺寸的ICONVIEW 小工具*/
+	hWinICON = ICONVIEW_CreateEx(150, 						/* 小工具的最左像素（在父坐标中）*/
+						     60, 							/* 小工具的最上像素（在父坐标中）*/
+							 500,    						/* 小工具的水平尺寸（单位：像素）*/
+							 230, 							/* 小工具的垂直尺寸（单位：像素）*/
+	                         hWinMain, 				        /* 父窗口的句柄。如果为0 ，则新小工具将成为桌面（顶级窗口）的子窗口 */
+							 WM_CF_SHOW | WM_CF_HASTRANS,   /* 窗口创建标记。为使小工具立即可见，通常使用 WM_CF_SHOW */ 
+	                         0,//ICONVIEW_CF_AUTOSCROLLBAR_V, 	/* 默认是0，如果不够现实可设置增减垂直滚动条 */
+							 GUI_ID_ICONVIEW0, 			        /* 小工具的窗口ID */
+							 90, 				    			/* 图标的水平尺寸 */
+							 90);	
+	
+	/* 向ICONVIEW 小工具添加新图标 */
+	for (i = 0; i < GUI_COUNTOF(_aBitmapItem); i++) 
+	{	
+		ICONVIEW_AddBitmapItem(hWinICON, _aBitmapItem[i].pBitmap, _aBitmapItem[i].pText);
+	}
+	
+	/* 设置小工具的背景色 32 位颜色值的前8 位可用于alpha混合处理效果*/
+	ICONVIEW_SetBkColor(hWinICON, ICONVIEW_CI_SEL, GUI_WHITE | 0x80000000);
+	
+	/* 设置图标在x 或y 方向上的间距。*/
+	ICONVIEW_SetSpace(hWinICON, GUI_COORD_Y, 20);
+	ICONVIEW_SetSpace(hWinICON, GUI_COORD_X, 10);
+	
+	/* 设置对齐方式 在5.22版本中最新加入的 */
+	ICONVIEW_SetIconAlign(hWinICON, ICONVIEW_IA_HCENTER|ICONVIEW_IA_TOP);
+	/* 定时消息传递Timer */
+	WM_CreateTimer(WM_GetClientWindow(hWinMain), /* 接受信息的窗口的句柄 */
+				   ID_TimerTime, 	             /* 用户定义的Id。如果不对同一窗口使用多个定时器，此值可以设置为零。 */
+				   20,                           /* 周期，此周期过后指定窗口应收到消息*/
+				   0);	                         /* 留待将来使用，应为0 */
+	
+}
+
+
+
+
 /*********************************************************************
 *
 *       Public code
@@ -485,8 +754,8 @@ WM_HWIN CreateWindow(void) {
   return hWin;
 }
 
-// USER START (Optionally insert additional public code)
-// USER END
+
+
 void MainTask(void) {
 
 	
@@ -506,7 +775,8 @@ void MainTask(void) {
 	while (1) {
 //		Debug_printf("stop?\n");
 		if(settime_mode)
-			hWin2 = CreateWindow();
+			MainWindow();
+//			hWin2 = CreateWindow();
 		GUI_Delay(10);
 	}
 }

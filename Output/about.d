@@ -1,0 +1,9 @@
+..\..\output\about.o: ..\..\emWin\about.c
+..\..\output\about.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\about.o: ..\..\emWin\inc\GUI.h
+..\..\output\about.o: ..\..\emWin\inc\GUI_ConfDefaults.h
+..\..\output\about.o: ..\..\emWin\Config\GUIConf.h
+..\..\output\about.o: ..\..\emWin\inc\GUI_Type.h
+..\..\output\about.o: ..\..\emWin\inc\LCD.h
+..\..\output\about.o: ..\..\emWin\inc\Global.h
+..\..\output\about.o: ..\..\emWin\inc\GUI_Version.h

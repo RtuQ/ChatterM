@@ -1,0 +1,9 @@
+..\..\output\planner.o: ..\..\emWin\planner.c
+..\..\output\planner.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\planner.o: ..\..\emWin\inc\GUI.h
+..\..\output\planner.o: ..\..\emWin\inc\GUI_ConfDefaults.h
+..\..\output\planner.o: ..\..\emWin\Config\GUIConf.h
+..\..\output\planner.o: ..\..\emWin\inc\GUI_Type.h
+..\..\output\planner.o: ..\..\emWin\inc\LCD.h
+..\..\output\planner.o: ..\..\emWin\inc\Global.h
+..\..\output\planner.o: ..\..\emWin\inc\GUI_Version.h

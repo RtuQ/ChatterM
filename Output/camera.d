@@ -1,0 +1,9 @@
+..\..\output\camera.o: ..\..\emWin\camera.c
+..\..\output\camera.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\camera.o: ..\..\emWin\inc\GUI.h
+..\..\output\camera.o: ..\..\emWin\inc\GUI_ConfDefaults.h
+..\..\output\camera.o: ..\..\emWin\Config\GUIConf.h
+..\..\output\camera.o: ..\..\emWin\inc\GUI_Type.h
+..\..\output\camera.o: ..\..\emWin\inc\LCD.h
+..\..\output\camera.o: ..\..\emWin\inc\Global.h
+..\..\output\camera.o: ..\..\emWin\inc\GUI_Version.h

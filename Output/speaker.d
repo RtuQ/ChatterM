@@ -1,0 +1,9 @@
+..\..\output\speaker.o: ..\..\emWin\speaker.c
+..\..\output\speaker.o: d:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\..\output\speaker.o: ..\..\emWin\inc\GUI.h
+..\..\output\speaker.o: ..\..\emWin\inc\GUI_ConfDefaults.h
+..\..\output\speaker.o: ..\..\emWin\Config\GUIConf.h
+..\..\output\speaker.o: ..\..\emWin\inc\GUI_Type.h
+..\..\output\speaker.o: ..\..\emWin\inc\LCD.h
+..\..\output\speaker.o: ..\..\emWin\inc\Global.h
+..\..\output\speaker.o: ..\..\emWin\inc\GUI_Version.h

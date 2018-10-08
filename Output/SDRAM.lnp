@@ -101,6 +101,14 @@
 "..\..\output\windowdlg.o"
 "..\..\output\gui_x_touch_analog.o"
 "..\..\output\beijing.o"
+"..\..\output\speaker.o"
+"..\..\output\setting.o"
+"..\..\output\planner.o"
+"..\..\output\music.o"
+"..\..\output\folder.o"
+"..\..\output\camera.o"
+"..\..\output\armclock.o"
+"..\..\output\about.o"
 --library_type=microlib --strict --scatter "..\..\Output\SDRAM.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
