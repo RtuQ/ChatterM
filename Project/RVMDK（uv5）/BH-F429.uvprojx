@@ -1147,6 +1147,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\emWin\about.c</FilePath>
             </File>
+            <File>
+              <FileName>undo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\undo.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
