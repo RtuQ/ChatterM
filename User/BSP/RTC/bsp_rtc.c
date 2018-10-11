@@ -145,7 +145,7 @@ void RTC_CLK_Config(void)
 	/* 用RTC_InitStructure的内容初始化RTC寄存器 */
 	if (RTC_Init(&RTC_InitStructure) == ERROR)
 	{
-		printf("\n\r RTC 时钟初始化失败 \r\n");
+		Debug_printf("\n\r RTC 时钟初始化失败 \r\n");
 	}	
 }
 

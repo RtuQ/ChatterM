@@ -48,6 +48,7 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmfolder;
 extern GUI_CONST_STORAGE GUI_BITMAP bmcamera;
 extern GUI_CONST_STORAGE GUI_BITMAP bmarmclock;
 extern GUI_CONST_STORAGE GUI_BITMAP bmabout;
+extern GUI_CONST_STORAGE GUI_BITMAP bmundo;
 
 /*********************************************************************
 *
@@ -83,10 +84,11 @@ static const BITMAP_ITEM _aBitmapItem[] =
 	{&bmfolder,    "Folder"},
 	{&bmsetting,    "Setting"},
 	{&bmabout,    "About"},
+	{&bmundo,     "Back"},
 };
 /*********************************************************************
 * 
-*                                   Defines
+*                               Defines
 *
 **********************************************************************
 */
@@ -104,23 +106,55 @@ static const BITMAP_ITEM _aBitmapItem[] =
 #define ID_TEXT_2   (GUI_ID_USER + 0x0A)
 #define ID_TEXT_3   (GUI_ID_USER + 0x0B)
 #define ID_TEXT_4   (GUI_ID_USER + 0x0C)
-#define ID_WINDOW_1   (GUI_ID_USER + 0x0D)
 
+/*          以下定义用于主设置界面                   */
+#define ID_WINDOW_1   (GUI_ID_USER + 0x0D)
 #define ID_TEXT_5   (GUI_ID_USER + 0x0E)
+#define ID_TEXT_6   (GUI_ID_USER + 0x0F)
+#define ID_TEXT_7   (GUI_ID_USER + 0x10)
 
 
 #define ID_TimerTime 1
 
 
-/*********************************************************************
-*
-*       Static data
-*
-**********************************************************************
-*/
 
-// USER START (Optionally insert additional static data)
-// USER END
+
+
+/*
+*********************************************************************************************************
+*	函 数 名: Caculate_RTC
+*	功能说明: 显示RTC时间   未使用
+*	形    参: pMsg 指针参数            
+*	返 回 值: 无
+*********************************************************************************************************
+*/
+//extern RTC_TimeTypeDef  RTC_TimeStructure;
+//extern RTC_DateTypeDef  RTC_DateStructure;
+static void Caculate_RTC(WM_MESSAGE * pMsg)
+{
+	  char buf[30];
+	  WM_HWIN hWin = pMsg->hWin;
+      
+	 RTC_TimeTypeDef  RTC_TimeStructure;
+     RTC_DateTypeDef  RTC_DateStructure;
+	
+	  RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
+	  RTC_GetDate(RTC_Format_BIN, &RTC_DateStructure);
+
+	  sprintf(buf, 
+	          "%d:%d:%d", 
+			  RTC_TimeStructure.RTC_Hours, 
+			  RTC_TimeStructure.RTC_Minutes,
+			  RTC_TimeStructure.RTC_Seconds);
+	 TEXT_SetText(WM_GetDialogItem(hWin,ID_TEXT_6), buf);
+ 
+	  sprintf(buf, 
+	          "20%d/%d/%d", 
+			  RTC_DateStructure.RTC_Year, 
+			  RTC_DateStructure.RTC_Month, 
+			  RTC_DateStructure.RTC_Date);
+	  TEXT_SetText(WM_GetDialogItem(hWin,ID_TEXT_7), buf); 			  	          
+}
 
 /*********************************************************************
 *
@@ -150,21 +184,178 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate[] = {
 */
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate2[] = {
   { WINDOW_CreateIndirect, "Window", ID_WINDOW_1, 0, 0, 480, 272, 0, 0x0, 0 },
-  { TEXT_CreateIndirect, "Text", ID_TEXT_5, 300,7,120,19, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_5, 180,7,120,19, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_6, 380,7,120,19, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "Text", ID_TEXT_7, 300,7,120,19, 0, 0x0, 0 },
 };
 
 /*********************************************************************
 *
-*       Static code
-*
-**********************************************************************
+*       _aDialogCreate3
 */
 
-// USER START (Optionally insert additional static code)
-// USER END
+
+static const GUI_WIDGET_CREATE_INFO _aDialogCreate3[] = {
+    { FRAMEWIN_CreateIndirect,  "Caption",           0,                       0,  0,  480,272,0,0},
+    { TEXT_CreateIndirect,    "It designed by QianLihao",           GUI_ID_TEXT0,          115,143,248,32, 0,0}
+};
+/*********************************************************************
+*
+*       _aDialogCreate4
+*/
+
+
+static const GUI_WIDGET_CREATE_INFO _aDialogCreate4[] = {
+    { FRAMEWIN_CreateIndirect,  "Caption",           0,                       0,  0,  480,272,0,0},
+      { TEXT_CreateIndirect, "TALK Mode", GUI_ID_TEXT0, 27, 24, 39, 19, 0, 0x0, 0 },
+	  { BUTTON_CreateIndirect, "OK", GUI_ID_BUTTON0, 181, 178, 80, 20, 0, 0x0, 0 },
+	  { TEXT_CreateIndirect, "Program", GUI_ID_TEXT1, 223, 27, 80, 20, 0, 0x0, 0 },
+	  { CHECKBOX_CreateIndirect, "CheckPeople", GUI_ID_CHECK0, 278, 24, 97, 20, 0, 0x0, 0 },
+	  { CHECKBOX_CreateIndirect, "Power", GUI_ID_CHECK1, 278, 57, 80, 20, 0, 0x0, 0 },
+	  { CHECKBOX_CreateIndirect, "Light", GUI_ID_CHECK2, 278, 90, 80, 20, 0, 0x0, 0 },
+	  { DROPDOWN_CreateIndirect, "Dropdown", ID_DROPDOWN_0, 67, 23, 80, 18, 0, 0x0, 0 },
+	  { TEXT_CreateIndirect, "Volume", GUI_ID_TEXT3, 27, 96, 42, 18, 0, 0x0, 0 },
+      { SLIDER_CreateIndirect, "Slider", GUI_ID_SLIDER0, 69, 91, 80, 20, 0, 0x0, 0 },
+};
+
+
+/*
+*********************************************************************************************************
+*	函 数 名: _cbCallback1
+*	功能说明: 回调函数
+*	形    参: pMsg 指针参数            
+*	返 回 值: 无
+*********************************************************************************************************
+*/
+static void _cbCallback1(WM_MESSAGE * pMsg) 
+{
+    int NCode, Id;
+    WM_HWIN hWin = pMsg->hWin;
+	
+    switch (pMsg->MsgId) 
+    {
+        case WM_INIT_DIALOG:
+			
+			//
+			//初始化框架窗口
+			//
+			FRAMEWIN_SetFont(hWin,GUI_FONT_20B_ASCII);
+			FRAMEWIN_SetText(hWin, _aBitmapItem[s_ucSelIconIndex].pText);
+			FRAMEWIN_SetTextAlign(hWin,GUI_TA_VCENTER|GUI_TA_CENTER);
+			FRAMEWIN_AddCloseButton(hWin, FRAMEWIN_BUTTON_RIGHT, 0);
+			FRAMEWIN_SetTitleHeight(hWin, 36);
+            break;
+		
+        case WM_KEY:
+            switch (((WM_KEY_INFO*)(pMsg->Data.p))->Key) 
+            {
+                case GUI_KEY_ESCAPE:
+                    GUI_EndDialog(hWin, 1);
+                    break;
+				
+                case GUI_KEY_ENTER:
+                    GUI_EndDialog(hWin, 0);
+                    break;
+            }
+            break;
+			
+        case WM_NOTIFY_PARENT:
+            Id = WM_GetId(pMsg->hWinSrc); 
+            NCode = pMsg->Data.v;        
+            switch (Id) 
+            {
+                case GUI_ID_OK:
+                    if(NCode==WM_NOTIFICATION_RELEASED)
+					{
+						GUI_EndDialog(hWin, 0);					
+					}
+                    break;
+					
+                case GUI_ID_CANCEL:
+                    if(NCode==WM_NOTIFICATION_RELEASED)
+					{
+						GUI_EndDialog(hWin, 0);	
+					}
+                    break;
+
+            }
+            break;
+			
+        default:
+            WM_DefaultProc(pMsg);
+    }
+}
 
 
 
+
+/*
+*********************************************************************************************************
+*	函 数 名: _cbCallback2
+*	功能说明: 回调函数
+*	形    参: pMsg 指针参数            
+*	返 回 值: 无
+*********************************************************************************************************
+*/
+static void _cbCallback2(WM_MESSAGE * pMsg) 
+{
+    int NCode, Id;
+    WM_HWIN hWin = pMsg->hWin;
+	
+    switch (pMsg->MsgId) 
+    {
+        case WM_INIT_DIALOG:
+			
+			//
+			//初始化框架窗口
+			//
+			FRAMEWIN_SetFont(hWin,GUI_FONT_20B_ASCII);
+			FRAMEWIN_SetText(hWin, _aBitmapItem[s_ucSelIconIndex].pText);
+			FRAMEWIN_SetTextAlign(hWin,GUI_TA_VCENTER|GUI_TA_CENTER);
+		
+			FRAMEWIN_AddCloseButton(hWin, FRAMEWIN_BUTTON_RIGHT, 0);
+			FRAMEWIN_SetTitleHeight(hWin, 36);
+            break;
+		
+        case WM_KEY:
+            switch (((WM_KEY_INFO*)(pMsg->Data.p))->Key) 
+            {
+                case GUI_KEY_ESCAPE:
+                    GUI_EndDialog(hWin, 1);
+                    break;
+				
+                case GUI_KEY_ENTER:
+                    GUI_EndDialog(hWin, 0);
+                    break;
+            }
+            break;
+			
+        case WM_NOTIFY_PARENT:
+            Id = WM_GetId(pMsg->hWinSrc); 
+            NCode = pMsg->Data.v;        
+            switch (Id) 
+            {
+                case GUI_ID_OK:
+                    if(NCode==WM_NOTIFICATION_RELEASED)
+					{
+						GUI_EndDialog(hWin, 0);					
+					}
+                    break;
+					
+                case GUI_ID_CANCEL:
+                    if(NCode==WM_NOTIFICATION_RELEASED)
+					{
+						GUI_EndDialog(hWin, 0);	
+					}
+                    break;
+
+            }
+            break;
+			
+        default:
+            WM_DefaultProc(pMsg);
+    }
+}
 
 /*
 *********************************************************************************************************
@@ -179,7 +370,7 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 	WM_HWIN hItem;
 	WM_MESSAGE pMsgInfo;
 	int NCode, Id;
-
+     OS_ERR      err;
 	switch (pMsg->MsgId) 
 	{
 		case WM_PAINT:
@@ -192,21 +383,21 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 			hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_5);
 			TEXT_SetTextColor(hItem, GUI_WHITE);
 			TEXT_SetFont(hItem, GUI_FONT_20B_ASCII);
-			TEXT_SetText(hItem, "System Set Mode");
+			TEXT_SetText(hItem, "System Set");
 
-//			hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_9);
-//			TEXT_SetFont(hItem, GUI_FONT_16B_ASCII);
-//			TEXT_SetTextColor(hItem, 0x00FFFFFF);
-//			TEXT_SetText(hItem, "2014-06-17");
-//			
-//			hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_10);
-//			TEXT_SetFont(hItem, GUI_FONT_16B_ASCII);
-//			TEXT_SetTextColor(hItem, 0x00FFFFFF);
-//			TEXT_SetText(hItem, "00:00:00");
+			hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_6);
+			TEXT_SetFont(hItem, GUI_FONT_16B_ASCII);
+			TEXT_SetTextColor(hItem, 0x00FFFFFF);
+			TEXT_SetText(hItem, "2014-06-17");
+			
+			hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_7);
+			TEXT_SetFont(hItem, GUI_FONT_16B_ASCII);
+			TEXT_SetTextColor(hItem, 0x00FFFFFF);
+			TEXT_SetText(hItem, "00:00:00");
 			break;
 			
 		case WM_TIMER:
-		
+		     Caculate_RTC(pMsg);
 			/* 重启定时器 */
 			WM_RestartTimer(pMsg->Data.v, 1000);
 			break;
@@ -244,57 +435,57 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 						case  WM_NOTIFICATION_RELEASED:
 							
 							s_ucSelIconIndex  = ICONVIEW_GetSel(pMsg->hWinSrc);
-						
+						Debug_printf("data1:%d",s_ucSelIconIndex);	
+						    Debug_printf("data:%d",ICONVIEW_GetSel(pMsg->hWinSrc));	
 							switch( ICONVIEW_GetSel(pMsg->hWinSrc))
 							{
-								/* 视频监控 */
+								/* 闹钟设置 */
 								case 0:
 //									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
 								    break;	
 								
-								/* 灯光控制 */
+								/* 音乐 */
 								case 1:
 //									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
 									break;	
 								
-								/* 智能门窗 */
+								/*  */
 								case 2:
 //									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
 								    break;	
 								
-								/* 电器控制 */
+								/*  */
 								case 3:
 //									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
 								    break;
 								
-								/* 信息查询 */
+								/*  */
 								case 4:
 //									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
 								    break;	
 								
-								/* 安防报警 */
+								/* 文件 */
 								case 5:
 //									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
 								    break;	
 								
-								/* 背景音乐 */
+								/* 设置 */
 								case 6:
-//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+									hWinInfo = GUI_CreateDialogBox(_aDialogCreate4, GUI_COUNTOF(_aDialogCreate4), &_cbCallback2, 0, 0, 0);				
 								    break;	
 								
-								/* 情景模式 */
+								/* 关于 */
 								case 7:
-//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+									hWinInfo = GUI_CreateDialogBox(_aDialogCreate3, GUI_COUNTOF(_aDialogCreate3), &_cbCallback1, 0, 0, 0);	
+                                    	Debug_printf("data:%d",ICONVIEW_GetSel(pMsg->hWinSrc));							
 								    break;	
 								
-								/* 定时管理 */
+								/* 退出 */
 								case 8:
-//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
-								    break;
-								
-								/* 系统设置 */
-								case 9:
-//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+									GUI_EndDialog(hWinMain,0);
+									settime_mode = 0;
+								    Touch_TimeMode = 1 ;
+								    OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);
 								    break;
 								
 								default:
@@ -677,7 +868,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 
 /*********************************************************************
 *
-*       CreateFramewin
+*       CreateWindow2
 */
 WM_HWIN CreateWindow2(void);
 WM_HWIN CreateWindow2(void) {
@@ -696,18 +887,18 @@ WM_HWIN CreateWindow2(void) {
 void  MainWindow(void){
 
 	 u8 i;
-     hWin2 = CreateWindow2();
+     hWinMain = CreateWindow2();
 	/*在指定位置创建指定尺寸的ICONVIEW 小工具*/
-	hWinICON = ICONVIEW_CreateEx(150, 						/* 小工具的最左像素（在父坐标中）*/
+	hWinICON = ICONVIEW_CreateEx(20, 						/* 小工具的最左像素（在父坐标中）*/
 						     60, 							/* 小工具的最上像素（在父坐标中）*/
-							 500,    						/* 小工具的水平尺寸（单位：像素）*/
+							 460,    						/* 小工具的水平尺寸（单位：像素）*/
 							 230, 							/* 小工具的垂直尺寸（单位：像素）*/
 	                         hWinMain, 				        /* 父窗口的句柄。如果为0 ，则新小工具将成为桌面（顶级窗口）的子窗口 */
 							 WM_CF_SHOW | WM_CF_HASTRANS,   /* 窗口创建标记。为使小工具立即可见，通常使用 WM_CF_SHOW */ 
 	                         0,//ICONVIEW_CF_AUTOSCROLLBAR_V, 	/* 默认是0，如果不够现实可设置增减垂直滚动条 */
 							 GUI_ID_ICONVIEW0, 			        /* 小工具的窗口ID */
-							 90, 				    			/* 图标的水平尺寸 */
-							 90);	
+							 60, 				    			/* 图标的水平尺寸 */
+							 60);	
 	
 	/* 向ICONVIEW 小工具添加新图标 */
 	for (i = 0; i < GUI_COUNTOF(_aBitmapItem); i++) 
@@ -729,6 +920,8 @@ void  MainWindow(void){
 				   ID_TimerTime, 	             /* 用户定义的Id。如果不对同一窗口使用多个定时器，此值可以设置为零。 */
 				   20,                           /* 周期，此周期过后指定窗口应收到消息*/
 				   0);	                         /* 留待将来使用，应为0 */
+	
+	settime_mode = 0;
 	
 }
 
@@ -774,9 +967,19 @@ void MainTask(void) {
 	
 	while (1) {
 //		Debug_printf("stop?\n");
-		if(settime_mode)
-			MainWindow();
-//			hWin2 = CreateWindow();
+		switch(settime_mode)
+		{
+			case 1:			
+			{
+				hWin2 = CreateWindow();
+			}break;
+			case 2:
+			{
+		        MainWindow();
+			}break;
+			default:
+				break;
+		}
 		GUI_Delay(10);
 	}
 }

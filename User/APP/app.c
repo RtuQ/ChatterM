@@ -333,19 +333,19 @@ static  void  AppTaskStart (void *p_arg)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
-//	OSTaskCreate((OS_TCB     *)&AppTaskCheckPeopleTCB,                /* Create the CheckPeople task                                */
-//                 (CPU_CHAR   *)"App Task CheckPeople",
-//                 (OS_TASK_PTR ) AppTaskCheckPeople,
-//                 (void       *) 0,
-//                 (OS_PRIO     ) APP_TASK_CheckPeople_PRIO,
-//                 (CPU_STK    *)&AppTaskCheckPeopleStk[0],
-//                 (CPU_STK_SIZE) APP_TASK_CheckPeople_STK_SIZE / 10,
-//                 (CPU_STK_SIZE) APP_TASK_CheckPeople_STK_SIZE,
-//                 (OS_MSG_QTY  ) 5u,
-//                 (OS_TICK     ) 0u,
-//                 (void       *) 0,
-//                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
-//                 (OS_ERR     *)&err);
+	OSTaskCreate((OS_TCB     *)&AppTaskCheckPeopleTCB,                /* Create the CheckPeople task                                */
+                 (CPU_CHAR   *)"App Task CheckPeople",
+                 (OS_TASK_PTR ) AppTaskCheckPeople,
+                 (void       *) 0,
+                 (OS_PRIO     ) APP_TASK_CheckPeople_PRIO,
+                 (CPU_STK    *)&AppTaskCheckPeopleStk[0],
+                 (CPU_STK_SIZE) APP_TASK_CheckPeople_STK_SIZE / 10,
+                 (CPU_STK_SIZE) APP_TASK_CheckPeople_STK_SIZE,
+                 (OS_MSG_QTY  ) 5u,
+                 (OS_TICK     ) 0u,
+                 (void       *) 0,
+                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+                 (OS_ERR     *)&err);
     OSTaskCreate((OS_TCB     *)&AppTaskTouchScanTCB,                /* Create the TouchScan task                                */
                  (CPU_CHAR   *)"App Task TouchScan",
                  (OS_TASK_PTR ) AppTaskTouchScan,
@@ -403,6 +403,7 @@ static  void  AppTaskStart (void *p_arg)
 #endif				 
 		OSTaskSuspend((OS_TCB *)&AppTaskTouchScanTCB,&err);               //挂起画板任务
 		OSTaskSuspend((OS_TCB *)&AppTaskWindowTCB,&err);               //挂起画板任务
+		OSTaskSuspend((OS_TCB *)&AppTaskCheckPeopleTCB,&err); 		   //有点烦 调试挂起；使用时注释：待优化
 		OSTaskDel ( & AppTaskStartTCB, & err );                           //删除启动任务
         OS_CRITICAL_EXIT();	                                              //退出临界
 		
@@ -799,7 +800,7 @@ static  void  AppTasktalk ( void * p_arg )
 							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
 							
 							Touch_TimeMode = 0;
-							settime_mode = 1;
+							settime_mode = 2;
 							OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
 						}break;
 			
@@ -1038,6 +1039,7 @@ static void  AppTaskTouch (void *p_arg)
 	OS_ERR err;
      u8 touch_time = 0;
 	 u8 do_Mode = 1;
+	 u8 It_Setting = 1;
 	(void)p_arg;
 	while(DEF_TRUE)
 	{
@@ -1047,7 +1049,16 @@ static void  AppTaskTouch (void *p_arg)
 			{
 				Debug_printf("touch\n");
 				touch_time ++;
-	
+			}
+			if(touch_time >=3&&It_Setting == 0)
+			{
+				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
+				OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+				settime_mode = 2;
+				It_Setting = 1;
+				Touch_TimeMode = 0;
+				OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
+				
 			}
 		    if(touch_time >=8&&do_Mode == 1)
 			{
@@ -1068,10 +1079,11 @@ static void  AppTaskTouch (void *p_arg)
 				_ShowGIF2("0:yaoren.gif",1,2,3);
 				touch_time =0;
 				do_Mode = 1;
-				
+				It_Setting = 0;
 				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
 				OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
 			}
+			
 			
 			OSTimeDlyHMSM(0,0,0,480,OS_OPT_TIME_DLY,&err);
 		}

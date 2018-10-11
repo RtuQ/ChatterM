@@ -282,6 +282,7 @@ void  BSP_Init (void)
 	RNG_Config();
 	
 	RTC_CLK_Config();
+	RTC_TimeAndDate_Set(8,20,18,10,8);
 	
 	i2c_CfgGpio();
     bsp_DelayMS(200);
