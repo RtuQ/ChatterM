@@ -838,7 +838,7 @@ static  void  AppTaskLed3 ( void * p_arg )
    (void)p_arg;
 
 
-    while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
+    while (DEF_TRUE) {                                          
 		if(DHT22_Read_Data(&tem,&hum) == 0)
 								{
 									tem = tem/10;
@@ -908,7 +908,7 @@ static void  AppTaskLight  ( void * p_arg )
 		
 		    Debug_printf("\r\n The current Light_ADC_Vol value = %f V \r\n",Light_ADC_Vol); 
 		 
-			if(Light_ADC_Vol > 2.7&&Light_Mode == 0)
+			if((double)Light_ADC_Vol > 2.7&&Light_Mode == 0)
 			{
 				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
 				OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
@@ -923,12 +923,11 @@ static void  AppTaskLight  ( void * p_arg )
 				
 				Light_Mode = 1;                                //亮度变化只提醒一遍，状态改变后再提醒
 			}
-			if (Light_ADC_Vol < 2.7&&Light_Mode == 1)
+			if ((double)Light_ADC_Vol < 2.7&&Light_Mode == 1)
 			{
 				Light_Mode = 0;
 			}
 			
-	        
 		    OSTimeDlyHMSM(0,0,2,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
 		    
 	}
@@ -944,7 +943,7 @@ static void  AppTaskCheckPeople  ( void * p_arg )
 	OS_ERR err;
 	 	 
     u8 Mode = 0;
-	u8 Last_Mode = 0;
+	u8 Last_Mode = 0;                 //模块可能连续两次高电平，此为了消除干扰
 	(void)p_arg;
 	while (DEF_TRUE){
       	    
@@ -1037,9 +1036,9 @@ static void  AppTaskTouchScan (void *p_arg)
 static void  AppTaskTouch (void *p_arg)
 {
 	OS_ERR err;
-     u8 touch_time = 0;
-	 u8 do_Mode = 1;
-	 u8 It_Setting = 1;
+     u8 touch_time = 0;               //记录触摸次数
+	 u8 do_Mode = 1;                  //用于延时退出 touch_time清零
+	 u8 It_Setting = 10;              //设定等待时长
 	(void)p_arg;
 	while(DEF_TRUE)
 	{
@@ -1050,46 +1049,67 @@ static void  AppTaskTouch (void *p_arg)
 				Debug_printf("touch\n");
 				touch_time ++;
 			}
-			if(touch_time >=3&&It_Setting == 0)
-			{
-				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
-				OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
-				settime_mode = 2;
-				It_Setting = 1;
-				Touch_TimeMode = 0;
-				OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
-				
-			}
-		    if(touch_time >=8&&do_Mode == 1)
-			{
-				printf("@TextToSpeech#好痒啊,别摸我了$");
-				do_Mode = 0;
-			}
-			if(touch_time >=16&&do_Mode == 0)
-			{
-				printf("@TextToSpeech#再来，我要咬你了$");
-				
-				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
-				OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
-				
-//				GUI_SelectLayer(1);
-				GUI_SetBkColor(GUI_BLACK);
-				GUI_Clear();
-				OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
-				_ShowGIF2("0:yaoren.gif",1,2,3);
-				touch_time =0;
-				do_Mode = 1;
-				It_Setting = 0;
-				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
-				OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
-			}
 			
-			
-			OSTimeDlyHMSM(0,0,0,480,OS_OPT_TIME_DLY,&err);
+			switch(touch_time)
+			{
+				case 8:
+					printf("@TextToSpeech#好痒啊,别摸我了$");
+				    touch_time = 0;
+				    while(It_Setting)
+					{
+						It_Setting--;
+						if(tp_dev.scan(0)==1)
+						{
+							touch_time++;
+						}
+						if(touch_time >=3)
+						{
+							printf("@TextToSpeech#再来，我要咬你了$");
+				
+							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+							OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
+							
+							GUI_SetBkColor(GUI_BLACK);
+							GUI_Clear();
+							OSTimeDly ( 50, OS_OPT_TIME_DLY, & err );
+							_ShowGIF2("0:yaoren.gif",1,2,3);
+						
+							OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
+							OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
+							
+							It_Setting = 0;
+							touch_time = 10;
+							do_Mode = 0;
+						}
+						else
+						OSTimeDlyHMSM(0,0,0,150,OS_OPT_TIME_DLY,&err);
+					}
+					if(do_Mode)
+					{
+						touch_time = 0;
+                        						
+					}
+					else do_Mode = 1;
+				    break;
+				case 15:
+						OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
+						OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+						settime_mode = 2;
+						Touch_TimeMode = 0;
+						touch_time = 0;
+						OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
+				    break;
+				default:
+					break;
+					
+			}
+			if(touch_time >15)   touch_time = 0;                         //防止出错
+			OSTimeDlyHMSM(0,0,0,300,OS_OPT_TIME_DLY,&err);
 		}
-		else
+		/*            Touch_TimeMode = 0 就提供坐标给GUI                  */
+		else                                            
         {
-			GUI_TOUCH_Exec();                             // 刷新坐标
+			GUI_TOUCH_Exec();                             // EMWIN刷新坐标函数
 			OSTimeDlyHMSM(0,0,0,10,OS_OPT_TIME_DLY,&err);
 		}
 	}
@@ -1100,7 +1120,7 @@ static void  AppTaskTouch (void *p_arg)
 
 /*
 *********************************************************************************************************
-*                                         窗口 TASK
+*                                         GUI TASK
 *********************************************************************************************************
 */
 
@@ -1110,7 +1130,7 @@ static void  AppTaskWindow (void *p_arg)
 	(void)p_arg;
 	while(DEF_TRUE)
 	{
-           Debug_printf("hello\n");
+            Debug_printf("hello\n");
 			MainTask();
 		    OSTimeDlyHMSM(0,0,0,450,OS_OPT_TIME_DLY,&err);
 			

@@ -213,7 +213,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate4[] = {
 	  { CHECKBOX_CreateIndirect, "CheckPeople", GUI_ID_CHECK0, 278, 24, 97, 20, 0, 0x0, 0 },
 	  { CHECKBOX_CreateIndirect, "Power", GUI_ID_CHECK1, 278, 57, 80, 20, 0, 0x0, 0 },
 	  { CHECKBOX_CreateIndirect, "Light", GUI_ID_CHECK2, 278, 90, 80, 20, 0, 0x0, 0 },
-	  { DROPDOWN_CreateIndirect, "Dropdown", ID_DROPDOWN_0, 67, 23, 80, 18, 0, 0x0, 0 },
+	  { DROPDOWN_CreateIndirect, "Dropdown", GUI_ID_DROPDOWN0, 67, 23, 80, 18, 0, 0x0, 0 },
 	  { TEXT_CreateIndirect, "Volume", GUI_ID_TEXT3, 27, 96, 42, 18, 0, 0x0, 0 },
       { SLIDER_CreateIndirect, "Slider", GUI_ID_SLIDER0, 69, 91, 80, 20, 0, 0x0, 0 },
 };
@@ -236,9 +236,9 @@ static void _cbCallback1(WM_MESSAGE * pMsg)
     {
         case WM_INIT_DIALOG:
 			
-			//
-			//初始化框架窗口
-			//
+			/*
+			*    初始化框架窗口
+		    */
 			FRAMEWIN_SetFont(hWin,GUI_FONT_20B_ASCII);
 			FRAMEWIN_SetText(hWin, _aBitmapItem[s_ucSelIconIndex].pText);
 			FRAMEWIN_SetTextAlign(hWin,GUI_TA_VCENTER|GUI_TA_CENTER);
@@ -299,22 +299,55 @@ static void _cbCallback1(WM_MESSAGE * pMsg)
 */
 static void _cbCallback2(WM_MESSAGE * pMsg) 
 {
+	WM_HWIN hItem;
     int NCode, Id;
+	int volume,list_value;
+	u8 light = 1,check = 1,power = 1;
     WM_HWIN hWin = pMsg->hWin;
 	
     switch (pMsg->MsgId) 
     {
         case WM_INIT_DIALOG:
 			
-			//
-			//初始化框架窗口
-			//
+			/*
+			*    初始化框架窗口
+		    */
 			FRAMEWIN_SetFont(hWin,GUI_FONT_20B_ASCII);
 			FRAMEWIN_SetText(hWin, _aBitmapItem[s_ucSelIconIndex].pText);
 			FRAMEWIN_SetTextAlign(hWin,GUI_TA_VCENTER|GUI_TA_CENTER);
 		
 			FRAMEWIN_AddCloseButton(hWin, FRAMEWIN_BUTTON_RIGHT, 0);
 			FRAMEWIN_SetTitleHeight(hWin, 36);
+		
+		    hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_DROPDOWN0);
+			DROPDOWN_SetFont(hItem, GUI_FONT_16B_ASCII);
+			DROPDOWN_AddString(hItem, "Chat");
+			DROPDOWN_AddString(hItem, "Housekeeper");
+		   
+		    DROPDOWN_SetAutoScroll(hItem, 1);
+			DROPDOWN_SetListHeight(hItem, 80);
+			DROPDOWN_SetScrollbarWidth(hItem, 30);
+		
+		    hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_CHECK0);
+			CHECKBOX_SetText(hItem,"Light");
+			CHECKBOX_SetFont(hItem,GUI_FONT_16B_ASCII);
+			CHECKBOX_Check(hItem);
+			
+			 hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_CHECK1);
+			CHECKBOX_SetText(hItem,"CheckPeople");
+			CHECKBOX_SetFont(hItem,GUI_FONT_16B_ASCII);
+			CHECKBOX_Check(hItem);
+			
+			 hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_CHECK2);
+			CHECKBOX_SetText(hItem,"Power");
+			CHECKBOX_SetFont(hItem,GUI_FONT_16B_ASCII);
+			CHECKBOX_Check(hItem);
+			
+			hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_SLIDER0);
+			SLIDER_SetNumTicks(hItem,10);                 //十级音量控制
+			SLIDER_SetRange(hItem,0,9);
+			
+		   
             break;
 		
         case WM_KEY:
@@ -348,6 +381,75 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 						GUI_EndDialog(hWin, 0);	
 					}
                     break;
+					
+				case GUI_ID_SLIDER0:
+					switch(NCode)
+					{
+						case WM_NOTIFICATION_CLICKED:
+							break;
+						case WM_NOTIFICATION_RELEASED:
+						    break;
+						case WM_NOTIFICATION_VALUE_CHANGED:
+							hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_SLIDER0);
+						    volume = SLIDER_GetValue(hItem);
+							break;
+					}
+				case GUI_ID_CHECK0:
+					switch(NCode)
+					{
+						case WM_NOTIFICATION_CLICKED:
+							break;
+						case WM_NOTIFICATION_RELEASED:
+						    break;
+						case WM_NOTIFICATION_VALUE_CHANGED:
+							light = ~light;	
+							break;
+					}
+				case GUI_ID_CHECK1:
+					switch(NCode)
+					{
+						case WM_NOTIFICATION_CLICKED:
+							break;
+						case WM_NOTIFICATION_RELEASED:
+						    break;
+						case WM_NOTIFICATION_VALUE_CHANGED:
+							check = ~check;	
+							break;
+					}
+				case GUI_ID_CHECK2:
+					switch(NCode)
+					{
+						case WM_NOTIFICATION_CLICKED:
+							break;
+						case WM_NOTIFICATION_RELEASED:
+						    break;
+						case WM_NOTIFICATION_VALUE_CHANGED:
+							power = ~power;	
+							break;
+					}
+				case GUI_ID_DROPDOWN0:
+					switch(NCode)
+					{
+						case WM_NOTIFICATION_CLICKED:
+							break;
+						case WM_NOTIFICATION_RELEASED:
+						    break;
+						case WM_NOTIFICATION_VALUE_CHANGED:
+							  hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_2);
+							  list_value =  DROPDOWN_GetSel(hItem);
+							break;
+					}
+				case GUI_ID_BUTTON0:
+					switch(NCode)
+					{
+						case WM_NOTIFICATION_CLICKED:
+							break;
+						case WM_NOTIFICATION_RELEASED:
+						    break;
+						case WM_NOTIFICATION_VALUE_CHANGED:
+							 //发送设置值给语音模块
+							break;
+					}
 
             }
             break;
@@ -368,9 +470,10 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 static void _cbDialog2(WM_MESSAGE * pMsg) 
 {
 	WM_HWIN hItem;
-	WM_MESSAGE pMsgInfo;
+//	WM_MESSAGE pMsgInfo;
 	int NCode, Id;
      OS_ERR      err;
+	
 	switch (pMsg->MsgId) 
 	{
 		case WM_PAINT:
@@ -795,8 +898,6 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 											  Debug_printf("mint:%d",Wset.hour);
 										}
         break;
-      // USER START (Optionally insert additional code for further notification handling)
-      // USER END
       }
       break;
     case ID_DROPDOWN_4: // Notifications sent by 'Dropdown'
@@ -817,8 +918,6 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 											  Debug_printf("mint:%d",Wset.mint);
 										}
         break;
-      // USER START (Optionally insert additional code for further notification handling)
-      // USER END
       }
       break;
     case ID_BUTTON_0: // Notifications sent by 'Button'
@@ -895,7 +994,7 @@ void  MainWindow(void){
 							 230, 							/* 小工具的垂直尺寸（单位：像素）*/
 	                         hWinMain, 				        /* 父窗口的句柄。如果为0 ，则新小工具将成为桌面（顶级窗口）的子窗口 */
 							 WM_CF_SHOW | WM_CF_HASTRANS,   /* 窗口创建标记。为使小工具立即可见，通常使用 WM_CF_SHOW */ 
-	                         0,//ICONVIEW_CF_AUTOSCROLLBAR_V, 	/* 默认是0，如果不够现实可设置增减垂直滚动条 */
+	                         0,//ICONVIEW_CF_AUTOSCROLLBAR_V	/* 默认是0，如果不够现实可设置增减垂直滚动条 */
 							 GUI_ID_ICONVIEW0, 			        /* 小工具的窗口ID */
 							 60, 				    			/* 图标的水平尺寸 */
 							 60);	
@@ -913,7 +1012,7 @@ void  MainWindow(void){
 	ICONVIEW_SetSpace(hWinICON, GUI_COORD_Y, 20);
 	ICONVIEW_SetSpace(hWinICON, GUI_COORD_X, 10);
 	
-	/* 设置对齐方式 在5.22版本中最新加入的 */
+	/* 设置对齐方式 */
 	ICONVIEW_SetIconAlign(hWinICON, ICONVIEW_IA_HCENTER|ICONVIEW_IA_TOP);
 	/* 定时消息传递Timer */
 	WM_CreateTimer(WM_GetClientWindow(hWinMain), /* 接受信息的窗口的句柄 */
