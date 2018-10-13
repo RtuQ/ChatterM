@@ -219,6 +219,53 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate4[] = {
 };
 
 
+static const GUI_WIDGET_CREATE_INFO _aDialogProgress[] = {
+  { FRAMEWIN_CreateIndirect, "In Progress...",  0,                 80,  80, 150,  60, 0 },
+  { PROGBAR_CreateIndirect,  0,                 GUI_ID_PROGBAR0,    9,   6, 120,  20, 0 },
+};
+
+
+
+
+
+/*********************************************************************
+*
+*       _cbDialogProgress
+*/
+static void _cbDialogProgress(WM_MESSAGE * pMsg) {
+  static int Progress;
+  WM_HWIN    hWin;
+  WM_HWIN    hItem;
+
+  hWin = pMsg->hWin;
+  switch (pMsg->MsgId) {
+  case WM_PAINT:
+    GUI_SetBkColor(GUI_WHITE);
+    GUI_Clear();
+    break;
+  case WM_TIMER:
+    if (Progress < 100) {
+      Progress += 2;
+      hItem = WM_GetDialogItem(hWin, GUI_ID_PROGBAR0);
+      PROGBAR_SetValue(hItem, Progress);
+      WM_RestartTimer(pMsg->Data.v, 20);
+    } else {
+      WM_DeleteTimer(pMsg->Data.v);
+      GUI_MEMDEV_FadeOutWindow(pMsg->hWin, 500);
+      GUI_EndDialog(pMsg->hWin, 0);
+    }
+    break;
+  case WM_INIT_DIALOG:
+    Progress = 0;
+    FRAMEWIN_SetMoveable(hWin, 1);
+    WM_CreateTimer(WM_GetClientWindow(hWin), 0, 200, 0);
+    break;
+  default:
+    WM_DefaultProc(pMsg);
+  }
+}
+
+
 /*
 *********************************************************************************************************
 *	函 数 名: _cbCallback1
@@ -264,19 +311,19 @@ static void _cbCallback1(WM_MESSAGE * pMsg)
             NCode = pMsg->Data.v;        
             switch (Id) 
             {
-                case GUI_ID_OK:
-                    if(NCode==WM_NOTIFICATION_RELEASED)
-					{
-						GUI_EndDialog(hWin, 0);					
-					}
-                    break;
-					
-                case GUI_ID_CANCEL:
-                    if(NCode==WM_NOTIFICATION_RELEASED)
-					{
-						GUI_EndDialog(hWin, 0);	
-					}
-                    break;
+//                case GUI_ID_OK:
+//                    if(NCode==WM_NOTIFICATION_RELEASED)
+//					{
+//						GUI_EndDialog(hWin, 0);					
+//					}
+//                    break;
+//					
+//                case GUI_ID_CANCEL:
+//                    if(NCode==WM_NOTIFICATION_RELEASED)
+//					{
+//						GUI_EndDialog(hWin, 0);	
+//					}
+//                    break;
 
             }
             break;
@@ -300,6 +347,7 @@ static void _cbCallback1(WM_MESSAGE * pMsg)
 static void _cbCallback2(WM_MESSAGE * pMsg) 
 {
 	WM_HWIN hItem;
+	WM_HWIN hProg;
     int NCode, Id;
 	int volume,list_value;
 	u8 light = 1,check = 1,power = 1;
@@ -443,12 +491,15 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 					switch(NCode)
 					{
 						case WM_NOTIFICATION_CLICKED:
+
 							break;
 						case WM_NOTIFICATION_RELEASED:
+						    hProg = GUI_CreateDialogBox(_aDialogProgress, GUI_COUNTOF(_aDialogProgress), &_cbDialogProgress, WM_HBKWIN, 0, 0); 
+							GUI_MEMDEV_FadeInWindow(hProg, 500);
+							WM_InvalidateWindow(hWin);
+							WM_MakeModal(hProg);
+							GUI_ExecCreatedDialog(hProg);
 						    break;
-						case WM_NOTIFICATION_VALUE_CHANGED:
-							 //发送设置值给语音模块
-							break;
 					}
 
             }
@@ -482,6 +533,13 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 			break;
 		
 		case WM_INIT_DIALOG:
+			
+		
+		    	/* 定时消息传递Timer */
+	WM_CreateTimer(WM_GetClientWindow(pMsg->hWin), /* 接受信息的窗口的句柄 */
+				   ID_TimerTime, 	             /* 用户定义的Id。如果不对同一窗口使用多个定时器，此值可以设置为零。 */
+				   20,                           /* 周期，此周期过后指定窗口应收到消息*/
+				   0);	                         /* 留待将来使用，应为0 */
 			/* 创建文本 */
 			hItem = WM_GetDialogItem(pMsg->hWin, ID_TEXT_5);
 			TEXT_SetTextColor(hItem, GUI_WHITE);
@@ -1014,11 +1072,6 @@ void  MainWindow(void){
 	
 	/* 设置对齐方式 */
 	ICONVIEW_SetIconAlign(hWinICON, ICONVIEW_IA_HCENTER|ICONVIEW_IA_TOP);
-	/* 定时消息传递Timer */
-	WM_CreateTimer(WM_GetClientWindow(hWinMain), /* 接受信息的窗口的句柄 */
-				   ID_TimerTime, 	             /* 用户定义的Id。如果不对同一窗口使用多个定时器，此值可以设置为零。 */
-				   20,                           /* 周期，此周期过后指定窗口应收到消息*/
-				   0);	                         /* 留待将来使用，应为0 */
 	
 	settime_mode = 0;
 	

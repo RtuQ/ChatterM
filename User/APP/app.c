@@ -58,13 +58,10 @@ uint8_t ucArray [ 70 ] [ 4 ];     //声明内存分区大小
 
 uint8_t Voice_Mode = 0;
 
+extern __IO uint16_t ADC_ConvertedValue[RHEOSTAT_NOFCHANEL];          // ADC1换的电压值通过MDA方式传到SRAM
 
-
-// ADC1换的电压值通过MDA方式传到SRAM
-extern __IO uint16_t ADC_ConvertedValue[RHEOSTAT_NOFCHANEL];
-
-u8 Touch_TimeMode = 1;
-u8 settime_mode  = 1;
+u8 Touch_TimeMode = 1;                          //1：触摸检测 0：反馈触摸值给·EMWIN
+u8 settime_mode  = 0;                          //1：设置时间  2：GUI设置
 
 #define People_Mode PGin(12)
 
@@ -800,7 +797,7 @@ static  void  AppTasktalk ( void * p_arg )
 							OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
 							
 							Touch_TimeMode = 0;
-							settime_mode = 2;
+							settime_mode = 1;
 							OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
 						}break;
 			
@@ -906,7 +903,7 @@ static void  AppTaskLight  ( void * p_arg )
       	    
 			Light_ADC_Vol =(float)ADC_ConvertedValue[1]/4096*(float)3.3;    // 读取转换的AD值
 		
-		    Debug_printf("\r\n The current Light_ADC_Vol value = %f V \r\n",Light_ADC_Vol); 
+//		    Debug_printf("\r\n The current Light_ADC_Vol value = %f V \r\n",Light_ADC_Vol); 
 		 
 			if((double)Light_ADC_Vol > 2.7&&Light_Mode == 0)
 			{
@@ -1038,7 +1035,7 @@ static void  AppTaskTouch (void *p_arg)
 	OS_ERR err;
      u8 touch_time = 0;               //记录触摸次数
 	 u8 do_Mode = 1;                  //用于延时退出 touch_time清零
-	 u8 It_Setting = 10;              //设定等待时长
+	 u8 It_Setting = 20;              //设定等待时长
 	(void)p_arg;
 	while(DEF_TRUE)
 	{
@@ -1046,7 +1043,7 @@ static void  AppTaskTouch (void *p_arg)
 		{
 			if(tp_dev.scan(0)==1)
 			{
-				Debug_printf("touch\n");
+//				Debug_printf("touch\n");
 				touch_time ++;
 			}
 			
@@ -1054,12 +1051,14 @@ static void  AppTaskTouch (void *p_arg)
 			{
 				case 8:
 					printf("@TextToSpeech#好痒啊,别摸我了$");
+				    OSTimeDlyHMSM(0,0,2,0,OS_OPT_TIME_DLY,&err);
 				    touch_time = 0;
 				    while(It_Setting)
 					{
 						It_Setting--;
 						if(tp_dev.scan(0)==1)
 						{
+							Debug_printf("touch！！！！！\n");
 							touch_time++;
 						}
 						if(touch_time >=3)
@@ -1084,6 +1083,7 @@ static void  AppTaskTouch (void *p_arg)
 						else
 						OSTimeDlyHMSM(0,0,0,150,OS_OPT_TIME_DLY,&err);
 					}
+					It_Setting = 20;
 					if(do_Mode)
 					{
 						touch_time = 0;
