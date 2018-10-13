@@ -451,7 +451,7 @@ static void AppTaskShowBQ (void * p_arg )
 					_ShowGIF2("0:xiaoji3.gif",2,1,5);
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					if(RandData2==2)	_ShowJPEG2("0:pc3.jpg",0,0);
 
 				}break;
 			  case 4:
@@ -463,7 +463,7 @@ static void AppTaskShowBQ (void * p_arg )
 					_ShowGIF2("0:xiaoji4.gif",2,1,5);
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					if(RandData2==2)	_ShowJPEG2("0:pc3.jpg",0,0);
 
 				}break;
 			  case 5:
@@ -475,7 +475,7 @@ static void AppTaskShowBQ (void * p_arg )
 					_ShowGIF2("0:xiaoji5.gif",2,1,5);
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					if(RandData2==2)	_ShowJPEG2("0:pc3.jpg",0,0);
 
 				}break;
 			  case 6:
@@ -487,7 +487,7 @@ static void AppTaskShowBQ (void * p_arg )
 					_ShowGIF2("0:xiaoji6.gif",2,1,5);
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					if(RandData2==2)	_ShowJPEG2("0:pc3.jpg",0,0);
 
 				}break;
 			  case 7:
@@ -499,7 +499,7 @@ static void AppTaskShowBQ (void * p_arg )
 					_ShowGIF2("0:xiaoji7.gif",2,1,5);
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					if(RandData2==2)	_ShowJPEG2("0:pc3.jpg",0,0);
 
 				}break;
 			  case 8:
@@ -511,7 +511,7 @@ static void AppTaskShowBQ (void * p_arg )
 					_ShowGIF2("0:xiaoji8.gif",2,1,5);
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					if(RandData2==2)	_ShowJPEG2("0:pc3.jpg",0,0);
 
 				}break;
 			  case 9:
@@ -523,7 +523,7 @@ static void AppTaskShowBQ (void * p_arg )
 					_ShowGIF2("0:xiaoji9.gif",2,1,5);
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					if(RandData2==2)	_ShowJPEG2("0:pc3.jpg",0,0);
 
 				}break;
 			  case 10:
@@ -535,7 +535,7 @@ static void AppTaskShowBQ (void * p_arg )
 					_ShowGIF2("0:xiaoji10.gif",2,1,5);
 					if(RandData2==0)	_ShowJPEG2("0:pc.jpg",0,0);
 					if(RandData2==1)	_ShowJPEG2("0:pc2.jpg",0,0);
-					else	_ShowJPEG2("0:pc3.jpg",0,0);
+					if(RandData2==2)	_ShowJPEG2("0:pc3.jpg",0,0);
 
 				}break;
 			}

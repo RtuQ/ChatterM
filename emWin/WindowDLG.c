@@ -374,7 +374,7 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 		   
 		    DROPDOWN_SetAutoScroll(hItem, 1);
 			DROPDOWN_SetListHeight(hItem, 80);
-			DROPDOWN_SetScrollbarWidth(hItem, 30);
+			DROPDOWN_SetScrollbarWidth(hItem, 100);
 		
 		    hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_CHECK0);
 			CHECKBOX_SetText(hItem,"Light");
@@ -441,7 +441,7 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 							hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_SLIDER0);
 						    volume = SLIDER_GetValue(hItem);
 							break;
-					}
+					}break;
 				case GUI_ID_CHECK0:
 					switch(NCode)
 					{
@@ -452,7 +452,7 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 						case WM_NOTIFICATION_VALUE_CHANGED:
 							light = ~light;	
 							break;
-					}
+					}break;
 				case GUI_ID_CHECK1:
 					switch(NCode)
 					{
@@ -463,7 +463,7 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 						case WM_NOTIFICATION_VALUE_CHANGED:
 							check = ~check;	
 							break;
-					}
+					}break;
 				case GUI_ID_CHECK2:
 					switch(NCode)
 					{
@@ -474,7 +474,7 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 						case WM_NOTIFICATION_VALUE_CHANGED:
 							power = ~power;	
 							break;
-					}
+					}break;
 				case GUI_ID_DROPDOWN0:
 					switch(NCode)
 					{
@@ -486,7 +486,7 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 							  hItem = WM_GetDialogItem(pMsg->hWin, ID_DROPDOWN_2);
 							  list_value =  DROPDOWN_GetSel(hItem);
 							break;
-					}
+					}break;
 				case GUI_ID_BUTTON0:
 					switch(NCode)
 					{
@@ -500,7 +500,7 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 							WM_MakeModal(hProg);
 							GUI_ExecCreatedDialog(hProg);
 						    break;
-					}
+					}break;
 
             }
             break;
