@@ -80,16 +80,16 @@
 #define	 APP_TASK_ShowBQ_STK_SIZE                   700u
 #define  APP_TASK_Power_STK_SIZE                    512u
 #define  APP_TASK_Light_STK_SIZE                    512u
-#define  APP_TASK_LED1_STK_SIZE                     128u
+#define  APP_TASK_LED1_STK_SIZE                     300u
 #define  APP_TASK_TALK_STK_SIZE                     700u
 #define  APP_TASK_LED3_STK_SIZE                     300u
-#define	 APP_TASK_CheckPeople_STK_SIZE              100u
+#define	 APP_TASK_CheckPeople_STK_SIZE              200u
 #define  APP_TASK_TouchScan_STK_SIZE                512u
 #define  APP_TASK_Touch_STK_SIZE                    512u
 #define  APP_TASK_Window_STK_SIZE                   512u
 
 #if SystemData == 1
-#define  SystemDatasBroadcast_STK_SIZE              100u
+#define  SystemDatasBroadcast_STK_SIZE              200u
 #endif
 
 

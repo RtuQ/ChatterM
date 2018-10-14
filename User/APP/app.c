@@ -566,13 +566,13 @@ static  void  AppTaskLed1 ( void * p_arg )
 				if(roll<0)
 				{
 					roll = roll*(-1);
-					Debug_printf("roll = -%d        pitch = %d          yaw = %d          \n",(int)(roll*100),(int)(pitch*100),(int)(yaw*10));
+//					Debug_printf("roll = -%d        pitch = %d          yaw = %d          \n",(int)(roll*100),(int)(pitch*100),(int)(yaw*10));
 				}
-				else
-					Debug_printf("roll = %d        pitch = %d          yaw = %d          \n",(int)(roll*100),(int)(pitch*100),(int)(yaw*10));
+//				else
+//					Debug_printf("roll = %d        pitch = %d          yaw = %d          \n",(int)(roll*100),(int)(pitch*100),(int)(yaw*10));
 			}
 //			RTC_TimeAndDate_Show();
-			OSTimeDly ( 2000, OS_OPT_TIME_DLY, & err );                                       
+			OSTimeDly (2000, OS_OPT_TIME_DLY, & err );                                       
     }
 }
 
@@ -613,14 +613,11 @@ static  void  AppTasktalk ( void * p_arg )
 		Voice_Mode = 1;
 		switch(* pMsg)
 		{
-			case 0x01:{
-						Debug_printf("你好\n");
-						OSTimeDly(2000,OS_OPT_TIME_DLY,&err);
-						printf("@TextToSpeech#有什么我能帮你的$");
-			          }break;
 			case 0x02:
                       {
 					    Debug_printf("你好\n");
+						  OSTimeDly(2000,OS_OPT_TIME_DLY,&err);
+						printf("@TextToSpeech#有什么我能帮你的$");
 						
 					  }break;
 			case 0x04:
@@ -939,7 +936,7 @@ static void  AppTaskCheckPeople  ( void * p_arg )
 {
 	OS_ERR err;
 	 	 
-    u8 Mode = 0;
+
 	u8 Last_Mode = 0;                 //模块可能连续两次高电平，此为了消除干扰
 	(void)p_arg;
 	while (DEF_TRUE){
@@ -948,25 +945,28 @@ static void  AppTaskCheckPeople  ( void * p_arg )
 				
 				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
 				OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
-				Mode = 1;
-				if(Last_Mode == 0)
-				{
+
+//				if(Last_Mode == 0)
+//				{
 					printf("@TextToSpeech#你好，有什么我可以帮你的吗？$");
 				    OSTimeDlyHMSM(0,0,5,0,OS_OPT_TIME_DLY,&err); 
-				}
-		        Last_Mode = ~Last_Mode;
-				Debug_printf("on\n");
-		    }
-			if(Mode == 1)
-			{
+//				}
+//		        Last_Mode = ~Last_Mode;
+				Debug_printf("People!!!!!!!!\n");
+				
 				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
 				OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
-				Mode = 0 ;
+				
 				OSTimeDlyHMSM(0,0,1,0,OS_OPT_TIME_DLY,&err); //检测到人后一段时间内不再检测 延时
-			}
-		    
+				while(People_Mode)
+				{
+					Debug_printf("Always People!!!!!!!!!!\n");
+					OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_DLY,&err); //检测到人后一段时间内不再检测 延时 
+				}    
 	}
+			OSTimeDlyHMSM(0,0,0,500,OS_OPT_TIME_DLY,&err);
 	
+}
 }
 
 /*

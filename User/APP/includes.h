@@ -31,7 +31,7 @@
 #define  INCLUDES_MODULES_PRESENT
 
 
-#define SystemData 0                                                         //系统检测任务 1 开启 0 关闭
+#define SystemData 1                                                         //系统检测任务 1 开启 0 关闭
 
 
 /*

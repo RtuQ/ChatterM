@@ -86,6 +86,10 @@ static const BITMAP_ITEM _aBitmapItem[] =
 	{&bmabout,    "About"},
 	{&bmundo,     "Back"},
 };
+
+
+int volume,list_value = 0;
+int last_data = 0;
 /*********************************************************************
 * 
 *                               Defines
@@ -207,13 +211,13 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate3[] = {
 
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate4[] = {
     { FRAMEWIN_CreateIndirect,  "Caption",           0,                       0,  0,  480,272,0,0},
-      { TEXT_CreateIndirect, "TALK Mode", GUI_ID_TEXT0, 27, 24, 39, 19, 0, 0x0, 0 },
+      { TEXT_CreateIndirect, "TALK", GUI_ID_TEXT0, 27, 24, 39, 19, 0, 0x0, 0 },
 	  { BUTTON_CreateIndirect, "OK", GUI_ID_BUTTON0, 181, 178, 80, 20, 0, 0x0, 0 },
 	  { TEXT_CreateIndirect, "Program", GUI_ID_TEXT1, 223, 27, 80, 20, 0, 0x0, 0 },
 	  { CHECKBOX_CreateIndirect, "CheckPeople", GUI_ID_CHECK0, 278, 24, 97, 20, 0, 0x0, 0 },
 	  { CHECKBOX_CreateIndirect, "Power", GUI_ID_CHECK1, 278, 57, 80, 20, 0, 0x0, 0 },
 	  { CHECKBOX_CreateIndirect, "Light", GUI_ID_CHECK2, 278, 90, 80, 20, 0, 0x0, 0 },
-	  { DROPDOWN_CreateIndirect, "Dropdown", GUI_ID_DROPDOWN0, 67, 23, 80, 18, 0, 0x0, 0 },
+	  { DROPDOWN_CreateIndirect, "Dropdown", GUI_ID_DROPDOWN0, 67, 23, 100, 18, 0, 0x0, 0 },
 	  { TEXT_CreateIndirect, "Volume", GUI_ID_TEXT3, 27, 96, 42, 18, 0, 0x0, 0 },
       { SLIDER_CreateIndirect, "Slider", GUI_ID_SLIDER0, 69, 91, 80, 20, 0, 0x0, 0 },
 };
@@ -236,7 +240,7 @@ static void _cbDialogProgress(WM_MESSAGE * pMsg) {
   static int Progress;
   WM_HWIN    hWin;
   WM_HWIN    hItem;
-
+  char ONE_BIT = 1;
   hWin = pMsg->hWin;
   switch (pMsg->MsgId) {
   case WM_PAINT:
@@ -246,10 +250,73 @@ static void _cbDialogProgress(WM_MESSAGE * pMsg) {
   case WM_TIMER:
     if (Progress < 100) {
       Progress += 2;
+
+		  if(Progress > 50&&ONE_BIT ==1)
+		  {
+			  	  if(list_value != last_data)
+				{
+					last_data  = list_value;
+				  ONE_BIT = 0;
+				  if(list_value == 0)
+					  printf("@AsrMode#1$");
+				  if(list_value == 1)
+					  printf("@AsrMode#3$");
+				  GUI_Delay (4000);
+			  }
+		  }
       hItem = WM_GetDialogItem(hWin, GUI_ID_PROGBAR0);
       PROGBAR_SetValue(hItem, Progress);
       WM_RestartTimer(pMsg->Data.v, 20);
     } else {
+	  ONE_BIT = 1;
+      WM_DeleteTimer(pMsg->Data.v);
+      GUI_MEMDEV_FadeOutWindow(pMsg->hWin, 500);
+      GUI_EndDialog(pMsg->hWin, 0);
+    }
+    break;
+  case WM_INIT_DIALOG:
+    Progress = 0;
+    FRAMEWIN_SetMoveable(hWin, 1);
+    WM_CreateTimer(WM_GetClientWindow(hWin), 0, 200, 0);
+    break;
+  default:
+    WM_DefaultProc(pMsg);
+  }
+}
+
+
+
+
+
+/*********************************************************************
+*
+*       _cbDialogProgress
+*/
+static void _cbDialogProgress1(WM_MESSAGE * pMsg) {
+  static int Progress;
+  WM_HWIN    hWin;
+  WM_HWIN    hItem;
+  char ONE_BIT = 1;
+  hWin = pMsg->hWin;
+  switch (pMsg->MsgId) {
+  case WM_PAINT:
+    GUI_SetBkColor(GUI_WHITE);
+    GUI_Clear();
+    break;
+  case WM_TIMER:
+    if (Progress < 100) {
+      Progress += 2;
+
+		  if(Progress > 50&&ONE_BIT ==1)
+		  {
+			 RTC_TimeAndDate_Set(Wset.hour,Wset.mint,Wset.year,Wset.month,Wset.day); 
+//			 RTC_TimeAndDate_Show();
+		  }
+      hItem = WM_GetDialogItem(hWin, GUI_ID_PROGBAR0);
+      PROGBAR_SetValue(hItem, Progress);
+      WM_RestartTimer(pMsg->Data.v, 20);
+    } else {
+	  ONE_BIT = 1;
       WM_DeleteTimer(pMsg->Data.v);
       GUI_MEMDEV_FadeOutWindow(pMsg->hWin, 500);
       GUI_EndDialog(pMsg->hWin, 0);
@@ -349,7 +416,6 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 	WM_HWIN hItem;
 	WM_HWIN hProg;
     int NCode, Id;
-	int volume,list_value;
 	u8 light = 1,check = 1,power = 1;
     WM_HWIN hWin = pMsg->hWin;
 	
@@ -374,7 +440,7 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
 		   
 		    DROPDOWN_SetAutoScroll(hItem, 1);
 			DROPDOWN_SetListHeight(hItem, 80);
-			DROPDOWN_SetScrollbarWidth(hItem, 100);
+			DROPDOWN_SetScrollbarWidth(hItem, 60);
 		
 		    hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_CHECK0);
 			CHECKBOX_SetText(hItem,"Light");
@@ -535,7 +601,7 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 		case WM_INIT_DIALOG:
 			
 		
-		    	/* 定时消息传递Timer */
+		   /* 定时消息传递Timer */
 	WM_CreateTimer(WM_GetClientWindow(pMsg->hWin), /* 接受信息的窗口的句柄 */
 				   ID_TimerTime, 	             /* 用户定义的Id。如果不对同一窗口使用多个定时器，此值可以设置为零。 */
 				   20,                           /* 周期，此周期过后指定窗口应收到消息*/
@@ -562,27 +628,6 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 			/* 重启定时器 */
 			WM_RestartTimer(pMsg->Data.v, 1000);
 			break;
-		
-//		/*  发送按下的消息 */
-//		case MSG_SetENTER:
-//			pMsgInfo.MsgId = WM_NOTIFY_PARENT;
-//			pMsgInfo.hWinSrc = hWinICON;
-//			pMsgInfo.Data.v = WM_NOTIFICATION_RELEASED;
-//			WM_SendMessage(pMsg->hWin, &pMsgInfo);	
-//			break;
-//		
-//		/*  设置ICON的聚焦 */
-//		case MSG_SetICONFocus:
-//			WM_SetFocus(hWinICON);
-//			break;
-//		
-//		/* 删除通过ICON创建的对话框 */
-//		case MSG_Delect:
-//			if(WM_IsWindow(hWinInfo))
-//			{
-//				WM_DeleteWindow(hWinInfo);			
-//			}
-//			break;
 			
 		case WM_NOTIFY_PARENT:
 			Id    = WM_GetId(pMsg->hWinSrc);     
@@ -669,6 +714,8 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 */
 static void _cbDialog(WM_MESSAGE * pMsg) {
   WM_HWIN hItem;
+  WM_HWIN hProg;
+   WM_HWIN hWin = pMsg->hWin;
   int     NCode;
   int     Id;
   int     list_value;
@@ -760,6 +807,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 	DROPDOWN_AddString(hItem, "10");
 	DROPDOWN_AddString(hItem, "11");
 	DROPDOWN_AddString(hItem, "12");
+	DROPDOWN_AddString(hItem, "13");
 	DROPDOWN_AddString(hItem, "14");
 	DROPDOWN_AddString(hItem, "15");
 	DROPDOWN_AddString(hItem, "16");
@@ -818,6 +866,7 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 	DROPDOWN_AddString(hItem, "10");
 	DROPDOWN_AddString(hItem, "11");
 	DROPDOWN_AddString(hItem, "12");
+	DROPDOWN_AddString(hItem, "13");
 	DROPDOWN_AddString(hItem, "14");
 	DROPDOWN_AddString(hItem, "15");
 	DROPDOWN_AddString(hItem, "16");
@@ -985,11 +1034,13 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
         // USER END
         break;
       case WM_NOTIFICATION_RELEASED:
-									  {
-										  RTC_TimeAndDate_Set(Wset.hour,Wset.mint,Wset.year,Wset.month,Wset.day);
-										  
-										  
-										  RTC_TimeAndDate_Show();
+	  {
+								
+										  hProg = GUI_CreateDialogBox(_aDialogProgress, GUI_COUNTOF(_aDialogProgress), &_cbDialogProgress1, WM_HBKWIN, 0, 0); 
+											GUI_MEMDEV_FadeInWindow(hProg, 500);
+											WM_InvalidateWindow(hWin);
+											WM_MakeModal(hProg);
+											GUI_ExecCreatedDialog(hProg);
 									  }
         break;
       // USER START (Optionally insert additional code for further notification handling)
