@@ -69,6 +69,7 @@ u8 settime_mode  = 0;                          //1：设置时间  2：GUI设置
 /*
 *********************************************************************************************************
 *                                                 TCB
+*                              因部分TCB需要外部调用，故没有设置static
 *********************************************************************************************************
 */
 
@@ -84,6 +85,7 @@ static  OS_TCB   AppTaskTouchScanTCB;
 static  OS_TCB   AppTaskTouchTCB; 
 static  OS_TCB   AppTaskLightTCB; 
         OS_TCB   AppTaskWindowTCB; 
+static  OS_TCB   AppTaskWhereTCB; 
 
 #if SystemData == 1                           //在includes.h中定义
 static  OS_TCB   SystemDatasBroadcast_TCB; 
@@ -107,6 +109,7 @@ static  CPU_STK  AppTaskCheckPeopleStk [ APP_TASK_CheckPeople_STK_SIZE ];
 static  CPU_STK  AppTaskTouchScanStk [APP_TASK_TouchScan_STK_SIZE];
 static  CPU_STK  AppTaskTouchStk [APP_TASK_Touch_STK_SIZE];
 static  CPU_STK  AppTaskWindowStk [APP_TASK_Window_STK_SIZE];
+static  CPU_STK  AppTaskWhereStk [APP_TASK_Where_STK_SIZE];
 
 #if SystemData == 1
 static  CPU_STK  SystemDatasBroadcast_STK [SystemDatasBroadcast_STK_SIZE];
@@ -129,6 +132,7 @@ static void  AppTaskTouchScan (void *p_arg);
 static void  AppTaskTouch (void *p_arg);
 static void  AppTaskLight (void *p_arg);
 static void  AppTaskWindow (void*p_arg);
+static void  AppTaskWhere (void*p_arg);
 
 #if SystemData == 1
 static void  SystemDatasBroadcast (void *p_arg);
@@ -383,6 +387,19 @@ static  void  AppTaskStart (void *p_arg)
                  (void       *) 0,
                  (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
                  (OS_ERR     *)&err);
+    OSTaskCreate((OS_TCB     *)&AppTaskWhereTCB,                /* Create the Window task                                */
+                 (CPU_CHAR   *)"App Task Where",
+                 (OS_TASK_PTR ) AppTaskWhere,
+                 (void       *) 0,
+                 (OS_PRIO     ) APP_TASK_Where_PRIO,
+                 (CPU_STK    *)&AppTaskWhereStk[0],
+                 (CPU_STK_SIZE) APP_TASK_Where_STK_SIZE / 10,
+                 (CPU_STK_SIZE) APP_TASK_Where_STK_SIZE,
+                 (OS_MSG_QTY  ) 5u,                                      //消息任务大小，需要时改
+                 (OS_TICK     ) 0u,
+                 (void       *) 0,
+                 (OS_OPT      )(OS_OPT_TASK_STK_CHK | OS_OPT_TASK_STK_CLR),
+                 (OS_ERR     *)&err);
 #if SystemData == 1
 	OSTaskCreate( (OS_TCB     *)&SystemDatasBroadcast_TCB,                 /* Create the SystemDatasBroadcast task       */
                 (CPU_CHAR   *)"SystemDatasBroadcast",
@@ -553,25 +570,12 @@ static void AppTaskShowBQ (void * p_arg )
 static  void  AppTaskLed1 ( void * p_arg )
 {
     OS_ERR      err;
-
-	float pitch,roll,yaw; 		//欧拉角
   
    (void)p_arg;
 		
     while (DEF_TRUE) {                                          /* Task body, always written as an infinite loop.       */
 			
 		    LED1_TOGGLE;
-		   while(mpu_dmp_get_data(&pitch,&roll,&yaw)!=0)
-			{ 
-				if(roll<0)
-				{
-					roll = roll*(-1);
-//					Debug_printf("roll = -%d        pitch = %d          yaw = %d          \n",(int)(roll*100),(int)(pitch*100),(int)(yaw*10));
-				}
-//				else
-//					Debug_printf("roll = %d        pitch = %d          yaw = %d          \n",(int)(roll*100),(int)(pitch*100),(int)(yaw*10));
-			}
-//			RTC_TimeAndDate_Show();
 			OSTimeDly (2000, OS_OPT_TIME_DLY, & err );                                       
     }
 }
@@ -1135,6 +1139,50 @@ static void  AppTaskWindow (void *p_arg)
 		    OSTimeDlyHMSM(0,0,0,450,OS_OPT_TIME_DLY,&err);
 			
     }
+}
+
+
+/*
+*********************************************************************************************************
+*                                          MPU6050 TASK
+*********************************************************************************************************
+*/
+
+static  void  AppTaskWhere ( void * p_arg )
+{
+    OS_ERR      err;
+
+	float pitch,roll,yaw; 		//欧拉角
+	int last_pitch;
+    int pitch_end;
+   (void)p_arg;
+		
+    while (DEF_TRUE) {                                          
+		
+		   while(mpu_dmp_get_data(&pitch,&roll,&yaw)!=0)
+			{ 
+				Debug_printf("pitch = %f   roll = %f      yaw = %f \n",pitch,roll,yaw);
+				last_pitch = (int)pitch*100;
+                pitch_end = pitch - last_pitch;
+				if(pitch >= 10|pitch <= -3 )
+				{
+						OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+						OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
+						OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
+						
+						printf("@TextToSpeech#头好晕，别摇了$");
+					    _ShowJPEG2("0:shui.jpg",0,0);
+						OSTimeDlyHMSM(0,0,10,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
+						
+						OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
+						OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
+						OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
+					
+				}  
+               OSTimeDly (2000, OS_OPT_TIME_DLY, & err );				
+			}
+}
+	
 }
 /*
 *********************************************************************************************************

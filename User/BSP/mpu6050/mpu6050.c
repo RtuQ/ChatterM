@@ -62,7 +62,7 @@ uint8_t MPU6050_ReadData(u8 reg_add)
 void MPU6050_Init(void)
 {
   	MPU6050_WriteReg(MPU6050_RA_PWR_MGMT_1,0X80);	//¸´Î»MPU6050
-    bsp_DelayMS(100);
+    bsp_DelayMS(200);
 	MPU6050_WriteReg(MPU6050_RA_PWR_MGMT_1, 0x00);	     //½â³ýÐÝÃß×´Ì¬
 	MPU_Set_Gyro_Fsr(3);
 	MPU_Set_Accel_Fsr(0);
