@@ -22,12 +22,21 @@ Dialog DLL:      DARMSTM.DLL V1.68.0.0
  
 <h2>Project:</h2>
 C:\Users\MSI\Desktop\智能语音表情\程序\Chatter\Project\RVMDK（uv5）\BH-F429.uvprojx
-Project File Date:  10/11/2018
+Project File Date:  10/21/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'SDRAM'
-"..\..\Output\SDRAM.axf" - 0 Error(s), 0 Warning(s).
+compiling app.c...
+..\..\User\APP\app.c(955): warning:  #177-D: variable "Last_Mode"  was declared but never referenced
+  	u8 Last_Mode = 0;                 //模块可能连续两次高电平，此为了消除干扰
+..\..\User\APP\app.c(1189): warning:  #550-D: variable "pitch_end"  was set but never used
+      int pitch_end;
+..\..\User\APP\app.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=189100 RO-data=342904 RW-data=2776 ZI-data=93424  
+FromELF: creating hex file...
+"..\..\Output\SDRAM.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -41,7 +50,7 @@ Package Vendor: Keil
   d:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:05
+Build Time Elapsed:  00:00:07
 </pre>
 </body>
 </html>

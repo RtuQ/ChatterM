@@ -1152,6 +1152,21 @@
               <FileType>1</FileType>
               <FilePath>..\..\emWin\undo.c</FilePath>
             </File>
+            <File>
+              <FileName>zd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\zd.c</FilePath>
+            </File>
+            <File>
+              <FileName>stop.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\stop.c</FilePath>
+            </File>
+            <File>
+              <FileName>begin.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\emWin\begin.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

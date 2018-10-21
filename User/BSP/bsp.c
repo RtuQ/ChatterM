@@ -277,12 +277,11 @@ void  BSP_Init (void)
 	
 	if(DHT_GPIO_Config() == 0)
 	Debug_printf("DHT22 OK!\n");
-	else Debug_printf("Have not find DHT22\n");
+	else Debug_printf("Not find DHT22\n");
     
 	RNG_Config();
 	
 	RTC_CLK_Config();
-	RTC_TimeAndDate_Set(8,20,18,10,8);
 	
 	i2c_CfgGpio();
     bsp_DelayMS(200);

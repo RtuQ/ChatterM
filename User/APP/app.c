@@ -418,6 +418,7 @@ static  void  AppTaskStart (void *p_arg)
 		OSTaskSuspend((OS_TCB *)&AppTaskTouchScanTCB,&err);               //挂起画板任务
 		OSTaskSuspend((OS_TCB *)&AppTaskWindowTCB,&err);               //挂起画板任务
 		OSTaskSuspend((OS_TCB *)&AppTaskCheckPeopleTCB,&err); 		   //有点烦 调试挂起；使用时注释：待优化
+				 OSTaskSuspend((OS_TCB *)&AppTaskWhereTCB,&err); 
 		OSTaskDel ( & AppTaskStartTCB, & err );                           //删除启动任务
         OS_CRITICAL_EXIT();	                                              //退出临界
 		
@@ -629,7 +630,14 @@ static  void  AppTasktalk ( void * p_arg )
 							Debug_printf("性别\n");
 							OSTimeDly(1000,OS_OPT_TIME_DLY,&err);
 						}break;
-						
+			case 0x1d:
+			case 0x05:
+						Debug_printf("喜欢\n");
+						OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);  //挂起显示表情任务
+						_ShowJPEG2("0:xiao.jpg",0,0);
+						OSTimeDly(5000,OS_OPT_TIME_DLY,&err);
+						OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
+						break;		
 	        case 0x06:
 						{
 							Debug_printf("温度\n");
@@ -642,8 +650,9 @@ static  void  AppTasktalk ( void * p_arg )
 
 									if(tem >=28)
 									{
-										printf("@TextToSpeech#这真的太热了！温度都到[n2]%dD度了$",tem);
 										_ShowJPEG2("0:ku.jpg",0,0);
+										printf("@TextToSpeech#这真的太热了！温度都到[n2]%d度了$",tem);
+										OSTimeDly(20000,OS_OPT_TIME_DLY,&err);
 									}
 									else
 									{
@@ -655,11 +664,14 @@ static  void  AppTasktalk ( void * p_arg )
 							else printf("@TextToSpeech#啊呀我的温度传感器坏了$");
 							OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
 						}break;
-			case 0x09:
+		    case 0x09:
+						Debug_printf("唱歌\n");
+						printf("@TextToSpeech#会啊，你想听什么$");
+						break;
+			case 0x0A:
 						{
 							Debug_printf("听歌\n");
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
-//							GUI_SelectLayer(1);
 							GUI_SetBkColor(GUI_BLACK);
 							GUI_Clear();
 							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
@@ -672,6 +684,7 @@ static  void  AppTasktalk ( void * p_arg )
 							_ShowGIF2("0:g6.gif",1,2,3);
 							OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  
 						}break;
+			case 0x1c:
 			case 0x0f:
 						{
 							Debug_printf("生气\n");
@@ -685,24 +698,12 @@ static  void  AppTasktalk ( void * p_arg )
 							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
 							
 							_ShowJPEG2("0:hanxiao.jpg",0,0);
-							if(i==0)printf("@TextToSpeech#有一学渣，暑假作业全部做完，在最后一页上面写了一句话:我的作业有17道错题，74个错别字，麻烦老师认真的逐一找出来，请不要用一个“阅”，换我们一个月！$");
+							if(i==0)printf("@TextToSpeech#讲完了$");
 						    if(i==1)printf("@TextToSpeech#乌龟受伤.让蜗牛去买药。过了2个小时.蜗牛还没回来。乌龟急了骂道:再不回来我就死了!这时门外传来了蜗牛的声音:你再说我不去了!$");
 						    OSTimeDlyHMSM(0,0,25,0,OS_OPT_TIME_DLY,&err);
 							i++; 
 							if(i>=2)i = 0;
 							OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
-						}break;
-			case 0x1c:
-						{
-							Debug_printf("笨蛋\n");
-							OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
-							
-
-							GUI_SetBkColor(GUI_BLACK);
-							GUI_Clear();
-							_ShowJPEG2("0:fahuo.jpg",0,0);	
-							
-							OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);							
 						}break;
 			case 0x16:
 						{
@@ -770,27 +771,37 @@ static  void  AppTasktalk ( void * p_arg )
 			case 0x19:
 						{
 							Debug_printf("开灯\n");
-							Led_Mode = 1;
-							
-							Usart_SendByte(USART1,'D');
-							Usart_Senddec(USART1,Led_Mode);
-							Usart_SendByte(USART1,'\r');
-							
-							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
-							printf("@TextToSpeech#已开灯$");
+							if(Led_Mode)
+								printf("@TextToSpeech#灯已经亮了$");
+							else
+							{	
+								Led_Mode = 1;
+								
+								Usart_SendByte(USART1,'D');
+								Usart_Senddec(USART1,Led_Mode);
+								Usart_SendByte(USART1,'\r');
+								
+								OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
+								printf("@TextToSpeech#已开灯$");
+							}
 							
 						}break;
 			case 0x1A:
 						{
 							Debug_printf("关灯\n");
-							Led_Mode = 2;
-							
-							Usart_SendByte(USART1,'D');
-							Usart_Senddec(USART1,Led_Mode);
-							Usart_SendByte(USART1,'\r');
-							
-							OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
-							printf("@TextToSpeech#已关灯$");
+							if(Led_Mode == 2)
+								printf("@TextToSpeech#灯已经关了，要开灯吗？$");
+							else
+							{
+								Led_Mode = 2;
+								
+								Usart_SendByte(USART1,'D');
+								Usart_Senddec(USART1,Led_Mode);
+								Usart_SendByte(USART1,'\r');
+								
+								OSTimeDlyHMSM(0, 0, 0,50,OS_OPT_TIME_DLY,&err);
+								printf("@TextToSpeech#已关灯$");
+							}
 						}break;
 			case 0x1B:
 						{
@@ -913,7 +924,7 @@ static void  AppTaskLight  ( void * p_arg )
 				OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
 				
 				printf("@TextToSpeech#天怎么突然黑了$");
-				OSTimeDlyHMSM(0,0,10,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
+				OSTimeDlyHMSM(0,0,10,0,OS_OPT_TIME_DLY,&err); 
 				
 				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
 				OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
@@ -1003,14 +1014,14 @@ static void  AppTaskTouchScan (void *p_arg)
 						lastpos[t][0] = tp_dev.x[t];
 						lastpos[t][1] = tp_dev.y[t];
 					}
-//					GUI_SelectLayer(1);
+
                     GUI_SetColor(GUI_BLUE);
 					GUI_DrawLine(lastpos[t][0],lastpos[t][1],tp_dev.x[t],tp_dev.y[t]);//画线
 					lastpos[t][0]=tp_dev.x[t];
 					lastpos[t][1]=tp_dev.y[t];
 					if(tp_dev.x[t]>(LCD_PIXEL_WIDTH-24)&&tp_dev.y[t]<40)
 					{
-//					  GUI_SelectLayer(1);
+
 					  GUI_SetBkColor(GUI_BLACK);
 					  GUI_Clear();
 					  GUI_SetFont(&GUI_Font24_ASCII);
@@ -1025,12 +1036,13 @@ static void  AppTaskTouchScan (void *p_arg)
 	}
 		
 	}	
-}
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
 
 
 /*
 *********************************************************************************************************
 *                                          摸摸 TASK
+*                                       连续触摸三个阶段
 *********************************************************************************************************
 */
 
@@ -1055,14 +1067,14 @@ static void  AppTaskTouch (void *p_arg)
 			{
 				case 8:
 					printf("@TextToSpeech#好痒啊,别摸我了$");
-				    OSTimeDlyHMSM(0,0,2,0,OS_OPT_TIME_DLY,&err);
+				    OSTimeDlyHMSM(0,0,4,0,OS_OPT_TIME_DLY,&err);
 				    touch_time = 0;
 				    while(It_Setting)
 					{
 						It_Setting--;
 						if(tp_dev.scan(0)==1)
 						{
-							Debug_printf("touch！！！！！\n");
+							Debug_printf("Keep touch！\n");
 							touch_time++;
 						}
 						if(touch_time >=3)
@@ -1090,18 +1102,38 @@ static void  AppTaskTouch (void *p_arg)
 					It_Setting = 20;
 					if(do_Mode)
 					{
-						touch_time = 0;
-                        						
+						touch_time = 0;				
 					}
 					else do_Mode = 1;
 				    break;
 				case 15:
-						OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
-						OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
-						settime_mode = 2;
-						Touch_TimeMode = 0;
+					 touch_time = 0;
+					 while(It_Setting)
+						{
+							It_Setting--;
+							if(tp_dev.scan(0)==1)
+							{
+								Debug_printf("Enter Set Center!\n");
+								touch_time++;
+							}
+							if(touch_time >=3)
+							{
+                                OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
+								OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
+								OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+								settime_mode = 2;
+								Touch_TimeMode = 0;
+								touch_time = 0;
+								OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
+								OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
+								
+								It_Setting = 0;
+							}
+							else
+							OSTimeDlyHMSM(0,0,0,150,OS_OPT_TIME_DLY,&err);
+						}
+						It_Setting = 20 ;
 						touch_time = 0;
-						OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
 				    break;
 				default:
 					break;

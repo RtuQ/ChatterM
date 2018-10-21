@@ -87,7 +87,7 @@
 #define	 APP_TASK_CheckPeople_STK_SIZE              200u
 #define  APP_TASK_TouchScan_STK_SIZE                512u
 #define  APP_TASK_Touch_STK_SIZE                    512u
-#define  APP_TASK_Window_STK_SIZE                   512u
+#define  APP_TASK_Window_STK_SIZE                   1024u
 #define  APP_TASK_Where_STK_SIZE                    300u
 
 #if SystemData == 1

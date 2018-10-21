@@ -147,7 +147,30 @@ void RTC_CLK_Config(void)
 	{
 		Debug_printf("\n\r RTC 时钟初始化失败 \r\n");
 	}	
+	
+	
+	
+	if (RTC_ReadBackupRegister(RTC_BKP_DRX) != RTC_BKP_DATA)
+  {
+    /* 设置时间和日期 */
+		RTC_TimeAndDate_Set(8,20,18,10,8);
+  }
+  else
+  {
+    /* 检查是否电源复位 */
+    if (RCC_GetFlagStatus(RCC_FLAG_PORRST) != RESET)
+    {
+      Debug_printf("\r\n 发生电源复位....\r\n");
+    }
+    /* 检查是否外部复位 */
+    else if (RCC_GetFlagStatus(RCC_FLAG_PINRST) != RESET)
+    {
+      Debug_printf("\r\n 发生外部复位....\r\n");
+    }
+
+    Debug_printf("\r\n 不需要重新配置RTC....\r\n");
 }
+ }
 
 /**
   * @brief  RTC配置：选择RTC时钟源，设置RTC_CLK的分频系数
@@ -181,13 +204,13 @@ void RTC_CLK_Config_Backup(void)
 	
 	if(LSEStatus == SET )
   {
-		printf("\n\r LSE 启动成功 \r\n");
+		Debug_printf("\n\r LSE 启动成功 \r\n");
 		/* 选择LSE作为RTC的时钟源 */
 		RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
   }
 	else
 	{
-		printf("\n\r LSE 故障，转为使用LSI \r\n");
+		Debug_printf("\n\r LSE 故障，转为使用LSI \r\n");
 		
 		/* 使能LSI */	
 		RCC_LSICmd(ENABLE);
@@ -196,7 +219,7 @@ void RTC_CLK_Config_Backup(void)
 		{			
 		}
 		
-		printf("\n\r LSI 启动成功 \r\n");
+		Debug_printf("\n\r LSI 启动成功 \r\n");
 		/* 选择LSI作为RTC的时钟源 */
 		RCC_RTCCLKConfig(RCC_RTCCLKSource_LSI);
 	}
@@ -217,7 +240,7 @@ void RTC_CLK_Config_Backup(void)
 	/* 用RTC_InitStructure的内容初始化RTC寄存器 */
 	if (RTC_Init(&RTC_InitStructure) == ERROR)
 	{
-		printf("\n\r RTC 时钟初始化失败 \r\n");
+		Debug_printf("\n\r RTC 时钟初始化失败 \r\n");
 	}	
 }
 

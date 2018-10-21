@@ -50,6 +50,48 @@ extern GUI_CONST_STORAGE GUI_BITMAP bmarmclock;
 extern GUI_CONST_STORAGE GUI_BITMAP bmabout;
 extern GUI_CONST_STORAGE GUI_BITMAP bmundo;
 
+extern GUI_CONST_STORAGE GUI_BITMAP bmzd;
+extern GUI_CONST_STORAGE GUI_BITMAP bmstop;
+extern GUI_CONST_STORAGE GUI_BITMAP bmbegin;
+
+
+
+
+/*********************************************************************
+* 
+*                               Defines
+*
+**********************************************************************
+*/
+
+#define ID_WINDOW_0   (GUI_ID_USER + 0x00)
+#define ID_DROPDOWN_0   (GUI_ID_USER + 0x01)
+#define ID_DROPDOWN_1   (GUI_ID_USER + 0x02)
+#define ID_DROPDOWN_2   (GUI_ID_USER + 0x03)
+#define ID_DROPDOWN_3   (GUI_ID_USER + 0x04)
+#define ID_DROPDOWN_4   (GUI_ID_USER + 0x05)
+#define ID_BUTTON_0   (GUI_ID_USER + 0x06)
+#define ID_BUTTON_1   (GUI_ID_USER + 0x07)
+#define ID_TEXT_0   (GUI_ID_USER + 0x08)
+#define ID_TEXT_1   (GUI_ID_USER + 0x09)
+#define ID_TEXT_2   (GUI_ID_USER + 0x0A)
+#define ID_TEXT_3   (GUI_ID_USER + 0x0B)
+#define ID_TEXT_4   (GUI_ID_USER + 0x0C)
+
+/*          以下定义用于主设置界面                   */
+#define ID_WINDOW_1   (GUI_ID_USER + 0x0D)
+#define ID_TEXT_5   (GUI_ID_USER + 0x0E)
+#define ID_TEXT_6   (GUI_ID_USER + 0x0F)
+#define ID_TEXT_7   (GUI_ID_USER + 0x10)
+
+
+#define ID_TimerTime 1
+
+#define _DF1S                   0x81
+#define MUSIC_MAX_NUM           100
+#define FILE_NAME_LEN           101			
+#define MUSIC_NAME_LEN          51		
+
 /*********************************************************************
 *
 *                                变量和数组
@@ -90,37 +132,11 @@ static const BITMAP_ITEM _aBitmapItem[] =
 
 int volume,list_value = 0;
 int last_data = 0;
-/*********************************************************************
-* 
-*                               Defines
-*
-**********************************************************************
-*/
 
-#define ID_WINDOW_0   (GUI_ID_USER + 0x00)
-#define ID_DROPDOWN_0   (GUI_ID_USER + 0x01)
-#define ID_DROPDOWN_1   (GUI_ID_USER + 0x02)
-#define ID_DROPDOWN_2   (GUI_ID_USER + 0x03)
-#define ID_DROPDOWN_3   (GUI_ID_USER + 0x04)
-#define ID_DROPDOWN_4   (GUI_ID_USER + 0x05)
-#define ID_BUTTON_0   (GUI_ID_USER + 0x06)
-#define ID_BUTTON_1   (GUI_ID_USER + 0x07)
-#define ID_TEXT_0   (GUI_ID_USER + 0x08)
-#define ID_TEXT_1   (GUI_ID_USER + 0x09)
-#define ID_TEXT_2   (GUI_ID_USER + 0x0A)
-#define ID_TEXT_3   (GUI_ID_USER + 0x0B)
-#define ID_TEXT_4   (GUI_ID_USER + 0x0C)
-
-/*          以下定义用于主设置界面                   */
-#define ID_WINDOW_1   (GUI_ID_USER + 0x0D)
-#define ID_TEXT_5   (GUI_ID_USER + 0x0E)
-#define ID_TEXT_6   (GUI_ID_USER + 0x0F)
-#define ID_TEXT_7   (GUI_ID_USER + 0x10)
-
-
-#define ID_TimerTime 1
-
-
+static char path[100]="0:";																		
+static uint8_t  file_num = 0;					
+static unsigned char playlist[MUSIC_MAX_NUM][FILE_NAME_LEN];
+static unsigned char lcdlist[MUSIC_MAX_NUM][MUSIC_NAME_LEN];
 
 
 
@@ -132,8 +148,6 @@ int last_data = 0;
 *	返 回 值: 无
 *********************************************************************************************************
 */
-//extern RTC_TimeTypeDef  RTC_TimeStructure;
-//extern RTC_DateTypeDef  RTC_DateStructure;
 static void Caculate_RTC(WM_MESSAGE * pMsg)
 {
 	  char buf[30];
@@ -201,9 +215,14 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate2[] = {
 
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate3[] = {
     { FRAMEWIN_CreateIndirect,  "Caption",           0,                       0,  0,  480,272,0,0},
-    { TEXT_CreateIndirect,    "It designed by QianLihao",           GUI_ID_TEXT0,          115,143,248,32, 0,0}
+    { TEXT_CreateIndirect,    "It designed by OJ",           GUI_ID_TEXT0,          80,20,248,32, 0,0},
+	{ TEXT_CreateIndirect,    "UCOS Version  UCOS-III",           GUI_ID_TEXT1,          80,57,248,32, 0,0},
+	{ TEXT_CreateIndirect,    "EMWIN Version  V5.40",           GUI_ID_TEXT2,          80,94,248,32, 0,0},
+	{ TEXT_CreateIndirect,    "FILE System  FATFS",           GUI_ID_TEXT3,          80,131,248,32, 0,0},
+	{ TEXT_CreateIndirect,    "SYSTEM Version  V1.0",           GUI_ID_TEXT4,          80,168,248,32, 0,0},
+	{ TEXT_CreateIndirect,    "DATE  2018-11-15",           GUI_ID_TEXT6,          80,205,248,32, 0,0},
 };
-/*********************************************************************
+/*********************************************************************111
 *
 *       _aDialogCreate4
 */
@@ -222,11 +241,84 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate4[] = {
       { SLIDER_CreateIndirect, "Slider", GUI_ID_SLIDER0, 69, 91, 80, 20, 0, 0x0, 0 },
 };
 
+/*********************************************************************111
+*
+*       _aDialogCreate5
+*/
+static const GUI_WIDGET_CREATE_INFO _aDialogCreate5[] = 
+{
+    { FRAMEWIN_CreateIndirect,    "SD FILE",        0,             0,   0,  480, 272 ,  0},
+    { LISTVIEW_CreateIndirect,     NULL,          GUI_ID_LISTVIEW0,   0,   0,470, 220,  0, 0},
+};
+
 
 static const GUI_WIDGET_CREATE_INFO _aDialogProgress[] = {
   { FRAMEWIN_CreateIndirect, "In Progress...",  0,                 80,  80, 150,  60, 0 },
   { PROGBAR_CreateIndirect,  0,                 GUI_ID_PROGBAR0,    9,   6, 120,  20, 0 },
 };
+
+
+
+
+
+
+
+/**
+  * @brief  scan_files 递归扫描sd卡内的歌曲文件
+  * @param  path:初始扫描路径
+  * @retval result:文件系统的返回值
+  */
+static FRESULT scan_files (char* path) 
+{ 
+  FRESULT res; 		//部分在递归过程被修改的变量，不用全局变量	
+  FILINFO fno; 
+  DIR dir; 
+  int i; 
+  char *fn; 
+	char file_name[FILE_NAME_LEN];	
+	
+#if _USE_LFN 
+  static char lfn[_MAX_LFN * (_DF1S ? 2 : 1) + 1]; 	//长文件名支持
+  fno.lfname = lfn; 
+  fno.lfsize = sizeof(lfn); 
+#endif 
+
+  
+  res = f_opendir(&dir, path); //打开目录
+  if (res == FR_OK) 
+	{ 
+    i = strlen(path); 
+    for (;;) 
+		{ 
+      res = f_readdir(&dir, &fno); 										//读取目录下的内容
+      if (res != FR_OK || fno.fname[0] == 0) break; 	//为空时表示所有项目读取完毕，跳出
+#if _USE_LFN 
+      fn = *fno.lfname ? fno.lfname : fno.fname; 
+#else 
+      fn = fno.fname; 
+#endif 
+      if(strstr(path,"recorder")!=NULL)continue;       //逃过录音文件
+      if (*fn == '.') continue; 											//点表示当前目录，跳过			
+      if (fno.fattrib & AM_DIR) 
+			{ 																							//目录，递归读取
+        sprintf(&path[i], "/%s", fn); 							//合成完整目录名
+        res = scan_files(path);											//递归遍历 
+        if (res != FR_OK) 
+					break; 																		//打开失败，跳出循环
+        path[i] = 0; 
+      } 
+			else 
+			{ 
+//				Debug_printf("%s/%s\r\n", path, fn);								//输出文件名
+						sprintf(file_name, "%s/%s", path, fn);
+				        memcpy(playlist[file_num],file_name,strlen(file_name));
+						memcpy(lcdlist[file_num],fn,strlen(fn));						
+						file_num++;//记录文件个数
+      }//else
+    } //for
+  } 
+  return res; 
+}
 
 
 
@@ -576,6 +668,115 @@ static void _cbCallback2(WM_MESSAGE * pMsg)
     }
 }
 
+
+/*
+*********************************************************************************************************
+*	函 数 名: InitDialogText
+*	功能说明: 初始化函数 
+*	形    参: pMsg   消息指针变量
+*	返 回 值: 无
+*********************************************************************************************************
+*/
+
+
+static void _cbCallback3(WM_MESSAGE * pMsg) 
+{
+    int NCode, Id;
+	char i = 0;
+	char buf[100];
+    WM_HWIN hWin = pMsg->hWin;
+	WM_HWIN hItem;
+	HEADER_Handle hHeader;
+	SCROLLBAR_Handle hScrollbar;
+	FILINFO info;
+    switch (pMsg->MsgId) 
+    {
+        case WM_INIT_DIALOG:
+			
+			/*
+			*    初始化框架窗口
+		    */
+
+				FRAMEWIN_SetTextColor(hWin, 0x0000ff);
+				FRAMEWIN_SetFont(hWin, GUI_FONT_16B_ASCII);
+				FRAMEWIN_SetTextAlign(hWin, GUI_TA_VCENTER|GUI_TA_CENTER);
+				
+				FRAMEWIN_AddCloseButton(hWin, FRAMEWIN_BUTTON_RIGHT, 0);
+				FRAMEWIN_SetTitleHeight(hWin, 30);
+
+				/* 设置listview控件上的header */
+				hHeader = LISTVIEW_GetHeader(WM_GetDialogItem(hWin, GUI_ID_LISTVIEW0));
+				HEADER_SetFont(hHeader, GUI_FONT_16B_ASCII);
+				HEADER_SetHeight(hHeader, 25);
+
+				/* 设置listview控件上的SCROLLBAR */
+				hItem = WM_GetDialogItem(hWin,GUI_ID_LISTVIEW0);
+				hScrollbar = SCROLLBAR_CreateAttached(hItem, SCROLLBAR_CF_VERTICAL);
+				SCROLLBAR_SetWidth(hScrollbar, 20);
+
+				/* 设置LISTVIEW控件 */
+				LISTVIEW_SetFont(hItem, GUI_FONT_16B_ASCII);
+				LISTVIEW_SetRowHeight(hItem, 24);
+				LISTVIEW_AddColumn(hItem, 20, "NAME", GUI_TA_VCENTER|GUI_TA_LEFT);
+				LISTVIEW_AddColumn(hItem, 20, "SIZE", GUI_TA_VCENTER|GUI_TA_LEFT);
+				LISTVIEW_SetColumnWidth(hItem, 0, 140);
+				LISTVIEW_SetColumnWidth(hItem, 1, 100);
+				LISTVIEW_SetGridVis(hItem,1);
+				
+				file_num = 0;
+				scan_files(path);
+				
+				
+				for(i=0;i<file_num;i++)
+					{ 
+						LISTVIEW_AddRow(hItem, NULL);
+						LISTVIEW_SetItemText(hItem, 0, i, (const char *)lcdlist[i]);
+						
+						f_stat((const char *)playlist[i],&info);
+						if(info.fsize < 1024)
+							{
+								sprintf((char *)buf, "%dB",info.fsize);
+							}
+							else if(info.fsize < 1024*1024)
+							{
+								sprintf((char *)buf, "%.2fKB", (float)info.fsize/1024);
+							}
+							else
+							{
+								sprintf((char *)buf, "%.2fMB", (float)info.fsize/1024/1024);
+							}
+							LISTVIEW_SetItemText(hItem, 1, i, (const char *)buf);	
+					}
+            break;
+		
+        case WM_KEY:
+            switch (((WM_KEY_INFO*)(pMsg->Data.p))->Key) 
+            {
+                case GUI_KEY_ESCAPE:
+                    GUI_EndDialog(hWin, 1);
+                    break;
+				
+                case GUI_KEY_ENTER:
+                    GUI_EndDialog(hWin, 0);
+                    break;
+            }
+            break;
+			
+        case WM_NOTIFY_PARENT:
+            Id = WM_GetId(pMsg->hWinSrc); 
+            NCode = pMsg->Data.v;        
+            switch (Id) 
+            {
+
+
+            }
+            break;
+			
+        default:
+            WM_DefaultProc(pMsg);
+    }
+}
+
 /*
 *********************************************************************************************************
 *	函 数 名: _cbDialogInfo
@@ -641,8 +842,6 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 						case  WM_NOTIFICATION_RELEASED:
 							
 							s_ucSelIconIndex  = ICONVIEW_GetSel(pMsg->hWinSrc);
-						Debug_printf("data1:%d",s_ucSelIconIndex);	
-						    Debug_printf("data:%d",ICONVIEW_GetSel(pMsg->hWinSrc));	
 							switch( ICONVIEW_GetSel(pMsg->hWinSrc))
 							{
 								/* 闹钟设置 */
@@ -672,7 +871,7 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 								
 								/* 文件 */
 								case 5:
-//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+									hWinInfo = GUI_CreateDialogBox(_aDialogCreate5, GUI_COUNTOF(_aDialogCreate5), &_cbCallback3, 0, 0, 0);				
 								    break;	
 								
 								/* 设置 */
@@ -682,8 +881,7 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 								
 								/* 关于 */
 								case 7:
-									hWinInfo = GUI_CreateDialogBox(_aDialogCreate3, GUI_COUNTOF(_aDialogCreate3), &_cbCallback1, 0, 0, 0);	
-                                    	Debug_printf("data:%d",ICONVIEW_GetSel(pMsg->hWinSrc));							
+									hWinInfo = GUI_CreateDialogBox(_aDialogCreate3, GUI_COUNTOF(_aDialogCreate3), &_cbCallback1, 0, 0, 0);						
 								    break;	
 								
 								/* 退出 */
