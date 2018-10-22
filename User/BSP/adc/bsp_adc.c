@@ -10,21 +10,21 @@ static void Rheostat_ADC_GPIO_Config(void)
 	// 使能 GPIO 时钟
 	RCC_AHB1PeriphClockCmd(RHEOSTAT_ADC_GPIO_CLK1,ENABLE);		
 	// 配置 IO
-  GPIO_InitStructure.GPIO_Pin = RHEOSTAT_ADC_GPIO_PIN1;
+  GPIO_InitStructure.GPIO_Pin = RHEOSTAT_ADC_GPIO_PIN1|RHEOSTAT_ADC_GPIO_PIN2;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
   //不上拉不下拉	
   GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
 	GPIO_Init(RHEOSTAT_ADC_GPIO_PORT1, &GPIO_InitStructure);
 
-	/*=====================通道2======================*/
-	// 使能 GPIO 时钟
-	RCC_AHB1PeriphClockCmd(RHEOSTAT_ADC_GPIO_CLK2,ENABLE);		
-	// 配置 IO
-  GPIO_InitStructure.GPIO_Pin = RHEOSTAT_ADC_GPIO_PIN2;
-	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
-  //不上拉不下拉	
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
-	GPIO_Init(RHEOSTAT_ADC_GPIO_PORT2, &GPIO_InitStructure);	
+//	/*=====================通道2======================*/
+//	// 使能 GPIO 时钟
+//	RCC_AHB1PeriphClockCmd(RHEOSTAT_ADC_GPIO_CLK2,ENABLE);		
+//	// 配置 IO
+//  GPIO_InitStructure.GPIO_Pin = RHEOSTAT_ADC_GPIO_PIN2;
+//	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AIN;
+//  //不上拉不下拉	
+//  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL ;
+//	GPIO_Init(RHEOSTAT_ADC_GPIO_PORT2, &GPIO_InitStructure);	
 
 //	/*=====================通道3=======================*/
 //	// 使能 GPIO 时钟
@@ -103,20 +103,20 @@ static void Rheostat_ADC_Mode_Config(void)
   ADC_InitStructure.ADC_ContinuousConvMode = ENABLE; 
   //禁止外部边沿触发
   ADC_InitStructure.ADC_ExternalTrigConvEdge = ADC_ExternalTrigConvEdge_None;
-  //外部触发通道，本例子使用软件触发，此值随便赋值即可
-  ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_CC1;
+//  //外部触发通道，本例子使用软件触发，此值随便赋值即可
+//  ADC_InitStructure.ADC_ExternalTrigConv = ADC_ExternalTrigConv_T1_CC1;
   //数据右对齐	
   ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
-  //转换通道 1个
+  //转换通道 2个
   ADC_InitStructure.ADC_NbrOfConversion = RHEOSTAT_NOFCHANEL;                                    
   ADC_Init(RHEOSTAT_ADC, &ADC_InitStructure);
   //---------------------------------------------------------------------------
 	
   // 配置 ADC 通道转换顺序和采样时间周期
   ADC_RegularChannelConfig(RHEOSTAT_ADC, RHEOSTAT_ADC_CHANNEL1, 1, 
-	                         ADC_SampleTime_3Cycles);
+	                         ADC_SampleTime_56Cycles);
   ADC_RegularChannelConfig(RHEOSTAT_ADC, RHEOSTAT_ADC_CHANNEL2, 2, 
-	                         ADC_SampleTime_3Cycles); 
+	                         ADC_SampleTime_56Cycles); 
 //  ADC_RegularChannelConfig(RHEOSTAT_ADC, RHEOSTAT_ADC_CHANNEL3, 3, 
 //	                         ADC_SampleTime_3Cycles); 
 

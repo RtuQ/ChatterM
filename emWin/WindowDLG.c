@@ -130,6 +130,15 @@ static const BITMAP_ITEM _aBitmapItem[] =
 };
 
 
+
+/* 用于MUSIC ICONVIEW图标的创建 */
+static const BITMAP_ITEM _aBitmapMusicItem[] = 
+{
+	{&bmbegin,    "Begin"},
+	{&bmzd,    "Suspend"},
+	{&bmstop,     "Stop"},
+};
+
 int volume,list_value = 0;
 int last_data = 0;
 
@@ -249,6 +258,15 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate5[] =
 {
     { FRAMEWIN_CreateIndirect,    "SD FILE",        0,             0,   0,  480, 272 ,  0},
     { LISTVIEW_CreateIndirect,     NULL,          GUI_ID_LISTVIEW0,   0,   0,470, 220,  0, 0},
+};
+
+/*********************************************************************111
+*
+*       _aDialogCreate5
+*/
+static const GUI_WIDGET_CREATE_INFO _aDialogCreate6[] = 
+{
+    { FRAMEWIN_CreateIndirect,    "MUSIC",        0,             0,   0,  480, 272 ,  0},
 };
 
 
@@ -777,6 +795,78 @@ static void _cbCallback3(WM_MESSAGE * pMsg)
     }
 }
 
+
+static void _cbCallback4(WM_MESSAGE * pMsg) 
+{
+	WM_HWIN hItem;
+	 WM_HWIN hWin = pMsg->hWin;
+//	WM_MESSAGE pMsgInfo;
+	int NCode, Id;
+     OS_ERR      err;
+	char i;
+	
+	switch (pMsg->MsgId) 
+	{
+		case WM_PAINT:
+			break;
+		
+		case WM_INIT_DIALOG:
+			
+		      FRAMEWIN_SetTextColor(hWin, GUI_BLACK);
+				FRAMEWIN_SetFont(hWin, GUI_FONT_16B_ASCII);
+				FRAMEWIN_SetTextAlign(hWin, GUI_TA_VCENTER|GUI_TA_CENTER);
+				
+				FRAMEWIN_AddCloseButton(hWin, FRAMEWIN_BUTTON_RIGHT, 0);
+				FRAMEWIN_SetTitleHeight(hWin, 30);
+			
+			break;
+			
+		case WM_TIMER:
+			break;
+			
+		case WM_NOTIFY_PARENT:
+			Id    = WM_GetId(pMsg->hWinSrc);     
+			NCode = pMsg->Data.v;                
+			switch (Id) 
+			{
+				/* 点击ICONVIEW上相应的图标，打开相应的窗口 */
+				case GUI_ID_ICONVIEW0:
+					switch (NCode) 
+					{
+						case  WM_NOTIFICATION_RELEASED:
+							
+							s_ucSelIconIndex  = ICONVIEW_GetSel(pMsg->hWinSrc);
+							switch( ICONVIEW_GetSel(pMsg->hWinSrc))
+							{
+								/* 开始 */
+								case 0:
+									
+								    break;	
+								
+								/* 暂停 */
+								case 1:
+													
+									break;	
+								
+								/* 退出 */
+								case 2:
+									
+								    break;	
+								
+								default:
+									break;
+							}	
+						 break;
+					}
+				break;
+			}
+			break;
+			
+		default:
+			WM_DefaultProc(pMsg);
+	}
+}
+
 /*
 *********************************************************************************************************
 *	函 数 名: _cbDialogInfo
@@ -791,6 +881,7 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 //	WM_MESSAGE pMsgInfo;
 	int NCode, Id;
      OS_ERR      err;
+	char i;
 	
 	switch (pMsg->MsgId) 
 	{
@@ -851,20 +942,48 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 								
 								/* 音乐 */
 								case 1:
-//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+									hWinInfo = GUI_CreateDialogBox(_aDialogCreate6, GUI_COUNTOF(_aDialogCreate6), &_cbCallback4, 0, 0, 0);
+                                    /*在指定位置创建指定尺寸的ICONVIEW 小工具*/
+									hWinICON = ICONVIEW_CreateEx(150, 						/* 小工具的最左像素（在父坐标中）*/
+															 110, 							/* 小工具的最上像素（在父坐标中）*/
+															 460,    						/* 小工具的水平尺寸（单位：像素）*/
+															 230, 							/* 小工具的垂直尺寸（单位：像素）*/
+															 hWinInfo, 				        /* 父窗口的句柄。如果为0 ，则新小工具将成为桌面（顶级窗口）的子窗口 */
+															 WM_CF_SHOW | WM_CF_HASTRANS,   /* 窗口创建标记。为使小工具立即可见，通常使用 WM_CF_SHOW */ 
+															 0,//ICONVIEW_CF_AUTOSCROLLBAR_V	/* 默认是0，如果不够现实可设置增减垂直滚动条 */
+															 GUI_ID_ICONVIEW0, 			        /* 小工具的窗口ID */
+															 60, 				    			/* 图标的水平尺寸 */
+															 60);	
+									
+									/* 向ICONVIEW 小工具添加新图标 */
+									for (i = 0; i < GUI_COUNTOF(_aBitmapMusicItem); i++) 
+									{	
+										ICONVIEW_AddBitmapItem(hWinICON, _aBitmapMusicItem[i].pBitmap, _aBitmapMusicItem[i].pText);
+									}
+									
+									/* 设置小工具的背景色 32 位颜色值的前8 位可用于alpha混合处理效果*/
+									ICONVIEW_SetBkColor(hWinICON, ICONVIEW_CI_SEL, GUI_WHITE | 0x80000000);
+									 ICONVIEW_SetTextColor(hWinICON,ICONVIEW_CI_UNSEL|ICONVIEW_CI_SEL,GUI_BLACK);
+									
+									/* 设置图标在x 或y 方向上的间距。*/
+									ICONVIEW_SetSpace(hWinICON, GUI_COORD_Y, 20);
+									ICONVIEW_SetSpace(hWinICON, GUI_COORD_X, 10);
+									
+									/* 设置对齐方式 */
+									ICONVIEW_SetIconAlign(hWinICON, ICONVIEW_IA_HCENTER|ICONVIEW_IA_TOP);								
 									break;	
 								
-								/*  */
+								/* 摄像头 */
 								case 2:
 //									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
 								    break;	
 								
-								/*  */
+								/* 万年历 */
 								case 3:
 //									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
 								    break;
 								
-								/*  */
+								/* 声音 */
 								case 4:
 //									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
 								    break;	

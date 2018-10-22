@@ -558,7 +558,7 @@ static void AppTaskShowBQ (void * p_arg )
 				}break;
 			}
           
-			OSTimeDlyHMSM(0, 0, 25,0,OS_OPT_TIME_DLY,&err);			
+			OSTimeDlyHMSM(0, 0,50,0,OS_OPT_TIME_DLY,&err);			
     }
 }
 
@@ -881,7 +881,9 @@ static void  AppTaskPower  ( void * p_arg )
 	(void)p_arg;
 	while (DEF_TRUE){
       	    
-			ADC_Vol =(float)ADC_ConvertedValue[0]/4096*(float)13.3; // 读取转换的AD值
+			ADC_Vol = (float)ADC_ConvertedValue[0]/4096*(float)3.3; // 读取转换的AD值 直接*13.3第一次数据正确之后变为*3.3的值 很奇怪？？！！
+		    ADC_Vol = ADC_Vol*4;
+//		    Debug_printf("\r\n The current AD value = %f \r\n",(float)ADC_ConvertedValue[0]);
 	        Debug_printf("\r\n The current AD value = %f V \r\n",ADC_Vol); 
 			if (ADC_Vol <= 10&&Voice_Mode == 0)
 			{
@@ -915,7 +917,7 @@ static void  AppTaskLight  ( void * p_arg )
       	    
 			Light_ADC_Vol =(float)ADC_ConvertedValue[1]/4096*(float)3.3;    // 读取转换的AD值
 		
-//		    Debug_printf("\r\n The current Light_ADC_Vol value = %f V \r\n",Light_ADC_Vol); 
+		    Debug_printf("\r\n The current Light_ADC_Vol value = %f V \r\n",Light_ADC_Vol); 
 		 
 			if((double)Light_ADC_Vol > 2.7&&Light_Mode == 0)
 			{
@@ -937,7 +939,7 @@ static void  AppTaskLight  ( void * p_arg )
 				Light_Mode = 0;
 			}
 			
-		    OSTimeDlyHMSM(0,0,2,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
+		    OSTimeDlyHMSM(0,0,10,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
 		    
 	}
 }
@@ -1124,6 +1126,7 @@ static void  AppTaskTouch (void *p_arg)
 								settime_mode = 2;
 								Touch_TimeMode = 0;
 								touch_time = 0;
+								
 								OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
 								OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
 								
