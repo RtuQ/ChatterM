@@ -27,16 +27,26 @@ Project File Date:  10/22/2018
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'd:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'SDRAM'
-compiling app.c...
-..\..\User\APP\app.c(957): warning:  #177-D: variable "Last_Mode"  was declared but never referenced
-  	u8 Last_Mode = 0;                 //模块可能连续两次高电平，此为了消除干扰
-..\..\User\APP\app.c(1192): warning:  #550-D: variable "pitch_end"  was set but never used
-      int pitch_end;
-..\..\User\APP\app.c: 2 warnings, 0 errors
+compiling WindowDLG.c...
+..\..\emWin\WindowDLG.c(366): warning:  #550-D: variable "ONE_BIT"  was set but never used
+    char ONE_BIT = 1;
+..\..\emWin\WindowDLG.c(408): warning:  #550-D: variable "ONE_BIT"  was set but never used
+    char ONE_BIT = 1;
+..\..\emWin\WindowDLG.c(449): warning:  #550-D: variable "NCode"  was set but never used
+      int NCode, Id;
+..\..\emWin\WindowDLG.c(695): warning:  #550-D: variable "NCode"  was set but never used
+      int NCode, Id;
+..\..\emWin\WindowDLG.c(794): warning:  #177-D: variable "hItem"  was declared but never referenced
+  	WM_HWIN hItem;
+..\..\emWin\WindowDLG.c(798): warning:  #177-D: variable "err"  was declared but never referenced
+       OS_ERR      err;
+..\..\emWin\WindowDLG.c(799): warning:  #177-D: variable "i"  was declared but never referenced
+  	char i;
+..\..\emWin\WindowDLG.c: 7 warnings, 0 errors
 linking...
-Program Size: Code=197798 RO-data=371110 RW-data=2780 ZI-data=101708  
+Program Size: Code=197890 RO-data=371234 RW-data=2780 ZI-data=101708  
 FromELF: creating hex file...
-"..\..\Output\SDRAM.axf" - 0 Error(s), 2 Warning(s).
+"..\..\Output\SDRAM.axf" - 0 Error(s), 7 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -50,7 +60,7 @@ Package Vendor: Keil
   d:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:07
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>

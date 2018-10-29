@@ -172,7 +172,6 @@ uint8_t i2c_ReadByte(u8 ack)
 	uint8_t value;
 	value = 0;
 	SDA_IN();
-	bsp_DelayUS(30);       //必须要有这个延时 不然 I2C出错
 	for (i = 0; i < 8; i++)
 	{
 		I2C_SCL = 0;

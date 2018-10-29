@@ -2,7 +2,6 @@
 #define _BSP_I2C_GPIO_H
 
 #include "includes.h"
-//#include <inttypes.h>
 
 
 #define EEPROM_I2C_WR	0		/* 写控制bit */
@@ -20,8 +19,9 @@
 #define I2C_SDA  PHout(3)	    	
 #define I2C_SDA_READ  PHin(3)
 
-#define SDA_IN()  {GPIOH->MODER&=~(3<<(3*2));GPIOH->MODER|=0<<3*2;}	//PH5输入模式
-#define SDA_OUT() {GPIOH->MODER&=~(3<<(3*2));GPIOH->MODER|=1<<3*2;} //PH5输出模式
+/* 可能由于F4的端口转换有问题 这里需要一定的延时才行 */
+#define SDA_IN()  {GPIOH->MODER&=~(3<<(3*2));GPIOH->MODER|=0<<3*2;bsp_DelayUS(1);}	//PH2输入模式
+#define SDA_OUT() {GPIOH->MODER&=~(3<<(3*2));GPIOH->MODER|=1<<3*2;bsp_DelayUS(1);} //PH2输出模式
 
 
 

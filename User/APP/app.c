@@ -416,9 +416,9 @@ static  void  AppTaskStart (void *p_arg)
                 (OS_ERR     *) &err);	
 #endif				 
 		OSTaskSuspend((OS_TCB *)&AppTaskTouchScanTCB,&err);               //挂起画板任务
-		OSTaskSuspend((OS_TCB *)&AppTaskWindowTCB,&err);               //挂起画板任务
+		OSTaskSuspend((OS_TCB *)&AppTaskWindowTCB,&err);               //挂起窗口任务
 		OSTaskSuspend((OS_TCB *)&AppTaskCheckPeopleTCB,&err); 		   //有点烦 调试挂起；使用时注释：待优化
-				 OSTaskSuspend((OS_TCB *)&AppTaskWhereTCB,&err); 
+//		OSTaskSuspend((OS_TCB *)&AppTaskWhereTCB,&err); 
 		OSTaskDel ( & AppTaskStartTCB, & err );                           //删除启动任务
         OS_CRITICAL_EXIT();	                                              //退出临界
 		
@@ -1067,7 +1067,7 @@ static void  AppTaskTouch (void *p_arg)
 			
 			switch(touch_time)
 			{
-				case 8:
+				case 5:
 					printf("@TextToSpeech#好痒啊,别摸我了$");
 				    OSTimeDlyHMSM(0,0,4,0,OS_OPT_TIME_DLY,&err);
 				    touch_time = 0;
@@ -1188,34 +1188,32 @@ static  void  AppTaskWhere ( void * p_arg )
     OS_ERR      err;
 
 	float pitch,roll,yaw; 		//欧拉角
-	int last_pitch;
-    int pitch_end;
    (void)p_arg;
 		
     while (DEF_TRUE) {                                          
 		
 		   while(mpu_dmp_get_data(&pitch,&roll,&yaw)!=0)
 			{ 
-				Debug_printf("pitch = %f   roll = %f      yaw = %f \n",pitch,roll,yaw);
-				last_pitch = (int)pitch*100;
-                pitch_end = pitch - last_pitch;
-				if(pitch >= 10|pitch <= -3 )
-				{
-						OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
-						OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
-						OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
-						
-						printf("@TextToSpeech#头好晕，别摇了$");
-					    _ShowJPEG2("0:shui.jpg",0,0);
-						OSTimeDlyHMSM(0,0,10,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
-						
-						OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
-						OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
-						OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
-					
-				}  
-               OSTimeDly (2000, OS_OPT_TIME_DLY, & err );				
+				
 			}
+						
+			Debug_printf("pitch = %d   roll = %d      yaw = %d \n",(int)(pitch*100),(int)(roll*100),(int)(yaw*100));
+			if(pitch >= 10|pitch <= -3 )
+			{
+					OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
+					OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
+					OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
+					
+					printf("@TextToSpeech#头好晕，别摇了$");
+					_ShowJPEG2("0:shui.jpg",0,0);
+					OSTimeDlyHMSM(0,0,3,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
+					
+					OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
+					OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
+					OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
+				
+			}  
+               OSTimeDly (2000, OS_OPT_TIME_DLY, & err );
 }
 	
 }

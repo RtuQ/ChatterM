@@ -1458,7 +1458,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -1468,7 +1468,7 @@ I (..\..\User\BSP\TOUCH\gt9147.h)(0x5B8F91F9)
 I (..\..\User\BSP\TOUCH\ft5206.h)(0x5B8F91F9)
 I (..\..\User\BSP\RTC\bsp_rtc.h)(0x5BB6BEE5)
 I (..\..\emWin\WindowDLG.h)(0x5BB6C12F)
-F (..\..\User\BSP\bsp.c)(0x5BCC8ADC)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\..\DSP_LIB -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\uCOS_III\uC-CPU -I ..\..\uCOS_III\uC-LIB -I ..\..\uCOS_III\uCOS-III\Ports -I ..\..\uCOS_III\uCOS-III\Source -I ..\..\emWin\Config -I ..\..\emWin\inc -I ..\..\emWin\Lib -I ..\..\emWin\OS -I ..\..\FATFS -I ..\..\User -I ..\..\User\APP -I ..\..\User\BSP -I ..\..\User\BSP\font -I ..\..\User\BSP\lcd -I ..\..\User\BSP\led -I ..\..\User\BSP\sdram -I ..\..\User\BSP\usart -I ..\..\User\BSP\sdio -I ..\..\User\User_APP -I ..\..\User\BSP\DHT22 -I ..\..\User\User_APP\delay -I ..\..\User\BSP\adc -I ..\..\User\BSP\rng -I ..\..\User\BSP\i2c -I ..\..\User\BSP\mpu6050 -I ..\..\User\BSP\TOUCH -I ..\..\emWin -I ..\..\User\BSP\RTC -I ..\..\User\BSP\mpu6050\eMPL-I.\RTE\_SDRAM-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F429xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER-o ..\..\output\bsp.o --omf_browse ..\..\output\bsp.crf --depend ..\..\output\bsp.d)
+F (..\..\User\BSP\bsp.c)(0x5BD6EDAD)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\..\DSP_LIB -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\uCOS_III\uC-CPU -I ..\..\uCOS_III\uC-LIB -I ..\..\uCOS_III\uCOS-III\Ports -I ..\..\uCOS_III\uCOS-III\Source -I ..\..\emWin\Config -I ..\..\emWin\inc -I ..\..\emWin\Lib -I ..\..\emWin\OS -I ..\..\FATFS -I ..\..\User -I ..\..\User\APP -I ..\..\User\BSP -I ..\..\User\BSP\font -I ..\..\User\BSP\lcd -I ..\..\User\BSP\led -I ..\..\User\BSP\sdram -I ..\..\User\BSP\usart -I ..\..\User\BSP\sdio -I ..\..\User\User_APP -I ..\..\User\BSP\DHT22 -I ..\..\User\User_APP\delay -I ..\..\User\BSP\adc -I ..\..\User\BSP\rng -I ..\..\User\BSP\i2c -I ..\..\User\BSP\mpu6050 -I ..\..\User\BSP\TOUCH -I ..\..\emWin -I ..\..\User\BSP\RTC -I ..\..\User\BSP\mpu6050\eMPL-I.\RTE\_SDRAM-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F429xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER-o ..\..\output\bsp.o --omf_browse ..\..\output\bsp.crf --depend ..\..\output\bsp.d)
 I (..\..\User\BSP\bsp.h)(0x5B03A063)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (d:\Keil_v5\ARM\ARMCC\include\stdarg.h)(0x599ECD2A)
@@ -1593,7 +1593,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -1972,7 +1972,7 @@ I (..\..\User\BSP\usart\bsp_usart3.h)(0x5B7023AC)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -2147,7 +2147,7 @@ I (..\..\User\BSP\usart\bsp_usart3.h)(0x5B7023AC)
 I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -2282,7 +2282,7 @@ I (..\..\User\BSP\usart\bsp_usart3.h)(0x5B7023AC)
 I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -2292,8 +2292,8 @@ I (..\..\User\BSP\TOUCH\gt9147.h)(0x5B8F91F9)
 I (..\..\User\BSP\TOUCH\ft5206.h)(0x5B8F91F9)
 I (..\..\User\BSP\RTC\bsp_rtc.h)(0x5BB6BEE5)
 I (..\..\emWin\WindowDLG.h)(0x5BB6C12F)
-F (..\..\User\BSP\i2c\bsp_i2c_gpio.c)(0x5BB78940)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\..\DSP_LIB -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\uCOS_III\uC-CPU -I ..\..\uCOS_III\uC-LIB -I ..\..\uCOS_III\uCOS-III\Ports -I ..\..\uCOS_III\uCOS-III\Source -I ..\..\emWin\Config -I ..\..\emWin\inc -I ..\..\emWin\Lib -I ..\..\emWin\OS -I ..\..\FATFS -I ..\..\User -I ..\..\User\APP -I ..\..\User\BSP -I ..\..\User\BSP\font -I ..\..\User\BSP\lcd -I ..\..\User\BSP\led -I ..\..\User\BSP\sdram -I ..\..\User\BSP\usart -I ..\..\User\BSP\sdio -I ..\..\User\User_APP -I ..\..\User\BSP\DHT22 -I ..\..\User\User_APP\delay -I ..\..\User\BSP\adc -I ..\..\User\BSP\rng -I ..\..\User\BSP\i2c -I ..\..\User\BSP\mpu6050 -I ..\..\User\BSP\TOUCH -I ..\..\emWin -I ..\..\User\BSP\RTC -I ..\..\User\BSP\mpu6050\eMPL-I.\RTE\_SDRAM-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F429xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER-o ..\..\output\bsp_i2c_gpio.o --omf_browse ..\..\output\bsp_i2c_gpio.crf --depend ..\..\output\bsp_i2c_gpio.d)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+F (..\..\User\BSP\i2c\bsp_i2c_gpio.c)(0x5BD6ED91)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\..\DSP_LIB -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\uCOS_III\uC-CPU -I ..\..\uCOS_III\uC-LIB -I ..\..\uCOS_III\uCOS-III\Ports -I ..\..\uCOS_III\uCOS-III\Source -I ..\..\emWin\Config -I ..\..\emWin\inc -I ..\..\emWin\Lib -I ..\..\emWin\OS -I ..\..\FATFS -I ..\..\User -I ..\..\User\APP -I ..\..\User\BSP -I ..\..\User\BSP\font -I ..\..\User\BSP\lcd -I ..\..\User\BSP\led -I ..\..\User\BSP\sdram -I ..\..\User\BSP\usart -I ..\..\User\BSP\sdio -I ..\..\User\User_APP -I ..\..\User\BSP\DHT22 -I ..\..\User\User_APP\delay -I ..\..\User\BSP\adc -I ..\..\User\BSP\rng -I ..\..\User\BSP\i2c -I ..\..\User\BSP\mpu6050 -I ..\..\User\BSP\TOUCH -I ..\..\emWin -I ..\..\User\BSP\RTC -I ..\..\User\BSP\mpu6050\eMPL-I.\RTE\_SDRAM-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F429xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER-o ..\..\output\bsp_i2c_gpio.o --omf_browse ..\..\output\bsp_i2c_gpio.crf --depend ..\..\output\bsp_i2c_gpio.d)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\APP\includes.h)(0x5BC2FF2B)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x599ECD2C)
@@ -2427,7 +2427,7 @@ I (..\..\User\BSP\TOUCH\gt9147.h)(0x5B8F91F9)
 I (..\..\User\BSP\TOUCH\ft5206.h)(0x5B8F91F9)
 I (..\..\User\BSP\RTC\bsp_rtc.h)(0x5BB6BEE5)
 I (..\..\emWin\WindowDLG.h)(0x5BB6C12F)
-F (..\..\User\BSP\mpu6050\mpu6050.c)(0x5BC2AE4A)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\..\DSP_LIB -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\uCOS_III\uC-CPU -I ..\..\uCOS_III\uC-LIB -I ..\..\uCOS_III\uCOS-III\Ports -I ..\..\uCOS_III\uCOS-III\Source -I ..\..\emWin\Config -I ..\..\emWin\inc -I ..\..\emWin\Lib -I ..\..\emWin\OS -I ..\..\FATFS -I ..\..\User -I ..\..\User\APP -I ..\..\User\BSP -I ..\..\User\BSP\font -I ..\..\User\BSP\lcd -I ..\..\User\BSP\led -I ..\..\User\BSP\sdram -I ..\..\User\BSP\usart -I ..\..\User\BSP\sdio -I ..\..\User\User_APP -I ..\..\User\BSP\DHT22 -I ..\..\User\User_APP\delay -I ..\..\User\BSP\adc -I ..\..\User\BSP\rng -I ..\..\User\BSP\i2c -I ..\..\User\BSP\mpu6050 -I ..\..\User\BSP\TOUCH -I ..\..\emWin -I ..\..\User\BSP\RTC -I ..\..\User\BSP\mpu6050\eMPL-I.\RTE\_SDRAM-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F429xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER-o ..\..\output\mpu6050.o --omf_browse ..\..\output\mpu6050.crf --depend ..\..\output\mpu6050.d)
+F (..\..\User\BSP\mpu6050\mpu6050.c)(0x5BD67620)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\..\DSP_LIB -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\uCOS_III\uC-CPU -I ..\..\uCOS_III\uC-LIB -I ..\..\uCOS_III\uCOS-III\Ports -I ..\..\uCOS_III\uCOS-III\Source -I ..\..\emWin\Config -I ..\..\emWin\inc -I ..\..\emWin\Lib -I ..\..\emWin\OS -I ..\..\FATFS -I ..\..\User -I ..\..\User\APP -I ..\..\User\BSP -I ..\..\User\BSP\font -I ..\..\User\BSP\lcd -I ..\..\User\BSP\led -I ..\..\User\BSP\sdram -I ..\..\User\BSP\usart -I ..\..\User\BSP\sdio -I ..\..\User\User_APP -I ..\..\User\BSP\DHT22 -I ..\..\User\User_APP\delay -I ..\..\User\BSP\adc -I ..\..\User\BSP\rng -I ..\..\User\BSP\i2c -I ..\..\User\BSP\mpu6050 -I ..\..\User\BSP\TOUCH -I ..\..\emWin -I ..\..\User\BSP\RTC -I ..\..\User\BSP\mpu6050\eMPL-I.\RTE\_SDRAM-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F429xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER-o ..\..\output\mpu6050.o --omf_browse ..\..\output\mpu6050.crf --depend ..\..\output\mpu6050.d)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\APP\includes.h)(0x5BC2FF2B)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
@@ -2553,7 +2553,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
 I (..\..\User\BSP\TOUCH\touch.h)(0x5B8FE321)
@@ -2688,7 +2688,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -2823,7 +2823,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -2959,7 +2959,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -3095,7 +3095,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -3229,7 +3229,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -3364,7 +3364,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -3376,7 +3376,7 @@ I (..\..\User\BSP\RTC\bsp_rtc.h)(0x5BB6BEE5)
 I (..\..\emWin\WindowDLG.h)(0x5BB6C12F)
 I (..\..\User\BSP\mpu6050\eMPL\dmpKey.h)(0x50CA9A0C)
 I (..\..\User\BSP\mpu6050\eMPL\dmpmap.h)(0x50CA9A0C)
-F (..\..\User\APP\app.c)(0x5BCDDD23)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\..\DSP_LIB -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\uCOS_III\uC-CPU -I ..\..\uCOS_III\uC-LIB -I ..\..\uCOS_III\uCOS-III\Ports -I ..\..\uCOS_III\uCOS-III\Source -I ..\..\emWin\Config -I ..\..\emWin\inc -I ..\..\emWin\Lib -I ..\..\emWin\OS -I ..\..\FATFS -I ..\..\User -I ..\..\User\APP -I ..\..\User\BSP -I ..\..\User\BSP\font -I ..\..\User\BSP\lcd -I ..\..\User\BSP\led -I ..\..\User\BSP\sdram -I ..\..\User\BSP\usart -I ..\..\User\BSP\sdio -I ..\..\User\User_APP -I ..\..\User\BSP\DHT22 -I ..\..\User\User_APP\delay -I ..\..\User\BSP\adc -I ..\..\User\BSP\rng -I ..\..\User\BSP\i2c -I ..\..\User\BSP\mpu6050 -I ..\..\User\BSP\TOUCH -I ..\..\emWin -I ..\..\User\BSP\RTC -I ..\..\User\BSP\mpu6050\eMPL-I.\RTE\_SDRAM-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F429xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER-o ..\..\output\app.o --omf_browse ..\..\output\app.crf --depend ..\..\output\app.d)
+F (..\..\User\APP\app.c)(0x5BD6ED6D)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\..\DSP_LIB -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\uCOS_III\uC-CPU -I ..\..\uCOS_III\uC-LIB -I ..\..\uCOS_III\uCOS-III\Ports -I ..\..\uCOS_III\uCOS-III\Source -I ..\..\emWin\Config -I ..\..\emWin\inc -I ..\..\emWin\Lib -I ..\..\emWin\OS -I ..\..\FATFS -I ..\..\User -I ..\..\User\APP -I ..\..\User\BSP -I ..\..\User\BSP\font -I ..\..\User\BSP\lcd -I ..\..\User\BSP\led -I ..\..\User\BSP\sdram -I ..\..\User\BSP\usart -I ..\..\User\BSP\sdio -I ..\..\User\User_APP -I ..\..\User\BSP\DHT22 -I ..\..\User\User_APP\delay -I ..\..\User\BSP\adc -I ..\..\User\BSP\rng -I ..\..\User\BSP\i2c -I ..\..\User\BSP\mpu6050 -I ..\..\User\BSP\TOUCH -I ..\..\emWin -I ..\..\User\BSP\RTC -I ..\..\User\BSP\mpu6050\eMPL-I.\RTE\_SDRAM-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F429xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER-o ..\..\output\app.o --omf_browse ..\..\output\app.crf --depend ..\..\output\app.d)
 I (..\..\User\APP\includes.h)(0x5BC2FF2B)
 I (d:\Keil_v5\ARM\ARMCC\include\stdio.h)(0x599ECD2C)
 I (d:\Keil_v5\ARM\ARMCC\include\string.h)(0x599ECD2C)
@@ -3501,7 +3501,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -3659,7 +3659,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -3794,7 +3794,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -3929,7 +3929,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -4064,7 +4064,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -4589,7 +4589,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -4724,7 +4724,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -4860,7 +4860,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -4871,7 +4871,7 @@ I (..\..\User\BSP\TOUCH\ft5206.h)(0x5B8F91F9)
 I (..\..\User\BSP\RTC\bsp_rtc.h)(0x5BB6BEE5)
 I (..\..\emWin\WindowDLG.h)(0x5BB6C12F)
 F (..\..\emWin\Lib\STemWin540_CM4_OS_Keil.lib)(0x5A8FF5D4)()
-F (..\..\emWin\WindowDLG.c)(0x5BCDC8F1)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\..\DSP_LIB -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\uCOS_III\uC-CPU -I ..\..\uCOS_III\uC-LIB -I ..\..\uCOS_III\uCOS-III\Ports -I ..\..\uCOS_III\uCOS-III\Source -I ..\..\emWin\Config -I ..\..\emWin\inc -I ..\..\emWin\Lib -I ..\..\emWin\OS -I ..\..\FATFS -I ..\..\User -I ..\..\User\APP -I ..\..\User\BSP -I ..\..\User\BSP\font -I ..\..\User\BSP\lcd -I ..\..\User\BSP\led -I ..\..\User\BSP\sdram -I ..\..\User\BSP\usart -I ..\..\User\BSP\sdio -I ..\..\User\User_APP -I ..\..\User\BSP\DHT22 -I ..\..\User\User_APP\delay -I ..\..\User\BSP\adc -I ..\..\User\BSP\rng -I ..\..\User\BSP\i2c -I ..\..\User\BSP\mpu6050 -I ..\..\User\BSP\TOUCH -I ..\..\emWin -I ..\..\User\BSP\RTC -I ..\..\User\BSP\mpu6050\eMPL-I.\RTE\_SDRAM-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F429xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER-o ..\..\output\windowdlg.o --omf_browse ..\..\output\windowdlg.crf --depend ..\..\output\windowdlg.d)
+F (..\..\emWin\WindowDLG.c)(0x5BD72741)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 -Otime --apcs=interwork --split_sections -I ..\..\DSP_LIB -I ..\..\Libraries\CMSIS\Include -I ..\..\Libraries\CMSIS\Device\ST\STM32F4xx\Include -I ..\..\Libraries\STM32F4xx_StdPeriph_Driver\inc -I ..\..\uCOS_III\uC-CPU -I ..\..\uCOS_III\uC-LIB -I ..\..\uCOS_III\uCOS-III\Ports -I ..\..\uCOS_III\uCOS-III\Source -I ..\..\emWin\Config -I ..\..\emWin\inc -I ..\..\emWin\Lib -I ..\..\emWin\OS -I ..\..\FATFS -I ..\..\User -I ..\..\User\APP -I ..\..\User\BSP -I ..\..\User\BSP\font -I ..\..\User\BSP\lcd -I ..\..\User\BSP\led -I ..\..\User\BSP\sdram -I ..\..\User\BSP\usart -I ..\..\User\BSP\sdio -I ..\..\User\User_APP -I ..\..\User\BSP\DHT22 -I ..\..\User\User_APP\delay -I ..\..\User\BSP\adc -I ..\..\User\BSP\rng -I ..\..\User\BSP\i2c -I ..\..\User\BSP\mpu6050 -I ..\..\User\BSP\TOUCH -I ..\..\emWin -I ..\..\User\BSP\RTC -I ..\..\User\BSP\mpu6050\eMPL-I.\RTE\_SDRAM-Id:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.11.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include-Id:\Keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F429xx -DSTM32F429_439xx -DUSE_STDPERIPH_DRIVER-o ..\..\output\windowdlg.o --omf_browse ..\..\output\windowdlg.crf --depend ..\..\output\windowdlg.d)
 I (..\..\emWin\inc\DIALOG.h)(0x5A8FF5D4)
 I (..\..\emWin\inc\WM.h)(0x5A8FF5D4)
 I (..\..\emWin\inc\GUI_ConfDefaults.h)(0x5AFEE30B)
@@ -4997,7 +4997,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)
@@ -5132,7 +5132,7 @@ I (..\..\User\BSP\DHT22\bsp_DHT22.h)(0x5B04010B)
 I (..\..\User\BSP\usart\bsp_usart6.h)(0x5B701985)
 I (..\..\User\BSP\adc\bsp_adc.h)(0x5BCDD471)
 I (..\..\User\BSP\rng\bsp_rng.h)(0x5B8E841B)
-I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BB725BA)
+I (..\..\User\BSP\i2c\bsp_i2c_gpio.h)(0x5BD6ED6D)
 I (..\..\User\BSP\mpu6050\mpu6050.h)(0x5BB78B41)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu.h)(0x5BB78940)
 I (..\..\User\BSP\mpu6050\eMPL\inv_mpu_dmp_motion_driver.h)(0x50CA9A0C)

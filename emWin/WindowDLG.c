@@ -262,13 +262,26 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate5[] =
 
 /*********************************************************************111
 *
-*       _aDialogCreate5
+*       _aDialogCreate6
 */
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate6[] = 
 {
     { FRAMEWIN_CreateIndirect,    "MUSIC",        0,             0,   0,  480, 272 ,  0},
 };
 
+
+/*********************************************************************111
+*
+*       _aDialogCreate7
+*/
+
+
+static const GUI_WIDGET_CREATE_INFO _aDialogCreate7[] = {
+    { FRAMEWIN_CreateIndirect,  "Volume",           0,  0,  0,  480,272,0,0},
+  { SLIDER_CreateIndirect, "Slider", GUI_ID_SLIDER0, 125, 93, 216, 60, 0, 0x0, 0 },
+  { TEXT_CreateIndirect, "Edit", GUI_ID_TEXT0, 195, 60, 80, 20, 0, 0x64, 0 },
+  { BUTTON_CreateIndirect, "Button", GUI_ID_BUTTON0, 194, 180, 80, 20, 0, 0x0, 0 },
+};
 
 static const GUI_WIDGET_CREATE_INFO _aDialogProgress[] = {
   { FRAMEWIN_CreateIndirect, "In Progress...",  0,                 80,  80, 150,  60, 0 },
@@ -360,20 +373,6 @@ static void _cbDialogProgress(WM_MESSAGE * pMsg) {
   case WM_TIMER:
     if (Progress < 100) {
       Progress += 2;
-
-		  if(Progress > 50&&ONE_BIT ==1)
-		  {
-			  	  if(list_value != last_data)
-				{
-					last_data  = list_value;
-				  ONE_BIT = 0;
-				  if(list_value == 0)
-					  printf("@AsrMode#1$");
-				  if(list_value == 1)
-					  printf("@AsrMode#3$");
-				  GUI_Delay (4000);
-			  }
-		  }
       hItem = WM_GetDialogItem(hWin, GUI_ID_PROGBAR0);
       PROGBAR_SetValue(hItem, Progress);
       WM_RestartTimer(pMsg->Data.v, 20);
@@ -416,12 +415,6 @@ static void _cbDialogProgress1(WM_MESSAGE * pMsg) {
   case WM_TIMER:
     if (Progress < 100) {
       Progress += 2;
-
-		  if(Progress > 50&&ONE_BIT ==1)
-		  {
-			 RTC_TimeAndDate_Set(Wset.hour,Wset.mint,Wset.year,Wset.month,Wset.day); 
-//			 RTC_TimeAndDate_Show();
-		  }
       hItem = WM_GetDialogItem(hWin, GUI_ID_PROGBAR0);
       PROGBAR_SetValue(hItem, Progress);
       WM_RestartTimer(pMsg->Data.v, 20);
@@ -867,6 +860,114 @@ static void _cbCallback4(WM_MESSAGE * pMsg)
 	}
 }
 
+
+
+static void _cbCallback5(WM_MESSAGE * pMsg) 
+{
+	WM_HWIN hItem;
+	WM_HWIN hProg;
+    int NCode, Id;
+	char buffer[50];
+    WM_HWIN hWin = pMsg->hWin;
+	
+    switch (pMsg->MsgId) 
+    {
+        case WM_INIT_DIALOG:
+			
+			/*
+			*    初始化框架窗口
+		    */
+			FRAMEWIN_SetFont(hWin,GUI_FONT_20B_ASCII);
+			FRAMEWIN_SetText(hWin, _aBitmapItem[s_ucSelIconIndex].pText);
+			FRAMEWIN_SetTextAlign(hWin,GUI_TA_VCENTER|GUI_TA_CENTER);
+		
+			FRAMEWIN_AddCloseButton(hWin, FRAMEWIN_BUTTON_RIGHT, 0);
+			FRAMEWIN_SetTitleHeight(hWin, 36);
+		
+		    hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_TEXT0);
+			sprintf((char *)buffer,"Volume = %d",volume);
+			TEXT_SetText(hItem,(const char *)buffer);
+			
+			hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_SLIDER0);
+			SLIDER_SetNumTicks(hItem,10);                 //十级音量控制
+			SLIDER_SetRange(hItem,0,9);
+		    SLIDER_SetValue(hItem,volume);
+			
+		   
+            break;
+		
+        case WM_KEY:
+            switch (((WM_KEY_INFO*)(pMsg->Data.p))->Key) 
+            {
+                case GUI_KEY_ESCAPE:
+                    GUI_EndDialog(hWin, 1);
+                    break;
+				
+                case GUI_KEY_ENTER:
+                    GUI_EndDialog(hWin, 0);
+                    break;
+            }
+            break;
+			
+        case WM_NOTIFY_PARENT:
+            Id = WM_GetId(pMsg->hWinSrc); 
+            NCode = pMsg->Data.v;        
+            switch (Id) 
+            {
+                case GUI_ID_OK:
+                    if(NCode==WM_NOTIFICATION_RELEASED)
+					{
+						GUI_EndDialog(hWin, 0);					
+					}
+                    break;
+					
+                case GUI_ID_CANCEL:
+                    if(NCode==WM_NOTIFICATION_RELEASED)
+					{
+						GUI_EndDialog(hWin, 0);	
+					}
+                    break;
+					
+				case GUI_ID_SLIDER0:
+					switch(NCode)
+					{
+						case WM_NOTIFICATION_CLICKED:
+							break;
+						case WM_NOTIFICATION_RELEASED:
+						    break;
+						case WM_NOTIFICATION_VALUE_CHANGED:
+							hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_SLIDER0);
+						    volume = SLIDER_GetValue(hItem);
+						    hItem = WM_GetDialogItem(pMsg->hWin, GUI_ID_TEXT0);
+						    sprintf((char *)buffer,"Volume = %d",volume);
+						    TEXT_SetText(hItem,(const char *)buffer);
+							break;
+					}break;
+				case GUI_ID_BUTTON0:
+					switch(NCode)
+					{
+						case WM_NOTIFICATION_CLICKED:
+
+							break;
+						case WM_NOTIFICATION_RELEASED:
+							printf("@Volum#%d$",volume);
+						    Debug_printf("Volume = %d",volume);
+						    hProg = GUI_CreateDialogBox(_aDialogProgress, GUI_COUNTOF(_aDialogProgress), &_cbDialogProgress, WM_HBKWIN, 0, 0); 
+							GUI_MEMDEV_FadeInWindow(hProg, 500);
+							WM_InvalidateWindow(hWin);
+							WM_MakeModal(hProg);
+							GUI_ExecCreatedDialog(hProg);
+						    break;
+					}break;
+
+            }
+            break;
+			
+        default:
+            WM_DefaultProc(pMsg);
+    }
+}
+
 /*
 *********************************************************************************************************
 *	函 数 名: _cbDialogInfo
@@ -985,7 +1086,7 @@ static void _cbDialog2(WM_MESSAGE * pMsg)
 								
 								/* 声音 */
 								case 4:
-//									hWinInfo = GUI_CreateDialogBox(_aDialogCreate1, GUI_COUNTOF(_aDialogCreate1), &_cbCallback1, 0, 0, 0);				
+									hWinInfo = GUI_CreateDialogBox(_aDialogCreate7, GUI_COUNTOF(_aDialogCreate7), &_cbCallback5, 0, 0, 0);				
 								    break;	
 								
 								/* 文件 */
