@@ -53,6 +53,7 @@ void RTC_TimeAndDate_Set(int hour,int mint,int year,int month,int date)
   */
 void RTC_TimeAndDate_Show(void)
 {
+	 OS_ERR      err;
 	RTC_TimeTypeDef RTC_TimeStructure;
 	RTC_DateTypeDef RTC_DateStructure;
 	
@@ -71,7 +72,6 @@ void RTC_TimeAndDate_Show(void)
 			RTC_DateStructure.RTC_Date,
 			RTC_DateStructure.RTC_WeekDay);
 		
-
 			
 		now.hour = 	RTC_TimeStructure.RTC_Hours;
 		now.mint =   RTC_TimeStructure.RTC_Minutes;
@@ -81,6 +81,8 @@ void RTC_TimeAndDate_Show(void)
 			RTC_TimeStructure.RTC_Hours, 
 			RTC_TimeStructure.RTC_Minutes, 
 			RTC_TimeStructure.RTC_Seconds);
+			OSTimeDly(100,OS_OPT_TIME_DLY,&err);
+		printf("@TextToSpeech#现在是北京时间[n2]%d点[n2]%d分$",RTC_TimeStructure.RTC_Hours,RTC_TimeStructure.RTC_Minutes);
 	
       	
       (void)RTC->DR;

@@ -219,6 +219,7 @@ static  void  AppTaskStart (void *p_arg)
     CPU_IntDisMeasMaxCurReset();
 #endif
 
+	printf("@Volume#0$ ");
      _ShowJPEG2("0:kaiji.jpg",0,0);
 	GUI_SetBkColor(GUI_WHITE);
 	GUI_SetColor(GUI_BLACK);
@@ -597,7 +598,9 @@ static  void  AppTasktalk ( void * p_arg )
 	u16 * pMsg;
 	u8 Led_Mode = 0;
 	u8 HH_Mode = 0;
-	
+	u8 Read_Data3 = 0;
+	u8 music_Mode = 0;
+	u8 year,month,day,hour,mint,sec;
 	u8 i = 0 ;
 	
    (void)p_arg;
@@ -615,6 +618,7 @@ static  void  AppTasktalk ( void * p_arg )
 											  (OS_ERR        *)&err);                //返回错误类型
 
      	Debug_printf ( "ReceiveData = %d\n", * pMsg );                                   //打印消息内容
+		Read_Data3 = Read_Seed()%3;
 		Voice_Mode = 1;
 		switch(* pMsg)
 		{
@@ -666,7 +670,9 @@ static  void  AppTasktalk ( void * p_arg )
 						}break;
 		    case 0x09:
 						Debug_printf("唱歌\n");
+			            OSTimeDly(100,OS_OPT_TIME_DLY,&err);
 						printf("@TextToSpeech#会啊，你想听什么$");
+						music_Mode = 1;
 						break;
 			case 0x0A:
 						{
@@ -771,8 +777,11 @@ static  void  AppTasktalk ( void * p_arg )
 			case 0x19:
 						{
 							Debug_printf("开灯\n");
-							if(Led_Mode)
+							if(Led_Mode == 1)
+							{
+								OSTimeDly(100,OS_OPT_TIME_DLY,&err);
 								printf("@TextToSpeech#灯已经亮了$");
+							}
 							else
 							{	
 								Led_Mode = 1;
@@ -790,7 +799,10 @@ static  void  AppTasktalk ( void * p_arg )
 						{
 							Debug_printf("关灯\n");
 							if(Led_Mode == 2)
+							{
+								OSTimeDly(100,OS_OPT_TIME_DLY,&err);
 								printf("@TextToSpeech#灯已经关了，要开灯吗？$");
+							}
 							else
 							{
 								Led_Mode = 2;
@@ -812,7 +824,80 @@ static  void  AppTasktalk ( void * p_arg )
 							settime_mode = 1;
 							OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
 						}break;
-			
+	
+			case 0x1e:
+					if(Read_Data3 == 0)
+					  {
+						OSTimeDly(100,OS_OPT_TIME_DLY,&err);
+						printf("@TextToSpeech#大吉大利，今晚吃鸡$");
+					  }
+					else
+					{
+						
+						OSTimeDly(100,OS_OPT_TIME_DLY,&err);
+						printf("@TextToSpeech#对不起，我不会$");
+					}
+					break;
+				      
+			case 0x1f:
+				      Debug_printf("时间\n");
+			          RTC_TimeTypeDef RTC_TimeStructure;
+						RTC_DateTypeDef RTC_DateStructure;
+						
+							// 获取日历
+						RTC_GetTime(RTC_Format_BIN, &RTC_TimeStructure);
+						  RTC_GetDate(RTC_Format_BIN, &RTC_DateStructure);
+							
+						  
+						  year = 	RTC_DateStructure.RTC_Year;
+						 month =    RTC_DateStructure.RTC_Month;
+						 day =      RTC_DateStructure.RTC_Date;
+								// 打印日期
+							Debug_printf("The Date :  Y:20%d - M:%d - D:%d - W:%d\r\n", 
+								RTC_DateStructure.RTC_Year,
+								RTC_DateStructure.RTC_Month, 
+								RTC_DateStructure.RTC_Date,
+								RTC_DateStructure.RTC_WeekDay);
+							
+								
+						  hour = 	RTC_TimeStructure.RTC_Hours;
+						mint =   RTC_TimeStructure.RTC_Minutes;
+						sec = RTC_TimeStructure.RTC_Seconds;
+								// 打印时间
+							Debug_printf("The Time :  %d:%d:%d \r\n\r\n", 
+								RTC_TimeStructure.RTC_Hours, 
+								RTC_TimeStructure.RTC_Minutes, 
+								RTC_TimeStructure.RTC_Seconds);
+								OSTimeDly(600,OS_OPT_TIME_DLY,&err);
+							printf("@TextToSpeech#现在是北京时间[n2]%d点[n2]%d分$",hour,mint);
+			          break;
+				     
+			case 0x20:
+				     	OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);    //挂起表情显示
+						OSTimeDlyHMSM(0, 0, 0,100,OS_OPT_TIME_DLY,&err);
+						
+						Touch_TimeMode = 0;
+						settime_mode = 2;
+						OSTaskResume((OS_TCB *)&AppTaskWindowTCB,&err);  //恢复
+			            break;
+			case 0x21:
+				    if(music_Mode)
+						OSTimeDly(100,OS_OPT_TIME_DLY,&err);
+						printf("@PlayTF#0002$");
+					    music_Mode = 0;
+					break;
+			case 0x22:
+				    if(music_Mode)
+						OSTimeDly(100,OS_OPT_TIME_DLY,&err);
+						printf("@PlayTF#0003$");
+					    music_Mode = 0;
+					break;
+			case 0x23:
+				    if(music_Mode)
+						OSTimeDly(100,OS_OPT_TIME_DLY,&err);
+						printf("@PlayTF#0001$");
+					    music_Mode = 0;
+					break;
 				
 			
 		}
@@ -919,13 +1004,14 @@ static void  AppTaskLight  ( void * p_arg )
 		
 		    Debug_printf("\r\n The current Light_ADC_Vol value = %f V \r\n",Light_ADC_Vol); 
 		 
-			if((double)Light_ADC_Vol > 2.7&&Light_Mode == 0)
+			if((double)Light_ADC_Vol > 2&&Light_Mode == 0)
 			{
 				OSTaskSuspend((OS_TCB *)&AppTaskShowBQTCB,&err);
 				OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
 				OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
 				
 				printf("@TextToSpeech#天怎么突然黑了$");
+				_ShowJPEG2("0:jingya.jpg",0,0);
 				OSTimeDlyHMSM(0,0,10,0,OS_OPT_TIME_DLY,&err); 
 				
 				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
@@ -934,12 +1020,12 @@ static void  AppTaskLight  ( void * p_arg )
 				
 				Light_Mode = 1;                                //亮度变化只提醒一遍，状态改变后再提醒
 			}
-			if ((double)Light_ADC_Vol < 2.7&&Light_Mode == 1)
+			if ((double)Light_ADC_Vol < 2&&Light_Mode == 1)
 			{
 				Light_Mode = 0;
 			}
 			
-		    OSTimeDlyHMSM(0,0,10,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
+		    OSTimeDlyHMSM(0,0,3,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
 		    
 	}
 }
@@ -1204,9 +1290,9 @@ static  void  AppTaskWhere ( void * p_arg )
 					OSTaskSuspend((OS_TCB *)&AppTasktalkTCB,&err);
 					OSTaskSuspend((OS_TCB *)&AppTaskPowerTCB,&err);
 					
-					printf("@TextToSpeech#头好晕，别摇了$");
-					_ShowJPEG2("0:shui.jpg",0,0);
-					OSTimeDlyHMSM(0,0,3,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
+					printf("@TextToSpeech#头好晕啊，别摇了$");
+					_ShowJPEG2("0:yun.jpg",0,0);
+					OSTimeDlyHMSM(0,0,2,0,OS_OPT_TIME_DLY,&err); //每隔一段时间读取一次电压值
 					
 					OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
 					OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
