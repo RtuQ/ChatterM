@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\..\Output\SDRAM.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\..\Output\SDRAM.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Nov 04 22:36:44 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Sun Nov 04 22:58:47 2018
 <BR><P>
 <H3>Maximum Stack Usage =       1792 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -10924,6 +10924,7 @@ Global Symbols
 <LI><a href="#[55a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_SetDate
 </UL>
 <BR>[Called By]<UL><LI><a href="#[211]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_CLK_Config
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_cbDialog
 </UL>
 
 <P><STRONG><a name="[553]"></a>RTC_WaitForSynchro</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, stm32f4xx_rtc.o(i.RTC_WaitForSynchro))
@@ -15408,7 +15409,7 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> app.o(i.AppTaskStart)
 </UL>
-<P><STRONG><a name="[9a]"></a>AppTaskLight</STRONG> (Thumb, 226 bytes, Stack size 32 bytes, app.o(i.AppTaskLight))
+<P><STRONG><a name="[9a]"></a>AppTaskLight</STRONG> (Thumb, 232 bytes, Stack size 32 bytes, app.o(i.AppTaskLight))
 <BR><BR>[Stack]<UL><LI>Max Depth = 1672 + Unknown Stack Size
 <LI>Call Chain = AppTaskLight &rArr; _ShowJPEG2 &rArr; GUI_JPEG_Draw &rArr; GUI_JPEG_DrawEx &rArr; _Draw &rArr; _DrawBanding &rArr; GUI_JPEG__DecodeProgressiveBanding &rArr; _InitScan &rArr; _CheckHuffmanTables &rArr; _CreateHuffmanTable
 </UL>
@@ -16437,11 +16438,12 @@ Local Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> windowdlg.o(i._cbDialog2)
 </UL>
-<P><STRONG><a name="[a2]"></a>_cbDialog</STRONG> (Thumb, 2106 bytes, Stack size 48 bytes, windowdlg.o(i._cbDialog))
+<P><STRONG><a name="[a2]"></a>_cbDialog</STRONG> (Thumb, 2136 bytes, Stack size 48 bytes, windowdlg.o(i._cbDialog))
 <BR><BR>[Stack]<UL><LI>Max Depth = 980 + Unknown Stack Size
 <LI>Call Chain = _cbDialog &rArr; DROPDOWN_SetFont &rArr; DROPDOWN_Expand &rArr; LISTBOX_CreateAsChild &rArr; LISTBOX_CreateUser &rArr; LISTBOX_SetText &rArr; LISTBOX_AddString &rArr; LISTBOX_UpdateScrollers &rArr; _ManageAutoScroll &rArr; WM_SetScrollbarH &rArr; WM__SetScrollbarH &rArr; _SetScrollbar &rArr; SCROLLBAR_CreateAttached &rArr; SCROLLBAR_CreateEx &rArr; SCROLLBAR_CreateUser &rArr; WM_CreateWindowAsChild &rArr; WM_BringToBottom &rArr; WM__InvalidateRectEx &rArr; WM__InvalidateRect &rArr;  WM__InvalidateRect (Cycle)
 </UL>
 <BR>[Calls]<UL><LI><a href="#[1db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Debug_printf
+<LI><a href="#[556]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_TimeAndDate_Set
 <LI><a href="#[3c9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_MEMDEV_WriteAt
 <LI><a href="#[1dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OSTaskResume
 <LI><a href="#[5fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;WM_MakeModal

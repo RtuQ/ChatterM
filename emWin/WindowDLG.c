@@ -268,10 +268,10 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate5[] =
 static const GUI_WIDGET_CREATE_INFO _aDialogCreate6[] = 
 {
     { FRAMEWIN_CreateIndirect,    "MUSIC",        0,             0,   0,  480, 272 ,  0},
-	 { BUTTON_CreateIndirect, "PLAY", GUI_ID_BUTTON0, 52, 110, 80, 20, 0, 0x0, 0 },
-	  { BUTTON_CreateIndirect, "STOP", GUI_ID_BUTTON1, 171, 110, 80, 20, 0, 0x0, 0 },
-	   { BUTTON_CreateIndirect, "Suspend", GUI_ID_BUTTON2, 293, 110, 80, 20, 0, 0x0, 0 },
-	    { BUTTON_CreateIndirect, "Resume", GUI_ID_BUTTON3, 413, 110, 80, 20, 0, 0x0, 0 },
+	 { BUTTON_CreateIndirect, "PLAY", GUI_ID_BUTTON0, 32, 110, 80, 20, 0, 0x0, 0 },
+	  { BUTTON_CreateIndirect, "STOP", GUI_ID_BUTTON1, 151, 110, 80, 20, 0, 0x0, 0 },
+	   { BUTTON_CreateIndirect, "Suspend", GUI_ID_BUTTON2, 273, 110, 80, 20, 0, 0x0, 0 },
+	    { BUTTON_CreateIndirect, "Resume", GUI_ID_BUTTON3, 393, 110, 80, 20, 0, 0x0, 0 },
 };
 
 
@@ -289,7 +289,7 @@ static const GUI_WIDGET_CREATE_INFO _aDialogCreate7[] = {
 };
 
 static const GUI_WIDGET_CREATE_INFO _aDialogProgress[] = {
-  { FRAMEWIN_CreateIndirect, "In Progress...",  0,                 80,  80, 150,  60, 0 },
+  { FRAMEWIN_CreateIndirect, "In Progress...",  0,                 100,  100, 150,  60, 0 },
   { PROGBAR_CreateIndirect,  0,                 GUI_ID_PROGBAR0,    9,   6, 120,  20, 0 },
 };
 
@@ -1340,12 +1340,10 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     case ID_DROPDOWN_0: // Notifications sent by 'Dropdown'
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+
         break;
       case WM_NOTIFICATION_RELEASED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
 									  {
@@ -1353,19 +1351,16 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 										  list_value =  DROPDOWN_GetSel(hItem);
 										  Wset.year = list_value + 16;
 									  }break;
-      // USER START (Optionally insert additional code for further notification handling)
-      // USER END
+
       }
       break;
     case ID_DROPDOWN_1: // Notifications sent by 'Dropdown'
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+
         break;
       case WM_NOTIFICATION_RELEASED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
 										{
@@ -1379,12 +1374,10 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     case ID_DROPDOWN_2: // Notifications sent by 'Dropdown'
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+
         break;
       case WM_NOTIFICATION_RELEASED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
 										{
@@ -1394,19 +1387,16 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 											Debug_printf("mint:%d",Wset.day);
 										}
         break;
-      // USER START (Optionally insert additional code for further notification handling)
-      // USER END
+
       }
       break;
     case ID_DROPDOWN_3: // Notifications sent by 'Dropdown'
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+
         break;
       case WM_NOTIFICATION_RELEASED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
 										{
@@ -1421,12 +1411,10 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     case ID_DROPDOWN_4: // Notifications sent by 'Dropdown'
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+
         break;
       case WM_NOTIFICATION_RELEASED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
+
         break;
       case WM_NOTIFICATION_SEL_CHANGED:
 										{
@@ -1441,11 +1429,11 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
     case ID_BUTTON_0: // Notifications sent by 'Button'
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
         break;
       case WM_NOTIFICATION_RELEASED:
 	  {
+		  
+		                                 RTC_TimeAndDate_Set(Wset.hour,Wset.mint,Wset.year,Wset.month,Wset.day);
 								
 										  hProg = GUI_CreateDialogBox(_aDialogProgress, GUI_COUNTOF(_aDialogProgress), &_cbDialogProgress1, WM_HBKWIN, 0, 0); 
 											GUI_MEMDEV_FadeInWindow(hProg, 500);
@@ -1454,15 +1442,11 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 											GUI_ExecCreatedDialog(hProg);
 									  }
         break;
-      // USER START (Optionally insert additional code for further notification handling)
-      // USER END
       }
       break;
     case ID_BUTTON_1: // Notifications sent by 'Button'
       switch(NCode) {
       case WM_NOTIFICATION_CLICKED:
-        // USER START (Optionally insert code for reacting on notification message)
-        // USER END
         break;
       case WM_NOTIFICATION_RELEASED:
 								  {GUI_EndDialog(hWin2,0);
@@ -1472,12 +1456,8 @@ static void _cbDialog(WM_MESSAGE * pMsg) {
 								  }	break;
       }
       break;
-    // USER START (Optionally insert additional code for further Ids)
-    // USER END
     }
     break;
-  // USER START (Optionally insert additional message handling)
-  // USER END
   default:
     WM_DefaultProc(pMsg);
     break;

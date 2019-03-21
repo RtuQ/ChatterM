@@ -1012,7 +1012,8 @@ static void  AppTaskLight  ( void * p_arg )
 				
 				printf("@TextToSpeech#天怎么突然黑了$");
 				_ShowJPEG2("0:jingya.jpg",0,0);
-				OSTimeDlyHMSM(0,0,10,0,OS_OPT_TIME_DLY,&err); 
+				OSTimeDlyHMSM(0,0,3,0,OS_OPT_TIME_DLY,&err);
+                printf("@TextToSpeech#需要帮您开灯吗$");				
 				
 				OSTaskResume((OS_TCB *)&AppTaskShowBQTCB,&err);  //恢复空闲显示表情任务
 				OSTaskResume((OS_TCB *)&AppTasktalkTCB,&err);  //恢复对话表情任务
